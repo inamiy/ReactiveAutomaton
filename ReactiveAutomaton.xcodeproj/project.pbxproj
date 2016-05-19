@@ -23,6 +23,7 @@
 		1FAEBD081CDCF04E0046EA72 /* Reply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAEBD071CDCF04E0046EA72 /* Reply.swift */; };
 		1FAEBD0A1CDCF0990046EA72 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FAEBD091CDCF0990046EA72 /* Result.framework */; };
 		1FAEBD0C1CDCF0A10046EA72 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FAEBD0B1CDCF0A10046EA72 /* ReactiveCocoa.framework */; };
+		48B2D1141CED890D0095F175 /* Mapping+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B2D1131CED890D0095F175 /* Mapping+Helper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -260,6 +261,7 @@
 		1FAEBD071CDCF04E0046EA72 /* Reply.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reply.swift; sourceTree = "<group>"; };
 		1FAEBD091CDCF0990046EA72 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FAEBD0B1CDCF0A10046EA72 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ReactiveCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		48B2D1131CED890D0095F175 /* Mapping+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mapping+Helper.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -428,6 +430,7 @@
 				1FAEBD021CDCEF940046EA72 /* ReactiveAutomaton.h */,
 				1FAEBD051CDCEFD50046EA72 /* Automaton.swift */,
 				1FAEBD071CDCF04E0046EA72 /* Reply.swift */,
+				48B2D1131CED890D0095F175 /* Mapping+Helper.swift */,
 				1F24E04C1CDD0F610008028E /* Internals */,
 				1FAEBD011CDCEF940046EA72 /* Info.plist */,
 			);
@@ -479,6 +482,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1FAEBCFD1CDCEF520046EA72 /* Build configuration list for PBXNativeTarget "ReactiveAutomaton" */;
 			buildPhases = (
+				48B2D1341CEDAC5D0095F175 /* SwiftLint */,
 				1FAEBCF01CDCEF510046EA72 /* Sources */,
 				1FAEBCF11CDCEF510046EA72 /* Frameworks */,
 				1FAEBCF21CDCEF510046EA72 /* Headers */,
@@ -776,6 +780,23 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		48B2D1341CEDAC5D0095F175 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1F24EB0D1CDD19240008028E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -791,6 +812,7 @@
 			files = (
 				1FAEBD081CDCF04E0046EA72 /* Reply.swift in Sources */,
 				1F24E04B1CDD0D760008028E /* ReactiveCocoa+SampleFrom.swift in Sources */,
+				48B2D1141CED890D0095F175 /* Mapping+Helper.swift in Sources */,
 				1FAEBD061CDCEFD50046EA72 /* Automaton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

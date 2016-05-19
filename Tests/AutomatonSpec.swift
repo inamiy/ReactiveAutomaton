@@ -12,28 +12,7 @@ import ReactiveAutomaton
 import Quick
 import Nimble
 
-func mapping(fromState: State, input: Input) -> State?
-{
-    switch (fromState, input) {
-        case (.LoggedOut, .Login):
-            return .LoggingIn
-        case (.LoggingIn, .LoginOK):
-            return .LoggedIn
-        case (.LoggedIn, .Logout):
-            return .LoggingOut
-        case (.LoggingOut, .LogoutOK):
-            return .LoggedOut
-
-        // ForceLogout
-        case (.LoggingIn, .ForceLogout), (.LoggedIn, .ForceLogout):
-            return .LoggingOut
-
-        default:
-            return nil
-    }
-}
-
-enum State: String, CustomStringConvertible
+private enum State: String, StateType, CustomStringConvertible
 {
     case LoggedOut = "LoggedOut"
     case LoggingIn = "LoggingIn"
@@ -43,7 +22,7 @@ enum State: String, CustomStringConvertible
     var description: String { return self.rawValue }
 }
 
-enum Input: String, CustomStringConvertible
+private enum Input: String, InputType, CustomStringConvertible
 {
     case Login = "Login"
     case LoginOK = "LoginOK"
@@ -62,85 +41,256 @@ class AutomatonSpec: QuickSpec
         var automaton: Automaton<State, Input>?
         var lastReply: Reply<State, Input>?
 
-        beforeEach {
-            automaton = Automaton<State, Input>(state: .LoggedOut, signal: signal, mapping: mapping)
-            automaton?.signal.observeNext { reply in
-                lastReply = reply
+        describe("Normal mapping") {
+
+            beforeEach {
+                func mapping(fromState: State, input: Input) -> State?
+                {
+                    switch (fromState, input) {
+                        case (.LoggedOut, .Login):
+                            return .LoggingIn
+                        case (.LoggingIn, .LoginOK):
+                            return .LoggedIn
+                        case (.LoggedIn, .Logout):
+                            return .LoggingOut
+                        case (.LoggingOut, .LogoutOK):
+                            return .LoggedOut
+
+                        // ForceLogout
+                        case (.LoggingIn, .ForceLogout), (.LoggedIn, .ForceLogout):
+                            return .LoggingOut
+
+                        default:
+                            return nil
+                    }
+                }
+
+                automaton = Automaton<State, Input>(state: .LoggedOut, signal: signal, mapping: mapping)
+                automaton?.signal.observeNext { reply in
+                    lastReply = reply
+                }
+
+                lastReply = nil
             }
 
-            lastReply = nil
+            describe("Normal transitions") {
+
+                it("`LoggedOut => LoggingIn => LoggedIn => LoggingOut => LoggedOut` succeed") {
+                    expect(automaton?.state) == .LoggedOut
+                    expect(lastReply).to(beNil())
+
+                    observer.sendNext(.Login)
+                    expect(lastReply?.input) == .Login
+                    expect(lastReply?.fromState) == .LoggedOut
+                    expect(lastReply?.toState) == .LoggingIn
+                    expect(automaton?.state) == .LoggingIn
+
+                    observer.sendNext(.LoginOK)
+                    expect(lastReply?.input) == .LoginOK
+                    expect(lastReply?.fromState) == .LoggingIn
+                    expect(lastReply?.toState) == .LoggedIn
+                    expect(automaton?.state) == .LoggedIn
+
+                    observer.sendNext(.Logout)
+                    expect(lastReply?.input) == .Logout
+                    expect(lastReply?.fromState) == .LoggedIn
+                    expect(lastReply?.toState) == .LoggingOut
+                    expect(automaton?.state) == .LoggingOut
+
+                    observer.sendNext(.LogoutOK)
+                    expect(lastReply?.input) == .LogoutOK
+                    expect(lastReply?.fromState) == .LoggingOut
+                    expect(lastReply?.toState) == .LoggedOut
+                    expect(automaton?.state) == .LoggedOut
+                }
+
+            }
+
+            describe("ForceLogout (auth error) handling") {
+
+                it("`LoggedOut => LoggingIn ==(ForceLogout)==> LoggingOut => LoggedOut` succeed") {
+                    expect(automaton?.state) == .LoggedOut
+                    expect(lastReply).to(beNil())
+
+                    observer.sendNext(.Login)
+                    expect(lastReply?.input) == .Login
+                    expect(lastReply?.fromState) == .LoggedOut
+                    expect(lastReply?.toState) == .LoggingIn
+                    expect(automaton?.state) == .LoggingIn
+
+                    observer.sendNext(.ForceLogout)
+                    expect(lastReply?.input) == .ForceLogout
+                    expect(lastReply?.fromState) == .LoggingIn
+                    expect(lastReply?.toState) == .LoggingOut
+                    expect(automaton?.state) == .LoggingOut
+
+                    // fails
+                    observer.sendNext(.LoginOK)
+                    expect(lastReply?.input) == .LoginOK
+                    expect(lastReply?.fromState) == .LoggingOut
+                    expect(lastReply?.toState).to(beNil())
+                    expect(automaton?.state) == .LoggingOut
+
+                    // fails
+                    observer.sendNext(.Logout)
+                    expect(lastReply?.input) == .Logout
+                    expect(lastReply?.fromState) == .LoggingOut
+                    expect(lastReply?.toState).to(beNil())
+                    expect(automaton?.state) == .LoggingOut
+
+                    observer.sendNext(.LogoutOK)
+                    expect(lastReply?.input) == .LogoutOK
+                    expect(lastReply?.fromState) == .LoggingOut
+                    expect(lastReply?.toState) == .LoggedOut
+                    expect(automaton?.state) == .LoggedOut
+                }
+
+            }
         }
 
-        describe("Normal transitions") {
+        describe("Syntax-sugar mapping") {
 
-            it("`LoggedOut => LoggingIn => LoggedIn => LoggingOut => LoggedOut` succeed") {
-                expect(automaton?.value) == .LoggedOut
+            beforeEach {
+                let canForceLogout: State -> Bool = { $0 == .LoggingIn || $0 == .LoggedIn }
+
+                let mappings: [Automaton<State, Input>.Mapping] = [
+                    .Login    | .LoggedOut => .LoggingIn,
+                    .LoginOK  | .LoggingIn => .LoggedIn,
+                    .Logout   | .LoggedIn => .LoggingOut,
+                    .LogoutOK | .LoggingOut => .LoggedOut,
+
+                    .ForceLogout | canForceLogout => .LoggingOut
+                ]
+
+                // Use `concat` to combine all mappings.
+                let concatMapping = concat(mappings)
+
+                automaton = Automaton<State, Input>(state: .LoggedOut, signal: signal, mapping: concatMapping)
+                automaton?.signal.observeNext { reply in
+                    lastReply = reply
+                }
+
+                lastReply = nil
+            }
+
+            describe("Normal transitions") {
+
+                it("`LoggedOut => LoggingIn => LoggedIn => LoggingOut => LoggedOut` succeed") {
+                    expect(automaton?.state) == .LoggedOut
+                    expect(lastReply).to(beNil())
+
+                    observer.sendNext(.Login)
+                    expect(lastReply?.input) == .Login
+                    expect(lastReply?.fromState) == .LoggedOut
+                    expect(lastReply?.toState) == .LoggingIn
+                    expect(automaton?.state) == .LoggingIn
+
+                    observer.sendNext(.LoginOK)
+                    expect(lastReply?.input) == .LoginOK
+                    expect(lastReply?.fromState) == .LoggingIn
+                    expect(lastReply?.toState) == .LoggedIn
+                    expect(automaton?.state) == .LoggedIn
+
+                    observer.sendNext(.Logout)
+                    expect(lastReply?.input) == .Logout
+                    expect(lastReply?.fromState) == .LoggedIn
+                    expect(lastReply?.toState) == .LoggingOut
+                    expect(automaton?.state) == .LoggingOut
+
+                    observer.sendNext(.LogoutOK)
+                    expect(lastReply?.input) == .LogoutOK
+                    expect(lastReply?.fromState) == .LoggingOut
+                    expect(lastReply?.toState) == .LoggedOut
+                    expect(automaton?.state) == .LoggedOut
+                }
+
+            }
+
+            describe("ForceLogout (auth error) handling") {
+
+                it("`LoggedOut => LoggingIn ==(ForceLogout)==> LoggingOut => LoggedOut` succeed") {
+                    expect(automaton?.state) == .LoggedOut
+                    expect(lastReply).to(beNil())
+
+                    observer.sendNext(.Login)
+                    expect(lastReply?.input) == .Login
+                    expect(lastReply?.fromState) == .LoggedOut
+                    expect(lastReply?.toState) == .LoggingIn
+                    expect(automaton?.state) == .LoggingIn
+
+                    observer.sendNext(.ForceLogout)
+                    expect(lastReply?.input) == .ForceLogout
+                    expect(lastReply?.fromState) == .LoggingIn
+                    expect(lastReply?.toState) == .LoggingOut
+                    expect(automaton?.state) == .LoggingOut
+
+                    // fails
+                    observer.sendNext(.LoginOK)
+                    expect(lastReply?.input) == .LoginOK
+                    expect(lastReply?.fromState) == .LoggingOut
+                    expect(lastReply?.toState).to(beNil())
+                    expect(automaton?.state) == .LoggingOut
+
+                    // fails
+                    observer.sendNext(.Logout)
+                    expect(lastReply?.input) == .Logout
+                    expect(lastReply?.fromState) == .LoggingOut
+                    expect(lastReply?.toState).to(beNil())
+                    expect(automaton?.state) == .LoggingOut
+
+                    observer.sendNext(.LogoutOK)
+                    expect(lastReply?.input) == .LogoutOK
+                    expect(lastReply?.fromState) == .LoggingOut
+                    expect(lastReply?.toState) == .LoggedOut
+                    expect(automaton?.state) == .LoggedOut
+                }
+
+            }
+        }
+
+        describe("Syntax-sugar mapping + `anyState`/`anyInput`") {
+
+            beforeEach {
+                let mappings: [Automaton<State, Input>.Mapping] = [
+                    .Login   | anyState => .LoggedIn,
+                    anyInput | .LoggedIn => .LoggedOut
+                ]
+
+                // Use `concat` to combine all mappings.
+                let concatMapping = concat(mappings)
+
+                automaton = Automaton<State, Input>(state: .LoggedOut, signal: signal, mapping: concatMapping)
+                automaton?.signal.observeNext { reply in
+                    lastReply = reply
+                }
+
+                lastReply = nil
+            }
+
+            it("`anyState`/`anyInput` succeeds") {
+                expect(automaton?.state) == .LoggedOut
                 expect(lastReply).to(beNil())
 
+                // try any input (fails)
+                observer.sendNext(.LoginOK)
+                expect(lastReply?.input) == .LoginOK
+                expect(lastReply?.fromState) == .LoggedOut
+                expect(lastReply?.toState).to(beNil())
+                expect(automaton?.state) == .LoggedOut
+
+                // try `.Login` from any state
                 observer.sendNext(.Login)
-                expect(automaton?.value) == .LoggingIn
                 expect(lastReply?.input) == .Login
                 expect(lastReply?.fromState) == .LoggedOut
-                expect(lastReply?.toState) == .LoggingIn    // = automaton.value
-
-                observer.sendNext(.LoginOK)
-                expect(automaton?.value) == .LoggedIn
-                expect(lastReply?.input) == .LoginOK
-                expect(lastReply?.fromState) == .LoggingIn
                 expect(lastReply?.toState) == .LoggedIn
+                expect(automaton?.state) == .LoggedIn
 
-                observer.sendNext(.Logout)
-                expect(automaton?.value) == .LoggingOut
-                expect(lastReply?.input) == .Logout
+                // try any input
+                observer.sendNext(.LogoutOK)
+                expect(lastReply?.input) == .LogoutOK
                 expect(lastReply?.fromState) == .LoggedIn
-                expect(lastReply?.toState) == .LoggingOut
-
-                observer.sendNext(.LogoutOK)
-                expect(automaton?.value) == .LoggedOut
-                expect(lastReply?.input) == .LogoutOK
-                expect(lastReply?.fromState) == .LoggingOut
                 expect(lastReply?.toState) == .LoggedOut
-            }
-
-        }
-
-        describe("ForceLogout (auth error) handling") {
-
-            it("`LoggedOut => LoggingIn ==(ForceLogout)==> LoggingOut => LoggedOut` succeed") {
-                expect(automaton?.value) == .LoggedOut
-                expect(lastReply).to(beNil())
-
-                observer.sendNext(.Login)
-                expect(automaton?.value) == .LoggingIn
-                expect(lastReply?.input) == .Login
-                expect(lastReply?.fromState) == .LoggedOut
-                expect(lastReply?.toState) == .LoggingIn
-
-                observer.sendNext(.ForceLogout)
-                expect(automaton?.value) == .LoggingOut
-                expect(lastReply?.input) == .ForceLogout
-                expect(lastReply?.fromState) == .LoggingIn
-                expect(lastReply?.toState) == .LoggingOut
-
-                // fails
-                observer.sendNext(.LoginOK)
-                expect(automaton?.value) == .LoggingOut
-                expect(lastReply?.input) == .LoginOK
-                expect(lastReply?.fromState) == .LoggingOut
-                expect(lastReply?.toState).to(beNil())
-
-                // fails
-                observer.sendNext(.Logout)
-                expect(automaton?.value) == .LoggingOut
-                expect(lastReply?.input) == .Logout
-                expect(lastReply?.fromState) == .LoggingOut
-                expect(lastReply?.toState).to(beNil())
-
-                observer.sendNext(.LogoutOK)
-                expect(automaton?.value) == .LoggedOut
-                expect(lastReply?.input) == .LogoutOK
-                expect(lastReply?.fromState) == .LoggingOut
-                expect(lastReply?.toState) == .LoggedOut
+                expect(automaton?.state) == .LoggedOut
             }
 
         }
