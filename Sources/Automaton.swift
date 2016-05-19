@@ -9,34 +9,44 @@
 import Result
 import ReactiveCocoa
 
+public protocol StateType {}
+public protocol InputType {}
+
 public protocol AutomatonType: class
 {
-    associatedtype State
-    associatedtype Input
+    associatedtype State: StateType
+    associatedtype Input: InputType
 
-    var value: State { get }
+    /// Current state.
+    var state: State { get }
 
+    /// Outputs signal sending `Reply`.
     var signal: Signal<Reply<State, Input>, NoError> { get }
 }
 
 /// Deterministic finite automaton.
-public final class Automaton<State, Input>: AutomatonType
+public final class Automaton<State: StateType, Input: InputType>: AutomatonType
 {
-    public let signal: Signal<Reply<State, Input>, NoError>
-    private let _observer: Observer<Reply<State, Input>, NoError>
-    private let _value: () -> State
+    public typealias Mapping = (State, Input) -> State?
 
-    public var value: State
+    /// Outputs signal sending `Reply`.
+    public let signal: Signal<Reply<State, Input>, NoError>
+
+    private let _observer: Observer<Reply<State, Input>, NoError>
+    private let _stateProperty: MutableProperty<State>
+
+    /// Current state.
+    public var state: State
     {
-        return _value()
+        return self._stateProperty.value
     }
 
-    public init(state: State, signal: Signal<Input, NoError>, mapping: (State, Input) -> State?)
+    public init(state initialState: State, signal inputSignal: Signal<Input, NoError>, mapping: Mapping)
     {
-        let stateProperty = MutableProperty(state)
+        self._stateProperty = MutableProperty(initialState)
 
-        let replySignal = signal
-            .sampleFrom(stateProperty.producer)
+        let replySignal = inputSignal
+            .sampleFrom(self._stateProperty.producer)
             .map { input, fromState -> Reply<State, Input> in
                 if let toState = mapping(fromState, input) {
                     return .Success(input, fromState, toState)
@@ -46,17 +56,15 @@ public final class Automaton<State, Input>: AutomatonType
                 }
             }
 
-        stateProperty <~ replySignal
+        self._stateProperty <~ replySignal
             .flatMap(.Merge) { reply -> SignalProducer<State, NoError> in
                 if let toState = reply.toState {
-                    return SignalProducer(value: toState).concat(.never)
+                    return .init(value: toState)
                 }
                 else {
                     return .never
                 }
             }
-
-        self._value = { stateProperty.value }
 
         let (signal, observer) = Signal<Reply<State, Input>, NoError>.pipe()
         self.signal = signal
