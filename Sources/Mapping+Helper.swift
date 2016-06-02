@@ -6,6 +6,9 @@
 //  Copyright © 2016 Yasuhiro Inami. All rights reserved.
 //
 
+import Result
+import ReactiveCocoa
+
 /// "From-" and "to-" states represented as `.State1 => .State2` or `anyState => .State3`.
 public struct Transition<State>
 {
@@ -14,6 +17,8 @@ public struct Transition<State>
 }
 
 // MARK: - Custom Operators
+
+// MARK: `=>` (Transition constructor)
 
 infix operator => { associativity left precedence 150 } // higher than `|` (precedence 140)
 
@@ -27,12 +32,14 @@ public func => <State: Equatable>(left: State, right: State) -> Transition<State
     return { $0 == left } => right
 }
 
+// MARK: `|` (Automaton.Mapping constructor)
+
 //infix operator | { associativity left precedence 140 }   // Comment-Out: already built-in
 
 public func | <State: StateType, Input: InputType>(inputFunc: Input -> Bool, transition: Transition<State>) -> Automaton<State, Input>.Mapping
 {
-    return { state, input in
-        if inputFunc(input) && transition.fromState(state) {
+    return { fromState, input in
+        if inputFunc(input) && transition.fromState(fromState) {
             return transition.toState
         }
         else {
@@ -44,6 +51,20 @@ public func | <State: StateType, Input: InputType>(inputFunc: Input -> Bool, tra
 public func | <State: StateType, Input: protocol<InputType, Equatable>>(input: Input, transition: Transition<State>) -> Automaton<State, Input>.Mapping
 {
     return { $0 == input } | transition
+}
+
+// MARK: `|` (Automaton.OutMapping constructor)
+
+public func | <State: StateType, Input: InputType>(mapping: Automaton<State, Input>.Mapping, nextInputProducer: SignalProducer<Input, NoError>) -> Automaton<State, Input>.OutMapping
+{
+    return { fromState, input in
+        if let toState = mapping(fromState, input) {
+            return (toState, nextInputProducer)
+        }
+        else {
+            return nil
+        }
+    }
 }
 
 // MARK: Functions
@@ -63,10 +84,23 @@ public func anyInput<Input: InputType>(_: Input) -> Bool
 /// Concatenates multiple `Automaton.Mapping`s to one (preceding mapping has higher priority).
 public func concat<State: StateType, Input: InputType, Mappings: SequenceType where Mappings.Generator.Element == Automaton<State, Input>.Mapping>(mappings: Mappings) -> Automaton<State, Input>.Mapping
 {
-    return { state, input in
+    return { fromState, input in
         for mapping in mappings {
-            if let toState = mapping(state, input) {
+            if let toState = mapping(fromState, input) {
                 return toState
+            }
+        }
+        return nil
+    }
+}
+
+/// Concatenates multiple `Automaton.OutMapping`s to one (preceding mapping has higher priority).
+public func concat<State: StateType, Input: InputType, Mappings: SequenceType where Mappings.Generator.Element == Automaton<State, Input>.OutMapping>(mappings: Mappings) -> Automaton<State, Input>.OutMapping
+{
+    return { fromState, input in
+        for mapping in mappings {
+            if let tuple = mapping(fromState, input) {
+                return tuple
             }
         }
         return nil

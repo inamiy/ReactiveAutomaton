@@ -15,7 +15,7 @@
 		1F24E9E01CDD15B00008028E /* UniversalFramework_Framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1F24E5721CDD15AF0008028E /* UniversalFramework_Framework.xcconfig */; };
 		1F24E9E11CDD15B00008028E /* UniversalFramework_Test.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1F24E5731CDD15AF0008028E /* UniversalFramework_Test.xcconfig */; };
 		1F24EB161CDD19240008028E /* ReactiveAutomaton.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FAEBCF51CDCEF510046EA72 /* ReactiveAutomaton.framework */; };
-		1F24EB3D1CDD197B0008028E /* AutomatonSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F24EB3B1CDD197B0008028E /* AutomatonSpec.swift */; };
+		1F24EB3D1CDD197B0008028E /* MappingSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F24EB3B1CDD197B0008028E /* MappingSpec.swift */; };
 		1F24EB401CDD19FE0008028E /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F24EAC81CDD15C90008028E /* Quick.framework */; };
 		1F24EB411CDD1A030008028E /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F24EAAB1CDD15C10008028E /* Nimble.framework */; };
 		1FAEBD041CDCEF940046EA72 /* ReactiveAutomaton.h in Headers */ = {isa = PBXBuildFile; fileRef = 1FAEBD021CDCEF940046EA72 /* ReactiveAutomaton.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -23,6 +23,9 @@
 		1FAEBD081CDCF04E0046EA72 /* Reply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAEBD071CDCF04E0046EA72 /* Reply.swift */; };
 		1FAEBD0A1CDCF0990046EA72 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FAEBD091CDCF0990046EA72 /* Result.framework */; };
 		1FAEBD0C1CDCF0A10046EA72 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FAEBD0B1CDCF0A10046EA72 /* ReactiveCocoa.framework */; };
+		487C0F291D00311E0071666D /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C0F281D00311E0071666D /* Fixtures.swift */; };
+		487C0F4B1D0032D80071666D /* OutMappingSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C0F4A1D0032D80071666D /* OutMappingSpec.swift */; };
+		487C0F4D1D003B2E0071666D /* AnyMappingSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C0F4C1D003B2E0071666D /* AnyMappingSpec.swift */; };
 		48B2D1141CED890D0095F175 /* Mapping+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B2D1131CED890D0095F175 /* Mapping+Helper.swift */; };
 /* End PBXBuildFile section */
 
@@ -237,6 +240,13 @@
 			remoteGlobalIDString = 1FAEBCF41CDCEF510046EA72;
 			remoteInfo = ReactiveAutomaton;
 		};
+		487C0F401D00311E0071666D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1F24E4FB1CDD15AF0008028E /* ReactiveCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7DFBED031CDB8C9500EE435B;
+			remoteInfo = "ReactiveCocoa-tvOSTests";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -253,7 +263,7 @@
 		1F24E5731CDD15AF0008028E /* UniversalFramework_Test.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = UniversalFramework_Test.xcconfig; sourceTree = "<group>"; };
 		1F24EB111CDD19240008028E /* ReactiveAutomatonTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReactiveAutomatonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F24EB3A1CDD197B0008028E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1F24EB3B1CDD197B0008028E /* AutomatonSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutomatonSpec.swift; sourceTree = "<group>"; };
+		1F24EB3B1CDD197B0008028E /* MappingSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MappingSpec.swift; sourceTree = "<group>"; };
 		1FAEBCF51CDCEF510046EA72 /* ReactiveAutomaton.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReactiveAutomaton.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FAEBD011CDCEF940046EA72 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1FAEBD021CDCEF940046EA72 /* ReactiveAutomaton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactiveAutomaton.h; sourceTree = "<group>"; };
@@ -261,6 +271,9 @@
 		1FAEBD071CDCF04E0046EA72 /* Reply.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reply.swift; sourceTree = "<group>"; };
 		1FAEBD091CDCF0990046EA72 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FAEBD0B1CDCF0A10046EA72 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ReactiveCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		487C0F281D00311E0071666D /* Fixtures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
+		487C0F4A1D0032D80071666D /* OutMappingSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutMappingSpec.swift; sourceTree = "<group>"; };
+		487C0F4C1D003B2E0071666D /* AnyMappingSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyMappingSpec.swift; sourceTree = "<group>"; };
 		48B2D1131CED890D0095F175 /* Mapping+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mapping+Helper.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -365,6 +378,7 @@
 				1F24EAE21CDD15D20008028E /* ReactiveCocoaTests.xctest */,
 				1F24EAE41CDD15D20008028E /* ReactiveCocoa.framework */,
 				1F24EAE61CDD15D20008028E /* ReactiveCocoa.framework */,
+				487C0F411D00311E0071666D /* ReactiveCocoaTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -397,7 +411,10 @@
 		1F24EB391CDD197B0008028E /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				1F24EB3B1CDD197B0008028E /* AutomatonSpec.swift */,
+				487C0F271D00311E0071666D /* Fixtures */,
+				1F24EB3B1CDD197B0008028E /* MappingSpec.swift */,
+				487C0F4A1D0032D80071666D /* OutMappingSpec.swift */,
+				487C0F4C1D003B2E0071666D /* AnyMappingSpec.swift */,
 				1F24EB3A1CDD197B0008028E /* Info.plist */,
 			);
 			path = Tests;
@@ -444,6 +461,14 @@
 				1FAEBD091CDCF0990046EA72 /* Result.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		487C0F271D00311E0071666D /* Fixtures */ = {
+			isa = PBXGroup;
+			children = (
+				487C0F281D00311E0071666D /* Fixtures.swift */,
+			);
+			path = Fixtures;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -755,6 +780,13 @@
 			remoteRef = 1F24EAFF1CDD15DA0008028E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		487C0F411D00311E0071666D /* ReactiveCocoaTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ReactiveCocoaTests.xctest;
+			remoteRef = 487C0F401D00311E0071666D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -802,7 +834,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F24EB3D1CDD197B0008028E /* AutomatonSpec.swift in Sources */,
+				1F24EB3D1CDD197B0008028E /* MappingSpec.swift in Sources */,
+				487C0F4B1D0032D80071666D /* OutMappingSpec.swift in Sources */,
+				487C0F4D1D003B2E0071666D /* AnyMappingSpec.swift in Sources */,
+				487C0F291D00311E0071666D /* Fixtures.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
