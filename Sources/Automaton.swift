@@ -12,69 +12,98 @@ import ReactiveCocoa
 public protocol StateType {}
 public protocol InputType {}
 
-public protocol AutomatonType: class
+/// Deterministic finite automaton.
+public final class Automaton<State: StateType, Input: InputType>
 {
-    associatedtype State: StateType
-    associatedtype Input: InputType
+    /// Basic state-transition function type.
+    public typealias Mapping = (State, Input) -> (State)?
+
+    /// Transducer (input & output) mapping with `SignalProducer<Input, NoError>` as output,
+    /// which can wrap heavy tasks and then emit new "input" values
+    /// for automatic & continuous state-transitions.
+    public typealias OutMapping = (State, Input) -> (State, SignalProducer<Input, NoError>)?
+
+    /// `Reply` signal.
+    public let replies: Signal<Reply<State, Input>, NoError>
 
     /// Current state.
-    var state: State { get }
-
-    /// Outputs signal sending `Reply`.
-    var signal: Signal<Reply<State, Input>, NoError> { get }
-}
-
-/// Deterministic finite automaton.
-public final class Automaton<State: StateType, Input: InputType>: AutomatonType
-{
-    public typealias Mapping = (State, Input) -> State?
-
-    /// Outputs signal sending `Reply`.
-    public let signal: Signal<Reply<State, Input>, NoError>
+    public let state: AnyProperty<State>
 
     private let _observer: Observer<Reply<State, Input>, NoError>
-    private let _stateProperty: MutableProperty<State>
 
-    /// Current state.
-    public var state: State
+    public convenience init(state initialState: State, input inputSignal: Signal<Input, NoError>, mapping: Mapping)
     {
-        return self._stateProperty.value
+        self.init(state: initialState, input: inputSignal, mapping: _compose(_emptyOutput, mapping))
     }
 
-    public init(state initialState: State, signal inputSignal: Signal<Input, NoError>, mapping: Mapping)
+    public init(state initialState: State, input inputSignal: Signal<Input, NoError>, mapping: OutMapping)
     {
-        self._stateProperty = MutableProperty(initialState)
-
-        let replySignal = inputSignal
-            .sampleFrom(self._stateProperty.producer)
-            .map { input, fromState -> Reply<State, Input> in
-                if let toState = mapping(fromState, input) {
-                    return .Success(input, fromState, toState)
-                }
-                else {
-                    return .Failure(input, fromState)
-                }
-            }
-
-        self._stateProperty <~ replySignal
-            .flatMap(.Merge) { reply -> SignalProducer<State, NoError> in
-                if let toState = reply.toState {
-                    return .init(value: toState)
-                }
-                else {
-                    return .never
-                }
-            }
+        let stateProperty = MutableProperty(initialState)
+        self.state = AnyProperty(stateProperty)
 
         let (signal, observer) = Signal<Reply<State, Input>, NoError>.pipe()
-        self.signal = signal
+        self.replies = signal
         self._observer = observer
 
-        replySignal.observe(self._observer)
+        func recurInputProducer(inputProducer: SignalProducer<Input, NoError>) -> SignalProducer<Input, NoError>
+        {
+            return inputProducer
+                .sampleFrom(stateProperty.producer)
+                .flatMap(.Latest) { input, fromState -> SignalProducer<Input, NoError> in
+                    if let (_, nextInputProducer) = mapping(fromState, input) {
+                        return recurInputProducer(nextInputProducer)
+                            .prefix(value: input)
+                    }
+                    else {
+                        return .init(value: input)
+                    }
+                }
+        }
+
+        recurInputProducer(SignalProducer(signal: inputSignal))
+            .sampleFrom(stateProperty.producer)
+            .flatMap(.Latest) { input, fromState -> SignalProducer<Reply<State, Input>, NoError> in
+                if let (toState, _) = mapping(fromState, input) {
+                    return .init(value: .Success(input, fromState, toState))
+                }
+                else {
+                    return .init(value: .Failure(input, fromState))
+                }
+            }
+            .startWithSignal { [unowned stateProperty] signal, disposable in
+                stateProperty <~ signal
+                    .flatMap(.Merge) { reply -> SignalProducer<State, NoError> in
+                        if let toState = reply.toState {
+                            return .init(value: toState)
+                        }
+                        else {
+                            return .never
+                        }
+                    }
+
+                signal.observe(self._observer)
+            }
     }
 
     deinit
     {
         self._observer.sendCompleted()
+    }
+}
+
+// MARK: Private
+
+private func _compose<A, B, C>(g: B -> C, _ f: A -> B) -> A -> C
+{
+    return { x in g(f(x)) }
+}
+
+private func _emptyOutput<State: StateType, Input: InputType>(toState: State?) -> (State, SignalProducer<Input, NoError>)?
+{
+    if let toState = toState {
+        return (toState, .empty)
+    }
+    else {
+        return nil
     }
 }
