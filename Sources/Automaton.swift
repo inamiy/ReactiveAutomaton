@@ -31,6 +31,8 @@ public final class Automaton<State: StateType, Input: InputType>
 
     private let _observer: Observer<Reply<State, Input>, NoError>
 
+    private var _disposable: Disposable?
+
     public convenience init(state initialState: State, input inputSignal: Signal<Input, NoError>, mapping: Mapping)
     {
         self.init(state: initialState, input: inputSignal, mapping: _compose(_emptyOutput, mapping))
@@ -70,7 +72,9 @@ public final class Automaton<State: StateType, Input: InputType>
                     return .init(value: .Failure(input, fromState))
                 }
             }
-            .startWithSignal { [unowned stateProperty] signal, disposable in
+            .startWithSignal { [unowned self, unowned stateProperty] signal, disposable in
+                self._disposable = disposable
+
                 stateProperty <~ signal
                     .flatMap(.Merge) { reply -> SignalProducer<State, NoError> in
                         if let toState = reply.toState {
@@ -88,6 +92,7 @@ public final class Automaton<State: StateType, Input: InputType>
     deinit
     {
         self._observer.sendCompleted()
+        self._disposable?.dispose()
     }
 }
 
