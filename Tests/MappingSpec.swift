@@ -149,7 +149,7 @@ class MappingSpec: QuickSpec
                     }
                 }
 
-                automaton = Automaton(state: .LoggedOut, input: signal, mapping: mapping >>> noOutput)
+                automaton = Automaton(state: .LoggedOut, input: signal, mapping: mapping)
                 automaton?.replies.observeNext { reply in
                     lastReply = reply
                 }
