@@ -43,3 +43,30 @@ enum MyInput: InputType
 {
     case Input0, Input1, Input2
 }
+
+// MARK: Extensions
+
+extension Event
+{
+    public var isCompleting: Bool
+    {
+        switch self {
+            case .Next, .Failed, .Interrupted:
+                return false
+
+            case .Completed:
+                return true
+        }
+    }
+
+    public var isInterrupting: Bool
+    {
+        switch self {
+            case .Next, .Failed, .Completed:
+                return false
+
+            case .Interrupted:
+                return true
+        }
+    }
+}

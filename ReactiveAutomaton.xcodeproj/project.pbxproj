@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1F242B1E1D08770400647917 /* DeinitSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F242AFE1D08766900647917 /* DeinitSpec.swift */; };
+		1F242B1E1D08770400647917 /* TerminatingSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F242AFE1D08766900647917 /* TerminatingSpec.swift */; };
 		1F24E04B1CDD0D760008028E /* ReactiveCocoa+SampleFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F24E04A1CDD0D760008028E /* ReactiveCocoa+SampleFrom.swift */; };
 		1F24E0511CDD15980008028E /* Base.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1F24E04E1CDD15980008028E /* Base.xcconfig */; };
 		1F24E0521CDD15980008028E /* Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1F24E04F1CDD15980008028E /* Debug.xcconfig */; };
@@ -251,7 +251,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1F242AFE1D08766900647917 /* DeinitSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeinitSpec.swift; sourceTree = "<group>"; };
+		1F242AFE1D08766900647917 /* TerminatingSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerminatingSpec.swift; sourceTree = "<group>"; };
 		1F24E04A1CDD0D760008028E /* ReactiveCocoa+SampleFrom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReactiveCocoa+SampleFrom.swift"; sourceTree = "<group>"; };
 		1F24E04E1CDD15980008028E /* Base.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		1F24E04F1CDD15980008028E /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -417,7 +417,7 @@
 				1F24EB3B1CDD197B0008028E /* MappingSpec.swift */,
 				487C0F4A1D0032D80071666D /* OutMappingSpec.swift */,
 				487C0F4C1D003B2E0071666D /* AnyMappingSpec.swift */,
-				1F242AFE1D08766900647917 /* DeinitSpec.swift */,
+				1F242AFE1D08766900647917 /* TerminatingSpec.swift */,
 				1F24EB3A1CDD197B0008028E /* Info.plist */,
 			);
 			path = Tests;
@@ -838,7 +838,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F24EB3D1CDD197B0008028E /* MappingSpec.swift in Sources */,
-				1F242B1E1D08770400647917 /* DeinitSpec.swift in Sources */,
+				1F242B1E1D08770400647917 /* TerminatingSpec.swift in Sources */,
 				487C0F4B1D0032D80071666D /* OutMappingSpec.swift in Sources */,
 				487C0F4D1D003B2E0071666D /* AnyMappingSpec.swift in Sources */,
 				487C0F291D00311E0071666D /* Fixtures.swift in Sources */,
