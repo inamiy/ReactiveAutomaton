@@ -1,5 +1,5 @@
 //
-//  OutMappingSpec.swift
+//  NextMappingSpec.swift
 //  ReactiveAutomaton
 //
 //  Created by Yasuhiro Inami on 2016-06-02.
@@ -14,18 +14,18 @@ import Nimble
 
 /// Tests for `(State, Input) -> (State, Output)?` mapping
 /// where `Output = SignalProducer<Input, NoError>`.
-class OutMappingSpec: QuickSpec
+class NextMappingSpec: QuickSpec
 {
     override func spec()
     {
         typealias Automaton = ReactiveAutomaton.Automaton<AuthState, AuthInput>
-        typealias OutMapping = Automaton.OutMapping
+        typealias NextMapping = Automaton.NextMapping
 
         let (signal, observer) = Signal<AuthInput, NoError>.pipe()
         var automaton: Automaton?
         var lastReply: Reply<AuthState, AuthInput>?
 
-        describe("Syntax-sugar OutMapping") {
+        describe("Syntax-sugar NextMapping") {
 
             var testScheduler: TestScheduler!
 
@@ -42,7 +42,7 @@ class OutMappingSpec: QuickSpec
                     SignalProducer<AuthInput, NoError>(value: .LogoutOK)
                         .delay(1, onScheduler: testScheduler)
 
-                let mappings: [Automaton.OutMapping] = [
+                let mappings: [Automaton.NextMapping] = [
                     .Login    | .LoggedOut  => .LoggingIn  | loginOKProducer,
                     .LoginOK  | .LoggingIn  => .LoggedIn   | .empty,
                     .Logout   | .LoggedIn   => .LoggingOut | logoutOKProducer,
@@ -95,7 +95,7 @@ class OutMappingSpec: QuickSpec
 
         }
 
-        describe("Func-based OutMapping") {
+        describe("Func-based NextMapping") {
 
             var testScheduler: TestScheduler!
 
@@ -112,7 +112,7 @@ class OutMappingSpec: QuickSpec
                     SignalProducer<AuthInput, NoError>(value: .LogoutOK)
                         .delay(1, onScheduler: testScheduler)
 
-                let mapping: OutMapping = { fromState, input in
+                let mapping: NextMapping = { fromState, input in
                     switch (fromState, input) {
                         case (.LoggedOut, .Login):
                             return (.LoggingIn, loginOKProducer)

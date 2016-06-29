@@ -45,7 +45,7 @@ class TerminatingSpec: QuickSpec
                         .delay(1, onScheduler: testScheduler)
                         .on(disposed: { nextProducerDisposed = true })
 
-                let mappings: [Automaton.OutMapping] = [
+                let mappings: [Automaton.NextMapping] = [
                     .Input0 | .State0 => .State1 | sendInput1And2AfterDelay,
                     .Input1 | .State1 => .State2 | .empty,
                     .Input2 | .State2 => .State0 | .empty
