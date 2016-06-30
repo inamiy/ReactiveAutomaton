@@ -53,9 +53,9 @@ public func | <State: StateType, Input: protocol<InputType, Equatable>>(input: I
     return { $0 == input } | transition
 }
 
-// MARK: `|` (Automaton.OutMapping constructor)
+// MARK: `|` (Automaton.NextMapping constructor)
 
-public func | <State: StateType, Input: InputType>(mapping: Automaton<State, Input>.Mapping, nextInputProducer: SignalProducer<Input, NoError>) -> Automaton<State, Input>.OutMapping
+public func | <State: StateType, Input: InputType>(mapping: Automaton<State, Input>.Mapping, nextInputProducer: SignalProducer<Input, NoError>) -> Automaton<State, Input>.NextMapping
 {
     return { fromState, input in
         if let toState = mapping(fromState, input) {
@@ -94,8 +94,8 @@ public func concat<State: StateType, Input: InputType, Mappings: SequenceType wh
     }
 }
 
-/// Concatenates multiple `Automaton.OutMapping`s to one (preceding mapping has higher priority).
-public func concat<State: StateType, Input: InputType, Mappings: SequenceType where Mappings.Generator.Element == Automaton<State, Input>.OutMapping>(mappings: Mappings) -> Automaton<State, Input>.OutMapping
+/// Concatenates multiple `Automaton.NextMapping`s to one (preceding mapping has higher priority).
+public func concat<State: StateType, Input: InputType, Mappings: SequenceType where Mappings.Generator.Element == Automaton<State, Input>.NextMapping>(mappings: Mappings) -> Automaton<State, Input>.NextMapping
 {
     return { fromState, input in
         for mapping in mappings {
