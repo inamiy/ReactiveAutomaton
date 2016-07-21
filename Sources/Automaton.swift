@@ -9,11 +9,8 @@
 import Result
 import ReactiveCocoa
 
-public protocol StateType {}
-public protocol InputType {}
-
 /// Deterministic finite automaton.
-public final class Automaton<State: StateType, Input: InputType>
+public final class Automaton<State, Input>
 {
     /// Basic state-transition function type.
     public typealias Mapping = (State, Input) -> State?
@@ -150,7 +147,7 @@ private func _compose<A, B, C>(g: B -> C, _ f: A -> B) -> A -> C
     return { x in g(f(x)) }
 }
 
-private func _toNextMapping<State: StateType, Input: InputType>(toState: State?) -> (State, SignalProducer<Input, NoError>)?
+private func _toNextMapping<State, Input>(toState: State?) -> (State, SignalProducer<Input, NoError>)?
 {
     if let toState = toState {
         return (toState, .empty)

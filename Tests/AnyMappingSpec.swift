@@ -27,8 +27,8 @@ class AnyMappingSpec: QuickSpec
 
             beforeEach {
                 let mappings: [Automaton.Mapping] = [
-                    .Input0   | anyState => .State1,
-                    anyInput | .State1 => .State2
+                    .Input0 | any => .State1,
+                    any     | .State1 => .State2
                 ]
 
                 automaton = Automaton(state: .State0, input: signal, mapping: concat(mappings))

@@ -10,7 +10,7 @@ import Result
 import ReactiveCocoa
 import ReactiveAutomaton
 
-enum AuthState: String, StateType, CustomStringConvertible
+enum AuthState: String, CustomStringConvertible
 {
     case LoggedOut = "LoggedOut"
     case LoggingIn = "LoggingIn"
@@ -23,7 +23,7 @@ enum AuthState: String, StateType, CustomStringConvertible
 /// - Note:
 /// `LoginOK` and `LogoutOK` should only be used internally
 /// (but Swift can't make them as `private case`)
-enum AuthInput: String, InputType, CustomStringConvertible
+enum AuthInput: String, CustomStringConvertible
 {
     case Login = "Login"
     case LoginOK = "LoginOK"
@@ -34,12 +34,12 @@ enum AuthInput: String, InputType, CustomStringConvertible
     var description: String { return self.rawValue }
 }
 
-enum MyState: StateType
+enum MyState
 {
     case State0, State1, State2
 }
 
-enum MyInput: InputType
+enum MyInput
 {
     case Input0, Input1, Input2
 }
