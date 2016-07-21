@@ -49,7 +49,7 @@ class NextMappingLatestSpec: QuickSpec
                 ]
 
                 // strategy = `.Latest`
-                automaton = Automaton(state: .LoggedOut, input: signal, mapping: concat(mappings), strategy: .Latest)
+                automaton = Automaton(state: .LoggedOut, input: signal, mapping: reduce(mappings), strategy: .Latest)
 
                 automaton?.replies.observeNext { reply in
                     lastReply = reply

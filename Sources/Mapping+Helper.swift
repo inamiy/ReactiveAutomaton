@@ -77,8 +77,8 @@ public func any<T>(_: T) -> Bool
     return true
 }
 
-/// Concatenates multiple `Automaton.Mapping`s to one (preceding mapping has higher priority).
-public func concat<State, Input, Mappings: SequenceType where Mappings.Generator.Element == Automaton<State, Input>.Mapping>(mappings: Mappings) -> Automaton<State, Input>.Mapping
+/// Folds multiple `Automaton.Mapping`s into one (preceding mapping has higher priority).
+public func reduce<State, Input, Mappings: SequenceType where Mappings.Generator.Element == Automaton<State, Input>.Mapping>(mappings: Mappings) -> Automaton<State, Input>.Mapping
 {
     return { fromState, input in
         for mapping in mappings {
@@ -90,8 +90,8 @@ public func concat<State, Input, Mappings: SequenceType where Mappings.Generator
     }
 }
 
-/// Concatenates multiple `Automaton.NextMapping`s to one (preceding mapping has higher priority).
-public func concat<State, Input, Mappings: SequenceType where Mappings.Generator.Element == Automaton<State, Input>.NextMapping>(mappings: Mappings) -> Automaton<State, Input>.NextMapping
+/// Folds multiple `Automaton.NextMapping`s into one (preceding mapping has higher priority).
+public func reduce<State, Input, Mappings: SequenceType where Mappings.Generator.Element == Automaton<State, Input>.NextMapping>(mappings: Mappings) -> Automaton<State, Input>.NextMapping
 {
     return { fromState, input in
         for mapping in mappings {

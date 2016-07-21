@@ -31,7 +31,7 @@ class AnyMappingSpec: QuickSpec
                     any     | .State1 => .State2
                 ]
 
-                automaton = Automaton(state: .State0, input: signal, mapping: concat(mappings))
+                automaton = Automaton(state: .State0, input: signal, mapping: reduce(mappings))
 
                 automaton?.replies.observeNext { reply in
                     lastReply = reply

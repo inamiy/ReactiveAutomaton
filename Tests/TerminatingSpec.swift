@@ -52,7 +52,7 @@ class TerminatingSpec: QuickSpec
                 ]
 
                 // strategy = `.Merge`
-                automaton = Automaton(state: .State0, input: signal, mapping: concat(mappings), strategy: .Merge)
+                automaton = Automaton(state: .State0, input: signal, mapping: reduce(mappings), strategy: .Merge)
 
                 automaton?.replies.observe { event in
                     lastRepliesEvent = event
