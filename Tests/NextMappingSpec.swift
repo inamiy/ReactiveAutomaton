@@ -116,13 +116,13 @@ class NextMappingSpec: QuickSpec
                 let mapping: NextMapping = { fromState, input in
                     switch (fromState, input) {
                         case (.LoggedOut, .Login):
-                            return (.LoggingIn, loginOKProducer)
+                            return (.LoggingIn, { _ in loginOKProducer })
                         case (.LoggingIn, .LoginOK):
-                            return (.LoggedIn, .empty)
+                            return (.LoggedIn, { _ in .empty })
                         case (.LoggedIn, .Logout):
-                            return (.LoggingOut, logoutOKProducer)
+                            return (.LoggingOut, { _ in logoutOKProducer })
                         case (.LoggingOut, .LogoutOK):
-                            return (.LoggedOut, .empty)
+                            return (.LoggedOut, { _ in .empty })
                         default:
                             return nil
                     }

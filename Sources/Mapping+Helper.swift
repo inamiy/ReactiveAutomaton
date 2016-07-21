@@ -55,11 +55,23 @@ public func | <State, Input: Equatable>(input: Input, transition: Transition<Sta
 
 // MARK: `|` (Automaton.NextMapping constructor)
 
-public func | <State, Input>(mapping: Automaton<State, Input>.Mapping, nextInputProducer: SignalProducer<Input, NoError>) -> Automaton<State, Input>.NextMapping
+public func | <State, Input>(mapping: Automaton<State, Input>.Mapping, nextProducerGen: Automaton<State, Input>.NextProducerGenerator) -> Automaton<State, Input>.NextMapping
 {
     return { fromState, input in
         if let toState = mapping(fromState, input) {
-            return (toState, nextInputProducer)
+            return (toState, nextProducerGen)
+        }
+        else {
+            return nil
+        }
+    }
+}
+
+public func | <State, Input>(mapping: Automaton<State, Input>.Mapping, nextProducer: SignalProducer<Input, NoError>) -> Automaton<State, Input>.NextMapping
+{
+    return { fromState, input in
+        if let toState = mapping(fromState, input) {
+            return (toState, { _ in nextProducer })
         }
         else {
             return nil
