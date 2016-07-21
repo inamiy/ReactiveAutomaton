@@ -49,7 +49,8 @@ class NextMappingSpec: QuickSpec
                     .LogoutOK | .LoggingOut => .LoggedOut  | .empty,
                 ]
 
-                automaton = Automaton(state: .LoggedOut, input: signal, mapping: concat(mappings))
+                // strategy = `.Merge`
+                automaton = Automaton(state: .LoggedOut, input: signal, mapping: concat(mappings), strategy: .Merge)
 
                 automaton?.replies.observeNext { reply in
                     lastReply = reply
@@ -127,7 +128,9 @@ class NextMappingSpec: QuickSpec
                     }
                 }
 
-                automaton = Automaton(state: .LoggedOut, input: signal, mapping: mapping)
+                // strategy = `.Merge`
+                automaton = Automaton(state: .LoggedOut, input: signal, mapping: mapping, strategy: .Merge)
+
                 automaton?.replies.observeNext { reply in
                     lastReply = reply
                 }
