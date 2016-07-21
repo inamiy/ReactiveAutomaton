@@ -27,6 +27,7 @@
 		487C0F291D00311E0071666D /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C0F281D00311E0071666D /* Fixtures.swift */; };
 		487C0F4B1D0032D80071666D /* NextMappingSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C0F4A1D0032D80071666D /* NextMappingSpec.swift */; };
 		487C0F4D1D003B2E0071666D /* AnyMappingSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C0F4C1D003B2E0071666D /* AnyMappingSpec.swift */; };
+		489C85E51D40DFE50077964B /* StrategyLatestSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489C85E41D40DFE50077964B /* StrategyLatestSpec.swift */; };
 		48B2D1141CED890D0095F175 /* Mapping+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B2D1131CED890D0095F175 /* Mapping+Helper.swift */; };
 /* End PBXBuildFile section */
 
@@ -276,6 +277,7 @@
 		487C0F281D00311E0071666D /* Fixtures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
 		487C0F4A1D0032D80071666D /* NextMappingSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextMappingSpec.swift; sourceTree = "<group>"; };
 		487C0F4C1D003B2E0071666D /* AnyMappingSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyMappingSpec.swift; sourceTree = "<group>"; };
+		489C85E41D40DFE50077964B /* StrategyLatestSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StrategyLatestSpec.swift; sourceTree = "<group>"; };
 		48B2D1131CED890D0095F175 /* Mapping+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mapping+Helper.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -418,6 +420,7 @@
 				487C0F4A1D0032D80071666D /* NextMappingSpec.swift */,
 				487C0F4C1D003B2E0071666D /* AnyMappingSpec.swift */,
 				1F242AFE1D08766900647917 /* TerminatingSpec.swift */,
+				489C85E41D40DFE50077964B /* StrategyLatestSpec.swift */,
 				1F24EB3A1CDD197B0008028E /* Info.plist */,
 			);
 			path = Tests;
@@ -838,6 +841,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F24EB3D1CDD197B0008028E /* MappingSpec.swift in Sources */,
+				489C85E51D40DFE50077964B /* StrategyLatestSpec.swift in Sources */,
 				1F242B1E1D08770400647917 /* TerminatingSpec.swift in Sources */,
 				487C0F4B1D0032D80071666D /* NextMappingSpec.swift in Sources */,
 				487C0F4D1D003B2E0071666D /* AnyMappingSpec.swift in Sources */,
