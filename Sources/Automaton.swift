@@ -15,13 +15,10 @@ public final class Automaton<State, Input>
     /// Basic state-transition function type.
     public typealias Mapping = (State, Input) -> State?
 
-    /// Transducer (input & output) mapping with `NextProducerGenerator` as output,
-    /// which generates "next input-producer" on successful transition
-    /// and automatically starts it to emit **next input values** for continuous state-transitions.
-    public typealias NextMapping = (State, Input) -> (State, NextProducerGenerator)?
-
-    /// Next input producer generator type, i.e. `(input, fromState, toState) -> nextProducer`.
-    public typealias NextProducerGenerator = (Input, State, State) -> SignalProducer<Input, NoError>
+    /// Transducer (input & output) mapping with `SignalProducer<Input, NoError>` as "next producer" output,
+    /// which can wrap heavy tasks and emit **next input values**
+    /// for automatic & continuous state-transitions.
+    public typealias NextMapping = (State, Input) -> (State, SignalProducer<Input, NoError>)?
 
     /// `Reply` signal.
     public let replies: Signal<Reply<State, Input>, NoError>
@@ -70,7 +67,7 @@ public final class Automaton<State, Input>
                 inputProducer
                     .sampleFrom(stateProperty.producer)
                     .map { input, fromState in
-                        return (input, fromState, mapping(fromState, input))
+                        return (input, fromState, mapping(fromState, input)?.1)
                     }
                     .startWithSignal { mappingSignal, mappingSignalDisposable in
                         //
@@ -88,17 +85,17 @@ public final class Automaton<State, Input>
                         // inner producers of `flatMap(strategy)` in `successSignal` don't get interrupted by mapping failure.
                         //
                         let successSignal = mappingSignal
-                            .filterMap { input, fromState, mapped in
-                                return mapped.map { (input, fromState, $0.0, $0.1) }
+                            .filterMap { input, fromState, nextProducer in
+                                return nextProducer.map { (input, fromState, $0) }
                             }
-                            .flatMap(strategy) { input, fromState, toState, nextProducerGen -> SignalProducer<Input, NoError> in
-                                return recurInputProducer(nextProducerGen(input, fromState, toState), strategy: strategy)
+                            .flatMap(strategy) { input, fromState, nextProducer -> SignalProducer<Input, NoError> in
+                                return recurInputProducer(nextProducer, strategy: strategy)
                                     .prefix(value: input)
                             }
 
                         let failureSignal = mappingSignal
-                            .filterMap { input, fromState, mapped -> Input? in
-                                return mapped == nil ? input : nil
+                            .filterMap { input, fromState, nextProducer -> Input? in
+                                return nextProducer == nil ? input : nil
                             }
 
                         let mergedProducer = SignalProducer(values: failureSignal, successSignal).flatten(.Merge)
@@ -150,10 +147,10 @@ private func _compose<A, B, C>(g: B -> C, _ f: A -> B) -> A -> C
     return { x in g(f(x)) }
 }
 
-private func _toNextMapping<State, Input>(toState: State?) -> (State, Automaton<State, Input>.NextProducerGenerator)?
+private func _toNextMapping<State, Input>(toState: State?) -> (State, SignalProducer<Input, NoError>)?
 {
     if let toState = toState {
-        return (toState, { _ in .empty })
+        return (toState, .empty)
     }
     else {
         return nil
