@@ -28,7 +28,7 @@ class MappingSpec: QuickSpec
 
             beforeEach {
                 // NOTE: predicate style i.e. `T -> Bool` is also available.
-                let canForceLogout: AuthState -> Bool = { $0 == .LoggingIn || $0 == .LoggedIn }
+                let canForceLogout: AuthState -> Bool = [AuthState.LoggingIn, .LoggedIn].contains
 
                 let mappings: [Mapping] = [
                     .Login    | .LoggedOut  => .LoggingIn,

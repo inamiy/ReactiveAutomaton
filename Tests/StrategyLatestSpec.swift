@@ -58,7 +58,7 @@ class NextMappingLatestSpec: QuickSpec
                 lastReply = nil
             }
 
-            it("`strategy = .Latest` should not interrupt inner next producers when transition fails") {
+            it("`strategy = .Latest` should not interrupt inner next-producers when transition fails") {
                 expect(automaton?.state.value) == .LoggedOut
                 expect(lastReply).to(beNil())
 
