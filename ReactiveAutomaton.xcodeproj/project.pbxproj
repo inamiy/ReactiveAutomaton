@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F00C32F1D5CB3D900CC3139 /* ReactiveCocoa+ThenValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F00C32E1D5CB3D900CC3139 /* ReactiveCocoa+ThenValue.swift */; };
 		1F242B1E1D08770400647917 /* TerminatingSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F242AFE1D08766900647917 /* TerminatingSpec.swift */; };
 		1F24E04B1CDD0D760008028E /* ReactiveCocoa+SampleFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F24E04A1CDD0D760008028E /* ReactiveCocoa+SampleFrom.swift */; };
 		1F24E0511CDD15980008028E /* Base.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1F24E04E1CDD15980008028E /* Base.xcconfig */; };
@@ -253,6 +254,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1F00C32E1D5CB3D900CC3139 /* ReactiveCocoa+ThenValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReactiveCocoa+ThenValue.swift"; sourceTree = "<group>"; };
 		1F242AFE1D08766900647917 /* TerminatingSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerminatingSpec.swift; sourceTree = "<group>"; };
 		1F24E04A1CDD0D760008028E /* ReactiveCocoa+SampleFrom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReactiveCocoa+SampleFrom.swift"; sourceTree = "<group>"; };
 		1F24E04E1CDD15980008028E /* Base.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
@@ -457,6 +459,7 @@
 				1FAEBD051CDCEFD50046EA72 /* Automaton.swift */,
 				1FAEBD071CDCF04E0046EA72 /* Reply.swift */,
 				48B2D1131CED890D0095F175 /* Mapping+Helper.swift */,
+				1F00C32E1D5CB3D900CC3139 /* ReactiveCocoa+ThenValue.swift */,
 				1F24E04C1CDD0F610008028E /* Internals */,
 				1FAEBD011CDCEF940046EA72 /* Info.plist */,
 			);
@@ -857,6 +860,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1FAEBD081CDCF04E0046EA72 /* Reply.swift in Sources */,
+				1F00C32F1D5CB3D900CC3139 /* ReactiveCocoa+ThenValue.swift in Sources */,
 				1F24E04B1CDD0D760008028E /* ReactiveCocoa+SampleFrom.swift in Sources */,
 				48B2D1141CED890D0095F175 /* Mapping+Helper.swift in Sources */,
 				1FAEBD061CDCEFD50046EA72 /* Automaton.swift in Sources */,
