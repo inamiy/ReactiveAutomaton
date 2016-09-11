@@ -7,7 +7,7 @@
 //
 
 import Result
-import ReactiveCocoa
+import ReactiveSwift
 
 // MARK: sampleFrom http://rxmarbles.com/#withLatestFrom
 
@@ -17,12 +17,11 @@ import ReactiveCocoa
 // but it should rather NOT be affected by `samplee`'s termination events.
 // That also means, `samplee` should be restricted to have `NoError` as error type.
 
-extension SignalType {
+extension SignalProtocol {
 
     /// Flipped version of `sampleOn`, combining `self`'s (sampler) and `samplee`'s values.
     /// - Returns: A signal that terminates only when `self` terminates (`samplee` doesn't affect).
-    @warn_unused_result(message="Did you forget to call `observe` on the signal?")
-    internal func sampleFrom<Value2>(samplee: Signal<Value2, NoError>) -> Signal<(Value, Value2), Error> {
+    internal func sampleFrom<Value2>(_ samplee: Signal<Value2, NoError>) -> Signal<(Value, Value2), Error> {
         return Signal { observer in
             let state = Atomic<Value2?>(nil)
             let disposable = CompositeDisposable()
@@ -33,15 +32,15 @@ extension SignalType {
 
             disposable += self.observe { event in
                 switch event {
-                case let .Next(value):
+                case let .next(value):
                     if let value2 = state.value {
                         observer.sendNext((value, value2))
                     }
-                case .Completed:
+                case .completed:
                     observer.sendCompleted()
-                case let .Failed(error):
+                case let .failed(error):
                     observer.sendFailed(error)
-                case .Interrupted:
+                case .interrupted:
                     observer.sendInterrupted()
                 }
             }
@@ -52,8 +51,7 @@ extension SignalType {
 
     /// Flipped version of `sampleOn`, combining `self`'s (sampler) and `samplee`'s values.
     /// - Returns: A signal that terminates only when `self` terminates (`samplee` doesn't affect).
-    @warn_unused_result(message="Did you forget to call `observe` on the signal?")
-    internal func sampleFrom<Value2>(samplee: SignalProducer<Value2, NoError>) -> Signal<(Value, Value2), Error> {
+    internal func sampleFrom<Value2>(_ samplee: SignalProducer<Value2, NoError>) -> Signal<(Value, Value2), Error> {
         return Signal { observer in
             let d = CompositeDisposable()
             samplee.startWithSignal { signal, disposable in
@@ -65,19 +63,17 @@ extension SignalType {
     }
 }
 
-extension SignalProducerType {
+extension SignalProducerProtocol {
 
     /// Flipped version of `sampleOn`, combining `self`'s (sampler) and `samplee`'s values.
     /// - Returns: A signalProducer that terminates only when `self` terminates (`samplee` doesn't affect).
-    @warn_unused_result(message="Did you forget to call `start` on the producer?")
-    internal func sampleFrom<Value2>(samplee: Signal<Value2, NoError>) -> SignalProducer<(Value, Value2), Error> {
+    internal func sampleFrom<Value2>(_ samplee: Signal<Value2, NoError>) -> SignalProducer<(Value, Value2), Error> {
         return lift(Signal.sampleFrom)(samplee)
     }
 
     /// Flipped version of `sampleOn`, combining `self`'s (sampler) and `samplee`'s values.
     /// - Returns: A signalProducer that terminates only when `self` terminates (`samplee` doesn't affect).
-    @warn_unused_result(message="Did you forget to call `start` on the producer?")
-    internal func sampleFrom<Value2>(samplee: SignalProducer<Value2, NoError>) -> SignalProducer<(Value, Value2), Error> {
+    internal func sampleFrom<Value2>(_ samplee: SignalProducer<Value2, NoError>) -> SignalProducer<(Value, Value2), Error> {
         return lift(Signal.sampleFrom)(samplee)
     }
 }

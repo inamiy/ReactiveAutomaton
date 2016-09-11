@@ -7,7 +7,7 @@
 //
 
 import Result
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveAutomaton
 
 enum AuthState: String, CustomStringConvertible
@@ -36,12 +36,12 @@ enum AuthInput: String, CustomStringConvertible
 
 enum MyState
 {
-    case State0, State1, State2
+    case state0, state1, state2
 }
 
 enum MyInput
 {
-    case Input0, Input1, Input2
+    case input0, input1, input2
 }
 
 // MARK: Extensions
@@ -51,10 +51,10 @@ extension Event
     public var isCompleting: Bool
     {
         switch self {
-            case .Next, .Failed, .Interrupted:
+            case .next, .failed, .interrupted:
                 return false
 
-            case .Completed:
+            case .completed:
                 return true
         }
     }
@@ -62,10 +62,10 @@ extension Event
     public var isInterrupting: Bool
     {
         switch self {
-            case .Next, .Failed, .Completed:
+            case .next, .failed, .completed:
                 return false
 
-            case .Interrupted:
+            case .interrupted:
                 return true
         }
     }

@@ -7,11 +7,10 @@
 //
 
 import Result
-import ReactiveCocoa
+import ReactiveSwift
 
-extension SignalProducerType {
+extension SignalProducerProtocol {
     /// Ignores all values & attaches single `replacement` value on `.Completed`.
-    @warn_unused_result(message="Did you forget to call `start` on the producer?")
     public func then<U>(value replacement: U) -> SignalProducer<U, Error> {
         return self.producer.then(SignalProducer(value: replacement))
     }

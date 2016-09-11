@@ -7,27 +7,26 @@
 //
 
 import Foundation
-import ReactiveCocoa
+import ReactiveSwift
 
 // Code from https://github.com/RACCommunity/Rex
 
-extension SignalType {
+extension SignalProtocol {
     /// Applies `transform` to values from `signal` with non-`nil` results unwrapped and
     /// forwared on the returned signal.
-    @warn_unused_result(message="Did you forget to call `observe` on the signal?")
-    internal func filterMap<U>(transform: Value -> U?) -> Signal<U, Error> {
+    internal func filterMap<U>(_ transform: @escaping (Value) -> U?) -> Signal<U, Error> {
         return Signal<U, Error> { observer in
             return self.observe { event in
                 switch event {
-                case let .Next(value):
+                case let .next(value):
                     if let mapped = transform(value) {
                         observer.sendNext(mapped)
                     }
-                case let .Failed(error):
+                case let .failed(error):
                     observer.sendFailed(error)
-                case .Completed:
+                case .completed:
                     observer.sendCompleted()
-                case .Interrupted:
+                case .interrupted:
                     observer.sendInterrupted()
                 }
             }
@@ -35,11 +34,10 @@ extension SignalType {
     }
 }
 
-extension SignalProducerType {
+extension SignalProducerProtocol {
     /// Applies `transform` to values from self with non-`nil` results unwrapped and
     /// forwared on the returned producer.
-    @warn_unused_result(message="Did you forget to call `start` on the producer?")
-    internal func filterMap<U>(transform: Value -> U?) -> SignalProducer<U, Error> {
+    internal func filterMap<U>(_ transform: @escaping (Value) -> U?) -> SignalProducer<U, Error> {
         return lift { $0.filterMap(transform) }
     }
 }

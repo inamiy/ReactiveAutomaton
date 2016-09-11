@@ -7,7 +7,7 @@
 //
 
 import Result
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveAutomaton
 import Quick
 import Nimble
@@ -28,7 +28,7 @@ class MappingSpec: QuickSpec
 
             beforeEach {
                 // NOTE: predicate style i.e. `T -> Bool` is also available.
-                let canForceLogout: AuthState -> Bool = [AuthState.LoggingIn, .LoggedIn].contains
+                let canForceLogout: (AuthState) -> Bool = [AuthState.LoggingIn, .LoggedIn].contains
 
                 let mappings: [Mapping] = [
                     .Login    | .LoggedOut  => .LoggingIn,

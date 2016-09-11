@@ -10,21 +10,15 @@
 		1F00C32F1D5CB3D900CC3139 /* ReactiveCocoa+ThenValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F00C32E1D5CB3D900CC3139 /* ReactiveCocoa+ThenValue.swift */; };
 		1F242B1E1D08770400647917 /* TerminatingSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F242AFE1D08766900647917 /* TerminatingSpec.swift */; };
 		1F24E04B1CDD0D760008028E /* ReactiveCocoa+SampleFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F24E04A1CDD0D760008028E /* ReactiveCocoa+SampleFrom.swift */; };
-		1F24E0511CDD15980008028E /* Base.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1F24E04E1CDD15980008028E /* Base.xcconfig */; };
-		1F24E0521CDD15980008028E /* Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1F24E04F1CDD15980008028E /* Debug.xcconfig */; };
-		1F24E0531CDD15980008028E /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1F24E0501CDD15980008028E /* Release.xcconfig */; };
-		1F24E9DF1CDD15B00008028E /* UniversalFramework_Base.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1F24E5711CDD15AF0008028E /* UniversalFramework_Base.xcconfig */; };
-		1F24E9E01CDD15B00008028E /* UniversalFramework_Framework.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1F24E5721CDD15AF0008028E /* UniversalFramework_Framework.xcconfig */; };
-		1F24E9E11CDD15B00008028E /* UniversalFramework_Test.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1F24E5731CDD15AF0008028E /* UniversalFramework_Test.xcconfig */; };
 		1F24EB161CDD19240008028E /* ReactiveAutomaton.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FAEBCF51CDCEF510046EA72 /* ReactiveAutomaton.framework */; };
 		1F24EB3D1CDD197B0008028E /* MappingSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F24EB3B1CDD197B0008028E /* MappingSpec.swift */; };
 		1F24EB401CDD19FE0008028E /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F24EAC81CDD15C90008028E /* Quick.framework */; };
 		1F24EB411CDD1A030008028E /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F24EAAB1CDD15C10008028E /* Nimble.framework */; };
+		1FA7EBA91D85350700875232 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FA7EB9C1D8534D700875232 /* ReactiveSwift.framework */; };
 		1FAEBD041CDCEF940046EA72 /* ReactiveAutomaton.h in Headers */ = {isa = PBXBuildFile; fileRef = 1FAEBD021CDCEF940046EA72 /* ReactiveAutomaton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1FAEBD061CDCEFD50046EA72 /* Automaton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAEBD051CDCEFD50046EA72 /* Automaton.swift */; };
 		1FAEBD081CDCF04E0046EA72 /* Reply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAEBD071CDCF04E0046EA72 /* Reply.swift */; };
 		1FAEBD0A1CDCF0990046EA72 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FAEBD091CDCF0990046EA72 /* Result.framework */; };
-		1FAEBD0C1CDCF0A10046EA72 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FAEBD0B1CDCF0A10046EA72 /* ReactiveCocoa.framework */; };
 		487C0F291D00311E0071666D /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C0F281D00311E0071666D /* Fixtures.swift */; };
 		487C0F4B1D0032D80071666D /* NextMappingSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C0F4A1D0032D80071666D /* NextMappingSpec.swift */; };
 		487C0F4D1D003B2E0071666D /* AnyMappingSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C0F4C1D003B2E0071666D /* AnyMappingSpec.swift */; };
@@ -139,48 +133,6 @@
 			remoteGlobalIDString = 1F118CF01BDCA4BB005013A2;
 			remoteInfo = "QuickFocused-tvOSTests";
 		};
-		1F24EADB1CDD15D20008028E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1F24E4FB1CDD15AF0008028E /* ReactiveCocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D04725EA19E49ED7006002AA;
-			remoteInfo = "ReactiveCocoa-Mac";
-		};
-		1F24EADD1CDD15D20008028E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1F24E4FB1CDD15AF0008028E /* ReactiveCocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D04725F519E49ED7006002AA;
-			remoteInfo = "ReactiveCocoa-MacTests";
-		};
-		1F24EADF1CDD15D20008028E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1F24E4FB1CDD15AF0008028E /* ReactiveCocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D047260C19E49F82006002AA;
-			remoteInfo = "ReactiveCocoa-iOS";
-		};
-		1F24EAE11CDD15D20008028E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1F24E4FB1CDD15AF0008028E /* ReactiveCocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D047261619E49F82006002AA;
-			remoteInfo = "ReactiveCocoa-iOSTests";
-		};
-		1F24EAE31CDD15D20008028E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1F24E4FB1CDD15AF0008028E /* ReactiveCocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A9B315541B3940610001CB9C;
-			remoteInfo = "ReactiveCocoa-watchOS";
-		};
-		1F24EAE51CDD15D20008028E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1F24E4FB1CDD15AF0008028E /* ReactiveCocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 57A4D2411BA13D7A00F7D4B1;
-			remoteInfo = "ReactiveCocoa-tvOS";
-		};
 		1F24EAF11CDD15DA0008028E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1F24E5661CDD15AF0008028E /* Result.xcodeproj */;
@@ -244,12 +196,54 @@
 			remoteGlobalIDString = 1FAEBCF41CDCEF510046EA72;
 			remoteInfo = ReactiveAutomaton;
 		};
-		487C0F401D00311E0071666D /* PBXContainerItemProxy */ = {
+		1FA7EB9B1D8534D700875232 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 1F24E4FB1CDD15AF0008028E /* ReactiveCocoa.xcodeproj */;
+			containerPortal = 1FA7EB911D8534D700875232 /* ReactiveSwift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D04725EA19E49ED7006002AA;
+			remoteInfo = "ReactiveSwift-macOS";
+		};
+		1FA7EB9D1D8534D700875232 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1FA7EB911D8534D700875232 /* ReactiveSwift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D04725F519E49ED7006002AA;
+			remoteInfo = "ReactiveSwift-macOSTests";
+		};
+		1FA7EB9F1D8534D700875232 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1FA7EB911D8534D700875232 /* ReactiveSwift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D047260C19E49F82006002AA;
+			remoteInfo = "ReactiveSwift-iOS";
+		};
+		1FA7EBA11D8534D700875232 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1FA7EB911D8534D700875232 /* ReactiveSwift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D047261619E49F82006002AA;
+			remoteInfo = "ReactiveSwift-iOSTests";
+		};
+		1FA7EBA31D8534D700875232 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1FA7EB911D8534D700875232 /* ReactiveSwift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A9B315541B3940610001CB9C;
+			remoteInfo = "ReactiveSwift-watchOS";
+		};
+		1FA7EBA51D8534D700875232 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1FA7EB911D8534D700875232 /* ReactiveSwift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 57A4D2411BA13D7A00F7D4B1;
+			remoteInfo = "ReactiveSwift-tvOS";
+		};
+		1FA7EBA71D8534D700875232 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1FA7EB911D8534D700875232 /* ReactiveSwift.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 7DFBED031CDB8C9500EE435B;
-			remoteInfo = "ReactiveCocoa-tvOSTests";
+			remoteInfo = "ReactiveSwift-tvOSTests";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -262,7 +256,6 @@
 		1F24E0501CDD15980008028E /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		1F24E05F1CDD15AE0008028E /* Nimble.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Nimble.xcodeproj; path = Nimble/Nimble.xcodeproj; sourceTree = "<group>"; };
 		1F24E1B11CDD15AE0008028E /* Quick.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Quick.xcodeproj; path = Quick/Quick.xcodeproj; sourceTree = "<group>"; };
-		1F24E4FB1CDD15AF0008028E /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
 		1F24E5661CDD15AF0008028E /* Result.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Result.xcodeproj; path = Result/Result.xcodeproj; sourceTree = "<group>"; };
 		1F24E5711CDD15AF0008028E /* UniversalFramework_Base.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = UniversalFramework_Base.xcconfig; sourceTree = "<group>"; };
 		1F24E5721CDD15AF0008028E /* UniversalFramework_Framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = UniversalFramework_Framework.xcconfig; sourceTree = "<group>"; };
@@ -270,6 +263,7 @@
 		1F24EB111CDD19240008028E /* ReactiveAutomatonTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReactiveAutomatonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F24EB3A1CDD197B0008028E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1F24EB3B1CDD197B0008028E /* MappingSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MappingSpec.swift; sourceTree = "<group>"; };
+		1FA7EB911D8534D700875232 /* ReactiveSwift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveSwift.xcodeproj; path = ReactiveSwift/ReactiveSwift.xcodeproj; sourceTree = "<group>"; };
 		1FAEBCF51CDCEF510046EA72 /* ReactiveAutomaton.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReactiveAutomaton.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FAEBD011CDCEF940046EA72 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1FAEBD021CDCEF940046EA72 /* ReactiveAutomaton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactiveAutomaton.h; sourceTree = "<group>"; };
@@ -300,7 +294,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1FAEBD0C1CDCF0A10046EA72 /* ReactiveCocoa.framework in Frameworks */,
+				1FA7EBA91D85350700875232 /* ReactiveSwift.framework in Frameworks */,
 				1FAEBD0A1CDCF0990046EA72 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -330,7 +324,7 @@
 			isa = PBXGroup;
 			children = (
 				1F24E5661CDD15AF0008028E /* Result.xcodeproj */,
-				1F24E4FB1CDD15AF0008028E /* ReactiveCocoa.xcodeproj */,
+				1FA7EB911D8534D700875232 /* ReactiveSwift.xcodeproj */,
 				1F24E05F1CDD15AE0008028E /* Nimble.xcodeproj */,
 				1F24E1B11CDD15AE0008028E /* Quick.xcodeproj */,
 			);
@@ -352,10 +346,10 @@
 		1F24EAA21CDD15C10008028E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1F24EAAB1CDD15C10008028E /* Nimble.framework */,
-				1F24EAAD1CDD15C10008028E /* NimbleTests.xctest */,
 				1F24EAAF1CDD15C10008028E /* Nimble.framework */,
 				1F24EAB11CDD15C10008028E /* NimbleTests.xctest */,
+				1F24EAAB1CDD15C10008028E /* Nimble.framework */,
+				1F24EAAD1CDD15C10008028E /* NimbleTests.xctest */,
 				1F24EAB31CDD15C10008028E /* Nimble.framework */,
 				1F24EAB51CDD15C10008028E /* NimbleTests.xctest */,
 			);
@@ -374,20 +368,6 @@
 				1F24EACE1CDD15C90008028E /* Quick.framework */,
 				1F24EAD01CDD15C90008028E /* Quick-tvOSTests.xctest */,
 				1F24EAD21CDD15C90008028E /* QuickFocused-tvOSTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		1F24EAD31CDD15D20008028E /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				1F24EADC1CDD15D20008028E /* ReactiveCocoa.framework */,
-				1F24EADE1CDD15D20008028E /* ReactiveCocoaTests.xctest */,
-				1F24EAE01CDD15D20008028E /* ReactiveCocoa.framework */,
-				1F24EAE21CDD15D20008028E /* ReactiveCocoaTests.xctest */,
-				1F24EAE41CDD15D20008028E /* ReactiveCocoa.framework */,
-				1F24EAE61CDD15D20008028E /* ReactiveCocoa.framework */,
-				487C0F411D00311E0071666D /* ReactiveCocoaTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -429,6 +409,20 @@
 				1F24EB3A1CDD197B0008028E /* Info.plist */,
 			);
 			path = Tests;
+			sourceTree = "<group>";
+		};
+		1FA7EB921D8534D700875232 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1FA7EB9C1D8534D700875232 /* ReactiveSwift.framework */,
+				1FA7EB9E1D8534D700875232 /* ReactiveSwiftTests.xctest */,
+				1FA7EBA01D8534D700875232 /* ReactiveSwift.framework */,
+				1FA7EBA21D8534D700875232 /* ReactiveSwiftTests.xctest */,
+				1FA7EBA41D8534D700875232 /* ReactiveSwift.framework */,
+				1FA7EBA61D8534D700875232 /* ReactiveSwift.framework */,
+				1FA7EBA81D8534D700875232 /* ReactiveSwiftTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		1FAEBCEB1CDCEF510046EA72 = {
@@ -541,14 +535,16 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Yasuhiro Inami";
 				TargetAttributes = {
 					1F24EB101CDD19240008028E = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 					};
 					1FAEBCF41CDCEF510046EA72 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -572,8 +568,8 @@
 					ProjectRef = 1F24E1B11CDD15AE0008028E /* Quick.xcodeproj */;
 				},
 				{
-					ProductGroup = 1F24EAD31CDD15D20008028E /* Products */;
-					ProjectRef = 1F24E4FB1CDD15AF0008028E /* ReactiveCocoa.xcodeproj */;
+					ProductGroup = 1FA7EB921D8534D700875232 /* Products */;
+					ProjectRef = 1FA7EB911D8534D700875232 /* ReactiveSwift.xcodeproj */;
 				},
 				{
 					ProductGroup = 1F24EAE71CDD15DA0008028E /* Products */;
@@ -694,48 +690,6 @@
 			remoteRef = 1F24EAD11CDD15C90008028E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		1F24EADC1CDD15D20008028E /* ReactiveCocoa.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ReactiveCocoa.framework;
-			remoteRef = 1F24EADB1CDD15D20008028E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1F24EADE1CDD15D20008028E /* ReactiveCocoaTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = ReactiveCocoaTests.xctest;
-			remoteRef = 1F24EADD1CDD15D20008028E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1F24EAE01CDD15D20008028E /* ReactiveCocoa.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ReactiveCocoa.framework;
-			remoteRef = 1F24EADF1CDD15D20008028E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1F24EAE21CDD15D20008028E /* ReactiveCocoaTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = ReactiveCocoaTests.xctest;
-			remoteRef = 1F24EAE11CDD15D20008028E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1F24EAE41CDD15D20008028E /* ReactiveCocoa.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ReactiveCocoa.framework;
-			remoteRef = 1F24EAE31CDD15D20008028E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1F24EAE61CDD15D20008028E /* ReactiveCocoa.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ReactiveCocoa.framework;
-			remoteRef = 1F24EAE51CDD15D20008028E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		1F24EAF21CDD15DA0008028E /* Result.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -792,11 +746,53 @@
 			remoteRef = 1F24EAFF1CDD15DA0008028E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		487C0F411D00311E0071666D /* ReactiveCocoaTests.xctest */ = {
+		1FA7EB9C1D8534D700875232 /* ReactiveSwift.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveSwift.framework;
+			remoteRef = 1FA7EB9B1D8534D700875232 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1FA7EB9E1D8534D700875232 /* ReactiveSwiftTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = ReactiveCocoaTests.xctest;
-			remoteRef = 487C0F401D00311E0071666D /* PBXContainerItemProxy */;
+			path = ReactiveSwiftTests.xctest;
+			remoteRef = 1FA7EB9D1D8534D700875232 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1FA7EBA01D8534D700875232 /* ReactiveSwift.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveSwift.framework;
+			remoteRef = 1FA7EB9F1D8534D700875232 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1FA7EBA21D8534D700875232 /* ReactiveSwiftTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ReactiveSwiftTests.xctest;
+			remoteRef = 1FA7EBA11D8534D700875232 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1FA7EBA41D8534D700875232 /* ReactiveSwift.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveSwift.framework;
+			remoteRef = 1FA7EBA31D8534D700875232 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1FA7EBA61D8534D700875232 /* ReactiveSwift.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveSwift.framework;
+			remoteRef = 1FA7EBA51D8534D700875232 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1FA7EBA81D8534D700875232 /* ReactiveSwiftTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ReactiveSwiftTests.xctest;
+			remoteRef = 1FA7EBA71D8534D700875232 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -813,12 +809,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F24E9DF1CDD15B00008028E /* UniversalFramework_Base.xcconfig in Resources */,
-				1F24E9E01CDD15B00008028E /* UniversalFramework_Framework.xcconfig in Resources */,
-				1F24E9E11CDD15B00008028E /* UniversalFramework_Test.xcconfig in Resources */,
-				1F24E0521CDD15980008028E /* Debug.xcconfig in Resources */,
-				1F24E0511CDD15980008028E /* Base.xcconfig in Resources */,
-				1F24E0531CDD15980008028E /* Release.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -889,6 +879,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.inamiy.ReactiveAutomatonTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -901,6 +892,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.inamiy.ReactiveAutomatonTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -919,8 +911,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -966,8 +960,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -996,6 +992,7 @@
 			baseConfigurationReference = 1F24E5721CDD15AF0008028E /* UniversalFramework_Framework.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1007,6 +1004,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.inamiy.ReactiveAutomaton;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1015,6 +1013,7 @@
 			baseConfigurationReference = 1F24E5721CDD15AF0008028E /* UniversalFramework_Framework.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1026,6 +1025,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.inamiy.ReactiveAutomaton;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

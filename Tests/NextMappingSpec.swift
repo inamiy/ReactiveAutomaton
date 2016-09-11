@@ -7,7 +7,7 @@
 //
 
 import Result
-import ReactiveCocoa
+import ReactiveSwift
 import ReactiveAutomaton
 import Quick
 import Nimble
@@ -35,12 +35,12 @@ class NextMappingSpec: QuickSpec
                 /// Sends `.LoginOK` after delay, simulating async work during `.LoggingIn`.
                 let loginOKProducer =
                     SignalProducer<AuthInput, NoError>(value: .LoginOK)
-                        .delay(1, onScheduler: testScheduler)
+                        .delay(1, on: testScheduler)
 
                 /// Sends `.LogoutOK` after delay, simulating async work during `.LoggingOut`.
                 let logoutOKProducer =
                     SignalProducer<AuthInput, NoError>(value: .LogoutOK)
-                        .delay(1, onScheduler: testScheduler)
+                        .delay(1, on: testScheduler)
 
                 let mappings: [Automaton.NextMapping] = [
                     .Login    | .LoggedOut  => .LoggingIn  | loginOKProducer,
@@ -50,7 +50,7 @@ class NextMappingSpec: QuickSpec
                 ]
 
                 // strategy = `.Merge`
-                automaton = Automaton(state: .LoggedOut, input: signal, mapping: reduce(mappings), strategy: .Merge)
+                automaton = Automaton(state: .LoggedOut, input: signal, mapping: reduce(mappings), strategy: .merge)
 
                 automaton?.replies.observeNext { reply in
                     lastReply = reply
@@ -71,7 +71,7 @@ class NextMappingSpec: QuickSpec
                 expect(automaton?.state.value) == .LoggingIn
 
                 // `loginOKProducer` will automatically send `.LoginOK`
-                testScheduler.advanceByInterval(1)
+                testScheduler.advance(by: 1)
 
                 expect(lastReply?.input) == .LoginOK
                 expect(lastReply?.fromState) == .LoggingIn
@@ -86,7 +86,7 @@ class NextMappingSpec: QuickSpec
                 expect(automaton?.state.value) == .LoggingOut
 
                 // `logoutOKProducer` will automatically send `.LogoutOK`
-                testScheduler.advanceByInterval(1)
+                testScheduler.advance(by:1)
 
                 expect(lastReply?.input) == .LogoutOK
                 expect(lastReply?.fromState) == .LoggingOut
@@ -106,12 +106,12 @@ class NextMappingSpec: QuickSpec
                 /// Sends `.LoginOK` after delay, simulating async work during `.LoggingIn`.
                 let loginOKProducer =
                     SignalProducer<AuthInput, NoError>(value: .LoginOK)
-                        .delay(1, onScheduler: testScheduler)
+                        .delay(1, on: testScheduler)
 
                 /// Sends `.LogoutOK` after delay, simulating async work during `.LoggingOut`.
                 let logoutOKProducer =
                     SignalProducer<AuthInput, NoError>(value: .LogoutOK)
-                        .delay(1, onScheduler: testScheduler)
+                        .delay(1, on: testScheduler)
 
                 let mapping: NextMapping = { fromState, input in
                     switch (fromState, input) {
@@ -129,7 +129,7 @@ class NextMappingSpec: QuickSpec
                 }
 
                 // strategy = `.Merge`
-                automaton = Automaton(state: .LoggedOut, input: signal, mapping: mapping, strategy: .Merge)
+                automaton = Automaton(state: .LoggedOut, input: signal, mapping: mapping, strategy: .merge)
 
                 automaton?.replies.observeNext { reply in
                     lastReply = reply
@@ -150,7 +150,7 @@ class NextMappingSpec: QuickSpec
                 expect(automaton?.state.value) == .LoggingIn
 
                 // `loginOKProducer` will automatically send `.LoginOK`
-                testScheduler.advanceByInterval(1)
+                testScheduler.advance(by:1)
 
                 expect(lastReply?.input) == .LoginOK
                 expect(lastReply?.fromState) == .LoggingIn
@@ -165,7 +165,7 @@ class NextMappingSpec: QuickSpec
                 expect(automaton?.state.value) == .LoggingOut
 
                 // `logoutOKProducer` will automatically send `.LogoutOK`
-                testScheduler.advanceByInterval(1)
+                testScheduler.advance(by:1)
 
                 expect(lastReply?.input) == .LogoutOK
                 expect(lastReply?.fromState) == .LoggingOut
