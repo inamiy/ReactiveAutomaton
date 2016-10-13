@@ -33,7 +33,7 @@ class AnyMappingSpec: QuickSpec
 
                 automaton = Automaton(state: .state0, input: signal, mapping: reduce(mappings))
 
-                automaton?.replies.observeNext { reply in
+                _ = automaton?.replies.observeValues { reply in
                     lastReply = reply
                 }
 
@@ -45,7 +45,7 @@ class AnyMappingSpec: QuickSpec
                 expect(lastReply).to(beNil())
 
                 // try any input (fails)
-                observer.sendNext(.input2)
+                observer.send(value: .input2)
 
                 expect(lastReply?.input) == .input2
                 expect(lastReply?.fromState) == .state0
@@ -53,7 +53,7 @@ class AnyMappingSpec: QuickSpec
                 expect(automaton?.state.value) == .state0
 
                 // try `.Login` from any state
-                observer.sendNext(.input0)
+                observer.send(value: .input0)
 
                 expect(lastReply?.input) == .input0
                 expect(lastReply?.fromState) == .state0
@@ -61,7 +61,7 @@ class AnyMappingSpec: QuickSpec
                 expect(automaton?.state.value) == .state1
 
                 // try any input
-                observer.sendNext(.input2)
+                observer.send(value: .input2)
 
                 expect(lastReply?.input) == .input2
                 expect(lastReply?.fromState) == .state1

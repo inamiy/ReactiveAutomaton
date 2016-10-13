@@ -51,7 +51,7 @@ extension Event
     public var isCompleting: Bool
     {
         switch self {
-            case .next, .failed, .interrupted:
+            case .value, .failed, .interrupted:
                 return false
 
             case .completed:
@@ -62,7 +62,7 @@ extension Event
     public var isInterrupting: Bool
     {
         switch self {
-            case .next, .failed, .completed:
+            case .value, .failed, .completed:
                 return false
 
             case .interrupted:

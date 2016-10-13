@@ -26,20 +26,20 @@ extension SignalProtocol {
             let state = Atomic<Value2?>(nil)
             let disposable = CompositeDisposable()
 
-            disposable += samplee.observeNext { value in
+            disposable += samplee.observeValues { value in
                 state.value = value
             }
 
             disposable += self.observe { event in
                 switch event {
-                case let .next(value):
+                case let .value(value):
                     if let value2 = state.value {
-                        observer.sendNext((value, value2))
+                        observer.send(value: (value, value2))
                     }
                 case .completed:
                     observer.sendCompleted()
                 case let .failed(error):
-                    observer.sendFailed(error)
+                    observer.send(error: error)
                 case .interrupted:
                     observer.sendInterrupted()
                 }

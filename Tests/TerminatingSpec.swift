@@ -54,7 +54,7 @@ class TerminatingSpec: QuickSpec
                 // strategy = `.Merge`
                 automaton = Automaton(state: .state0, input: signal, mapping: reduce(mappings), strategy: .merge)
 
-                automaton?.replies.observe { event in
+                _ = automaton?.replies.observe { event in
                     lastRepliesEvent = event
 
                     if let reply = event.value {
@@ -88,7 +88,7 @@ class TerminatingSpec: QuickSpec
                     expect(lastRepliesEvent).to(beNil())
                     expect(nextProducerDisposed) == false
 
-                    observer.sendNext(.input0)
+                    observer.send(value: .input0)
 
                     expect(automaton?.state.value) == .state1
                     expect(lastReply?.input) == .input0
@@ -144,7 +144,7 @@ class TerminatingSpec: QuickSpec
                     expect(lastRepliesEvent).to(beNil())
                     expect(nextProducerDisposed) == false
 
-                    observer.sendNext(.input0)
+                    observer.send(value: .input0)
 
                     expect(automaton?.state.value) == .state1
                     expect(lastReply?.input) == .input0
@@ -200,7 +200,7 @@ class TerminatingSpec: QuickSpec
                     expect(lastRepliesEvent).to(beNil())
                     expect(nextProducerDisposed) == false
 
-                    observer.sendNext(.input0)
+                    observer.send(value: .input0)
 
                     expect(automaton?.state.value) == .state1
                     expect(lastReply?.input) == .input0

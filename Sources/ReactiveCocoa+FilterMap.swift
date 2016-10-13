@@ -18,12 +18,12 @@ extension SignalProtocol {
         return Signal<U, Error> { observer in
             return self.observe { event in
                 switch event {
-                case let .next(value):
+                case let .value(value):
                     if let mapped = transform(value) {
-                        observer.sendNext(mapped)
+                        observer.send(value: mapped)
                     }
                 case let .failed(error):
-                    observer.sendFailed(error)
+                    observer.send(error: error)
                 case .completed:
                     observer.sendCompleted()
                 case .interrupted:

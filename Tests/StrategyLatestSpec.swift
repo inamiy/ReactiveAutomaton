@@ -51,7 +51,7 @@ class NextMappingLatestSpec: QuickSpec
                 // strategy = `.latest`
                 automaton = Automaton(state: .LoggedOut, input: signal, mapping: reduce(mappings), strategy: .latest)
 
-                automaton?.replies.observeNext { reply in
+                _ = automaton?.replies.observeValues { reply in
                     lastReply = reply
                 }
 
@@ -62,7 +62,7 @@ class NextMappingLatestSpec: QuickSpec
                 expect(automaton?.state.value) == .LoggedOut
                 expect(lastReply).to(beNil())
 
-                observer.sendNext(.Login)
+                observer.send(value: .Login)
 
                 expect(lastReply?.input) == .Login
                 expect(lastReply?.fromState) == .LoggedOut
@@ -72,7 +72,7 @@ class NextMappingLatestSpec: QuickSpec
                 testScheduler.advance(by: 0.1)
 
                 // fails (`loginOKProducer` will not be interrupted)
-                observer.sendNext(.Login)
+                observer.send(value: .Login)
 
                 expect(lastReply?.input) == .Login
                 expect(lastReply?.fromState) == .LoggingIn

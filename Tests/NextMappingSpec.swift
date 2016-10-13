@@ -52,7 +52,7 @@ class NextMappingSpec: QuickSpec
                 // strategy = `.Merge`
                 automaton = Automaton(state: .LoggedOut, input: signal, mapping: reduce(mappings), strategy: .merge)
 
-                automaton?.replies.observeNext { reply in
+                _ = automaton?.replies.observeValues { reply in
                     lastReply = reply
                 }
 
@@ -63,7 +63,7 @@ class NextMappingSpec: QuickSpec
                 expect(automaton?.state.value) == .LoggedOut
                 expect(lastReply).to(beNil())
 
-                observer.sendNext(.Login)
+                observer.send(value: .Login)
 
                 expect(lastReply?.input) == .Login
                 expect(lastReply?.fromState) == .LoggedOut
@@ -78,7 +78,7 @@ class NextMappingSpec: QuickSpec
                 expect(lastReply?.toState) == .LoggedIn
                 expect(automaton?.state.value) == .LoggedIn
 
-                observer.sendNext(.Logout)
+                observer.send(value: .Logout)
 
                 expect(lastReply?.input) == .Logout
                 expect(lastReply?.fromState) == .LoggedIn
@@ -131,7 +131,7 @@ class NextMappingSpec: QuickSpec
                 // strategy = `.Merge`
                 automaton = Automaton(state: .LoggedOut, input: signal, mapping: mapping, strategy: .merge)
 
-                automaton?.replies.observeNext { reply in
+                _ = automaton?.replies.observeValues { reply in
                     lastReply = reply
                 }
 
@@ -142,7 +142,7 @@ class NextMappingSpec: QuickSpec
                 expect(automaton?.state.value) == .LoggedOut
                 expect(lastReply).to(beNil())
 
-                observer.sendNext(.Login)
+                observer.send(value: .Login)
 
                 expect(lastReply?.input) == .Login
                 expect(lastReply?.fromState) == .LoggedOut
@@ -157,7 +157,7 @@ class NextMappingSpec: QuickSpec
                 expect(lastReply?.toState) == .LoggedIn
                 expect(automaton?.state.value) == .LoggedIn
 
-                observer.sendNext(.Logout)
+                observer.send(value: .Logout)
 
                 expect(lastReply?.input) == .Logout
                 expect(lastReply?.fromState) == .LoggedIn

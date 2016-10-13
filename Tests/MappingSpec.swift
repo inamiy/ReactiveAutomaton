@@ -42,7 +42,7 @@ class MappingSpec: QuickSpec
                 // NOTE: Use `concat` to combine all mappings.
                 automaton = Automaton(state: .LoggedOut, input: signal, mapping: reduce(mappings))
 
-                automaton?.replies.observeNext { reply in
+                _ = automaton?.replies.observeValues { reply in
                     lastReply = reply
                 }
 
@@ -53,28 +53,28 @@ class MappingSpec: QuickSpec
                 expect(automaton?.state.value) == .LoggedOut
                 expect(lastReply).to(beNil())
 
-                observer.sendNext(.Login)
+                observer.send(value: .Login)
 
                 expect(lastReply?.input) == .Login
                 expect(lastReply?.fromState) == .LoggedOut
                 expect(lastReply?.toState) == .LoggingIn
                 expect(automaton?.state.value) == .LoggingIn
 
-                observer.sendNext(.LoginOK)
+                observer.send(value: .LoginOK)
 
                 expect(lastReply?.input) == .LoginOK
                 expect(lastReply?.fromState) == .LoggingIn
                 expect(lastReply?.toState) == .LoggedIn
                 expect(automaton?.state.value) == .LoggedIn
 
-                observer.sendNext(.Logout)
+                observer.send(value: .Logout)
 
                 expect(lastReply?.input) == .Logout
                 expect(lastReply?.fromState) == .LoggedIn
                 expect(lastReply?.toState) == .LoggingOut
                 expect(automaton?.state.value) == .LoggingOut
 
-                observer.sendNext(.LogoutOK)
+                observer.send(value: .LogoutOK)
 
                 expect(lastReply?.input) == .LogoutOK
                 expect(lastReply?.fromState) == .LoggingOut
@@ -86,14 +86,14 @@ class MappingSpec: QuickSpec
                 expect(automaton?.state.value) == .LoggedOut
                 expect(lastReply).to(beNil())
 
-                observer.sendNext(.Login)
+                observer.send(value: .Login)
 
                 expect(lastReply?.input) == .Login
                 expect(lastReply?.fromState) == .LoggedOut
                 expect(lastReply?.toState) == .LoggingIn
                 expect(automaton?.state.value) == .LoggingIn
 
-                observer.sendNext(.ForceLogout)
+                observer.send(value: .ForceLogout)
 
                 expect(lastReply?.input) == .ForceLogout
                 expect(lastReply?.fromState) == .LoggingIn
@@ -101,7 +101,7 @@ class MappingSpec: QuickSpec
                 expect(automaton?.state.value) == .LoggingOut
 
                 // fails
-                observer.sendNext(.LoginOK)
+                observer.send(value: .LoginOK)
 
                 expect(lastReply?.input) == .LoginOK
                 expect(lastReply?.fromState) == .LoggingOut
@@ -109,14 +109,14 @@ class MappingSpec: QuickSpec
                 expect(automaton?.state.value) == .LoggingOut
 
                 // fails
-                observer.sendNext(.Logout)
+                observer.send(value: .Logout)
 
                 expect(lastReply?.input) == .Logout
                 expect(lastReply?.fromState) == .LoggingOut
                 expect(lastReply?.toState).to(beNil())
                 expect(automaton?.state.value) == .LoggingOut
 
-                observer.sendNext(.LogoutOK)
+                observer.send(value: .LogoutOK)
 
                 expect(lastReply?.input) == .LogoutOK
                 expect(lastReply?.fromState) == .LoggingOut
@@ -150,7 +150,8 @@ class MappingSpec: QuickSpec
                 }
 
                 automaton = Automaton(state: .LoggedOut, input: signal, mapping: mapping)
-                automaton?.replies.observeNext { reply in
+
+                _ = automaton?.replies.observeValues { reply in
                     lastReply = reply
                 }
 
@@ -161,28 +162,28 @@ class MappingSpec: QuickSpec
                 expect(automaton?.state.value) == .LoggedOut
                 expect(lastReply).to(beNil())
 
-                observer.sendNext(.Login)
+                observer.send(value: .Login)
 
                 expect(lastReply?.input) == .Login
                 expect(lastReply?.fromState) == .LoggedOut
                 expect(lastReply?.toState) == .LoggingIn
                 expect(automaton?.state.value) == .LoggingIn
 
-                observer.sendNext(.LoginOK)
+                observer.send(value: .LoginOK)
 
                 expect(lastReply?.input) == .LoginOK
                 expect(lastReply?.fromState) == .LoggingIn
                 expect(lastReply?.toState) == .LoggedIn
                 expect(automaton?.state.value) == .LoggedIn
 
-                observer.sendNext(.Logout)
+                observer.send(value: .Logout)
 
                 expect(lastReply?.input) == .Logout
                 expect(lastReply?.fromState) == .LoggedIn
                 expect(lastReply?.toState) == .LoggingOut
                 expect(automaton?.state.value) == .LoggingOut
 
-                observer.sendNext(.LogoutOK)
+                observer.send(value: .LogoutOK)
 
                 expect(lastReply?.input) == .LogoutOK
                 expect(lastReply?.fromState) == .LoggingOut
@@ -194,14 +195,14 @@ class MappingSpec: QuickSpec
                 expect(automaton?.state.value) == .LoggedOut
                 expect(lastReply).to(beNil())
 
-                observer.sendNext(.Login)
+                observer.send(value: .Login)
 
                 expect(lastReply?.input) == .Login
                 expect(lastReply?.fromState) == .LoggedOut
                 expect(lastReply?.toState) == .LoggingIn
                 expect(automaton?.state.value) == .LoggingIn
 
-                observer.sendNext(.ForceLogout)
+                observer.send(value: .ForceLogout)
 
                 expect(lastReply?.input) == .ForceLogout
                 expect(lastReply?.fromState) == .LoggingIn
@@ -209,7 +210,7 @@ class MappingSpec: QuickSpec
                 expect(automaton?.state.value) == .LoggingOut
 
                 // fails
-                observer.sendNext(.LoginOK)
+                observer.send(value: .LoginOK)
 
                 expect(lastReply?.input) == .LoginOK
                 expect(lastReply?.fromState) == .LoggingOut
@@ -217,14 +218,14 @@ class MappingSpec: QuickSpec
                 expect(automaton?.state.value) == .LoggingOut
 
                 // fails
-                observer.sendNext(.Logout)
+                observer.send(value: .Logout)
 
                 expect(lastReply?.input) == .Logout
                 expect(lastReply?.fromState) == .LoggingOut
                 expect(lastReply?.toState).to(beNil())
                 expect(automaton?.state.value) == .LoggingOut
 
-                observer.sendNext(.LogoutOK)
+                observer.send(value: .LogoutOK)
 
                 expect(lastReply?.input) == .LogoutOK
                 expect(lastReply?.fromState) == .LoggingOut
