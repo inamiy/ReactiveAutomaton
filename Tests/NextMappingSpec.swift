@@ -24,10 +24,9 @@ class NextMappingSpec: QuickSpec
         let (signal, observer) = Signal<AuthInput, NoError>.pipe()
         var automaton: Automaton?
         var lastReply: Reply<AuthState, AuthInput>?
+        var testScheduler: TestScheduler!
 
         describe("Syntax-sugar NextMapping") {
-
-            var testScheduler: TestScheduler!
 
             beforeEach {
                 testScheduler = TestScheduler()
@@ -97,8 +96,6 @@ class NextMappingSpec: QuickSpec
         }
 
         describe("Func-based NextMapping") {
-
-            var testScheduler: TestScheduler!
 
             beforeEach {
                 testScheduler = TestScheduler()
@@ -171,6 +168,65 @@ class NextMappingSpec: QuickSpec
                 expect(lastReply?.fromState) == .LoggingOut
                 expect(lastReply?.toState) == .LoggedOut
                 expect(automaton?.state.value) == .LoggedOut
+            }
+
+        }
+
+        /// https://github.com/inamiy/RxAutomaton/issues/3
+        describe("Next-producer should be called only once per input") {
+
+            var effectCallCount = 0
+
+            beforeEach {
+                testScheduler = TestScheduler()
+                effectCallCount = 0
+
+                /// Sends `.loginOK` after delay, simulating async work during `.loggingIn`.
+                let loginOKProducer =
+                    SignalProducer<AuthInput, NoError> { observer, disposable in
+                        effectCallCount += 1
+                        disposable += testScheduler.schedule(after: 0.1) {
+                            observer.send(value: .LoginOK)
+                            observer.sendCompleted()
+                        }
+                    }
+
+                let mappings: [Automaton.NextMapping] = [
+                    .Login    | .LoggedOut  => .LoggingIn  | loginOKProducer,
+                    .LoginOK  | .LoggingIn  => .LoggedIn   | .empty,
+                ]
+
+                // strategy = `.Merge`
+                automaton = Automaton(state: .LoggedOut, input: signal, mapping: reduce(mappings), strategy: .merge)
+
+                _ = automaton?.replies.observeValues { reply in
+                    lastReply = reply
+                }
+
+                lastReply = nil
+            }
+
+            it("`LoggedOut => LoggingIn => LoggedIn => LoggingOut => LoggedOut` succeed") {
+                expect(automaton?.state.value) == .LoggedOut
+                expect(lastReply).to(beNil())
+                expect(effectCallCount) == 0
+
+                observer.send(value: .Login)
+
+                expect(lastReply?.input) == .Login
+                expect(lastReply?.fromState) == .LoggedOut
+                expect(lastReply?.toState) == .LoggingIn
+                expect(automaton?.state.value) == .LoggingIn
+                expect(effectCallCount) == 1
+
+                // `loginOKProducer` will automatically send `.LoginOK`
+                testScheduler.advance(by: 1)
+
+                expect(lastReply?.input) == .LoginOK
+                expect(lastReply?.fromState) == .LoggingIn
+                expect(lastReply?.toState) == .LoggedIn
+                expect(automaton?.state.value) == .LoggedIn
+                expect(effectCallCount) == 1
             }
 
         }
