@@ -21,7 +21,7 @@ public final class Automaton<State, Input>
     /// for automatic & continuous state-transitions.
     public typealias NextMapping = (State, Input) -> (State, SignalProducer<Input, NoError>)?
 
-    /// `Reply` signal that notifies either `.Success` or `.Failure` of state-transition on every input.
+    /// `Reply` signal that notifies either `.success` or `.failure` of state-transition on every input.
     public let replies: Signal<Reply<State, Input>, NoError>
 
     /// Current state.

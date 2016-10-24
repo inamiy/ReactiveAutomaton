@@ -12,10 +12,10 @@ import ReactiveAutomaton
 
 enum AuthState: String, CustomStringConvertible
 {
-    case LoggedOut = "LoggedOut"
-    case LoggingIn = "LoggingIn"
-    case LoggedIn = "LoggedIn"
-    case LoggingOut = "LoggingOut"
+    case loggedOut
+    case loggingIn
+    case loggedIn
+    case loggingOut
 
     var description: String { return self.rawValue }
 }
@@ -25,11 +25,11 @@ enum AuthState: String, CustomStringConvertible
 /// (but Swift can't make them as `private case`)
 enum AuthInput: String, CustomStringConvertible
 {
-    case Login = "Login"
-    case LoginOK = "LoginOK"
-    case Logout = "Logout"
-    case ForceLogout = "ForceLogout"
-    case LogoutOK = "LogoutOK"
+    case login
+    case loginOK
+    case logout
+    case forceLogout
+    case logoutOK
 
     var description: String { return self.rawValue }
 }

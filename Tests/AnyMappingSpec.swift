@@ -52,7 +52,7 @@ class AnyMappingSpec: QuickSpec
                 expect(lastReply?.toState).to(beNil())
                 expect(automaton?.state.value) == .state0
 
-                // try `.Login` from any state
+                // try `.login` from any state
                 observer.send(value: .input0)
 
                 expect(lastReply?.input) == .input0
