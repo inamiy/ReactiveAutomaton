@@ -94,10 +94,12 @@ Note that **any sizes of `State` and `Input` will work using `ReactiveAutomaton`
 
 ## References
 
-1. [iOSDC 2016 (Tokyo)](https://iosdc.jp/2016/) (2016/08/20)
-    - [Reactive State Machine (Japanese) // Speaker Deck](https://speakerdeck.com/inamiy/reactive-state-machine-japanese)
-2. [iOSConf SG (Singapore)](http://iosconf.sg/) (2016/10/20-21)
-    - TBD
+1. [iOSDC 2016 (Tokyo, in Japanese)](https://iosdc.jp/2016/) (2016/08/20)
+    - [iOSDC Japan 2016 08/20 Track A / Reactive State Machine / 稲見 泰宏 - YouTube](https://www.youtube.com/watch?v=Yvz9H9AWGFM) (video)
+    - [Reactive State Machine (Japanese) // Speaker Deck](https://speakerdeck.com/inamiy/reactive-state-machine-japanese) (slide)
+2. [iOSConf SG (Singapore, in English)](http://iosconf.sg/) (2016/10/20-21)
+    - [Reactive State Machine - iOS Conf SG 2016 - YouTube](https://www.youtube.com/watch?v=Oau4JjJP3nA) (video)
+    - [Reactive State Machine // Speaker Deck](https://speakerdeck.com/inamiy/reactive-state-machine-1) (slide)
 
 ## License
 
