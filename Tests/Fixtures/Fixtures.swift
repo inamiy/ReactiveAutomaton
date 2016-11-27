@@ -10,6 +10,8 @@ import Result
 import ReactiveSwift
 import ReactiveAutomaton
 
+// MARK: AuthState/Input
+
 enum AuthState: String, CustomStringConvertible
 {
     case loggedOut
@@ -33,6 +35,20 @@ enum AuthInput: String, CustomStringConvertible
 
     var description: String { return self.rawValue }
 }
+
+// MARK: CountState/Input
+
+typealias CountState = Int
+
+enum CountInput: String, CustomStringConvertible
+{
+    case increment
+    case decrement
+
+    var description: String { return self.rawValue }
+}
+
+// MARK: MyState/Input
 
 enum MyState
 {

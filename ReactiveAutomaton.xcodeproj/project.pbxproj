@@ -15,6 +15,7 @@
 		1F24E04B1CDD0D760008028E /* ReactiveCocoa+SampleFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F24E04A1CDD0D760008028E /* ReactiveCocoa+SampleFrom.swift */; };
 		1F24EB161CDD19240008028E /* ReactiveAutomaton.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FAEBCF51CDCEF510046EA72 /* ReactiveAutomaton.framework */; };
 		1F24EB3D1CDD197B0008028E /* MappingSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F24EB3B1CDD197B0008028E /* MappingSpec.swift */; };
+		1FA0AC441DE8AAC7007F01E0 /* StateFuncMappingSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA0AC431DE8AAC7007F01E0 /* StateFuncMappingSpec.swift */; };
 		1FAEBD041CDCEF940046EA72 /* ReactiveAutomaton.h in Headers */ = {isa = PBXBuildFile; fileRef = 1FAEBD021CDCEF940046EA72 /* ReactiveAutomaton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1FAEBD061CDCEFD50046EA72 /* Automaton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAEBD051CDCEFD50046EA72 /* Automaton.swift */; };
 		1FAEBD081CDCF04E0046EA72 /* Reply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAEBD071CDCF04E0046EA72 /* Reply.swift */; };
@@ -53,6 +54,7 @@
 		1F24EB111CDD19240008028E /* ReactiveAutomatonTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReactiveAutomatonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F24EB3A1CDD197B0008028E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1F24EB3B1CDD197B0008028E /* MappingSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MappingSpec.swift; sourceTree = "<group>"; };
+		1FA0AC431DE8AAC7007F01E0 /* StateFuncMappingSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateFuncMappingSpec.swift; sourceTree = "<group>"; };
 		1FAEBCF51CDCEF510046EA72 /* ReactiveAutomaton.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReactiveAutomaton.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FAEBD011CDCEF940046EA72 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1FAEBD021CDCEF940046EA72 /* ReactiveAutomaton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactiveAutomaton.h; sourceTree = "<group>"; };
@@ -134,8 +136,9 @@
 			children = (
 				487C0F271D00311E0071666D /* Fixtures */,
 				1F24EB3B1CDD197B0008028E /* MappingSpec.swift */,
-				487C0F4C1D003B2E0071666D /* AnyMappingSpec.swift */,
 				487C0F4A1D0032D80071666D /* NextMappingSpec.swift */,
+				487C0F4C1D003B2E0071666D /* AnyMappingSpec.swift */,
+				1FA0AC431DE8AAC7007F01E0 /* StateFuncMappingSpec.swift */,
 				48C03E751D4093610084B208 /* StrategyLatestSpec.swift */,
 				1F242AFE1D08766900647917 /* TerminatingSpec.swift */,
 				1F24EB3A1CDD197B0008028E /* Info.plist */,
@@ -327,6 +330,7 @@
 				1F24EB3D1CDD197B0008028E /* MappingSpec.swift in Sources */,
 				1F242B1E1D08770400647917 /* TerminatingSpec.swift in Sources */,
 				487C0F4B1D0032D80071666D /* NextMappingSpec.swift in Sources */,
+				1FA0AC441DE8AAC7007F01E0 /* StateFuncMappingSpec.swift in Sources */,
 				487C0F4D1D003B2E0071666D /* AnyMappingSpec.swift in Sources */,
 				487C0F291D00311E0071666D /* Fixtures.swift in Sources */,
 				48C03E951D4094270084B208 /* StrategyLatestSpec.swift in Sources */,
