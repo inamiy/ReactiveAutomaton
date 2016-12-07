@@ -96,7 +96,7 @@ class TerminatingSpec: QuickSpec
                     expect(nextProducerDisposed) == false
 
                     // `sendInput1And2AfterDelay` will automatically send `.input1` at this point
-                    testScheduler.advance(by: 1)
+                    testScheduler.advance(by: .seconds(1))
 
                     expect(automaton?.state.value) == .state2
                     expect(lastReply?.input) == .input1
@@ -113,7 +113,7 @@ class TerminatingSpec: QuickSpec
 
                     // If `sendInput1And2AfterDelay` is still alive, it will send `.input2` at this point,
                     // but it's already interrupted because `automaton` is deinited.
-                    testScheduler.advance(by: 1)
+                    testScheduler.advance(by: .seconds(1))
 
                     // Last input should NOT change.
                     expect(lastReply?.input) == .input1
@@ -152,7 +152,7 @@ class TerminatingSpec: QuickSpec
                     expect(nextProducerDisposed) == false
 
                     // `sendInput1And2AfterDelay` will automatically send `.input1` at this point
-                    testScheduler.advance(by: 1)
+                    testScheduler.advance(by: .seconds(1))
 
                     expect(automaton?.state.value) == .state2
                     expect(lastReply?.input) == .input1
@@ -168,7 +168,7 @@ class TerminatingSpec: QuickSpec
 
                     // If `sendInput1And2AfterDelay` is still alive, it will send `.input2` at this point,
                     // but it's already interrupted because of `sendInterrupted`.
-                    testScheduler.advance(by: 1)
+                    testScheduler.advance(by: .seconds(1))
 
                     // Last state & input should NOT change.
                     expect(automaton?.state.value) == .state2
@@ -208,7 +208,7 @@ class TerminatingSpec: QuickSpec
                     expect(nextProducerDisposed) == false
 
                     // `sendInput1And2AfterDelay` will automatically send `.input1` at this point.
-                    testScheduler.advance(by: 1)
+                    testScheduler.advance(by: .seconds(1))
 
                     expect(automaton?.state.value) == .state2
                     expect(lastReply?.input) == .input1
@@ -224,7 +224,7 @@ class TerminatingSpec: QuickSpec
                     expect(nextProducerDisposed) == false
 
                     // `sendInput1And2AfterDelay` will automatically send `.input2` at this point.
-                    testScheduler.advance(by: 1)
+                    testScheduler.advance(by: .seconds(1))
 
                     // Last state & input should change.
                     expect(automaton?.state.value) == .state0

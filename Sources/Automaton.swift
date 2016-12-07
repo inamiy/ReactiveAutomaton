@@ -66,7 +66,7 @@ public final class Automaton<State, Input>
         {
             return SignalProducer<Input, NoError> { observer, disposable in
                 inputProducer
-                    .sampleFrom(stateProperty.producer)
+                    .withLatest(from: stateProperty.producer)
                     .map { input, fromState in
                         return (input, fromState, mapping(fromState, input)?.1)
                     }
@@ -108,7 +108,7 @@ public final class Automaton<State, Input>
         }
 
         recurInputProducer(SignalProducer(signal: inputSignal), strategy: strategy)
-            .sampleFrom(stateProperty.producer)
+            .withLatest(from: stateProperty.producer)
             .flatMap(.merge) { input, fromState -> SignalProducer<Reply<State, Input>, NoError> in
                 if let (toState, _) = mapping(fromState, input) {
                     return .init(value: .success(input, fromState, toState))

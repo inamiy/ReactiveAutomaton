@@ -69,7 +69,7 @@ class NextMappingLatestSpec: QuickSpec
                 expect(lastReply?.toState) == .loggingIn
                 expect(automaton?.state.value) == .loggingIn
 
-                testScheduler.advance(by: 0.1)
+                testScheduler.advance(by: .milliseconds(100))
 
                 // fails (`loginOKProducer` will not be interrupted)
                 observer.send(value: .login)
@@ -80,7 +80,7 @@ class NextMappingLatestSpec: QuickSpec
                 expect(automaton?.state.value) == .loggingIn
 
                 // `loginOKProducer` will automatically send `.loginOK`
-                testScheduler.advance(by: 1)
+                testScheduler.advance(by: .seconds(1))
 
                 expect(lastReply?.input) == .loginOK
                 expect(lastReply?.fromState) == .loggingIn

@@ -70,7 +70,7 @@ class NextMappingSpec: QuickSpec
                 expect(automaton?.state.value) == .loggingIn
 
                 // `loginOKProducer` will automatically send `.loginOK`
-                testScheduler.advance(by: 1)
+                testScheduler.advance(by: .seconds(1))
 
                 expect(lastReply?.input) == .loginOK
                 expect(lastReply?.fromState) == .loggingIn
@@ -85,7 +85,7 @@ class NextMappingSpec: QuickSpec
                 expect(automaton?.state.value) == .loggingOut
 
                 // `logoutOKProducer` will automatically send `.logoutOK`
-                testScheduler.advance(by:1)
+                testScheduler.advance(by: .seconds(1))
 
                 expect(lastReply?.input) == .logoutOK
                 expect(lastReply?.fromState) == .loggingOut
@@ -147,7 +147,7 @@ class NextMappingSpec: QuickSpec
                 expect(automaton?.state.value) == .loggingIn
 
                 // `loginOKProducer` will automatically send `.loginOK`
-                testScheduler.advance(by:1)
+                testScheduler.advance(by: .seconds(1))
 
                 expect(lastReply?.input) == .loginOK
                 expect(lastReply?.fromState) == .loggingIn
@@ -162,7 +162,7 @@ class NextMappingSpec: QuickSpec
                 expect(automaton?.state.value) == .loggingOut
 
                 // `logoutOKProducer` will automatically send `.logoutOK`
-                testScheduler.advance(by:1)
+                testScheduler.advance(by: .seconds(1))
 
                 expect(lastReply?.input) == .logoutOK
                 expect(lastReply?.fromState) == .loggingOut
@@ -185,7 +185,7 @@ class NextMappingSpec: QuickSpec
                 let loginOKProducer =
                     SignalProducer<AuthInput, NoError> { observer, disposable in
                         effectCallCount += 1
-                        disposable += testScheduler.schedule(after: 0.1) {
+                        disposable += testScheduler.schedule(after: .milliseconds(100)) {
                             observer.send(value: .loginOK)
                             observer.sendCompleted()
                         }
@@ -220,7 +220,7 @@ class NextMappingSpec: QuickSpec
                 expect(effectCallCount) == 1
 
                 // `loginOKProducer` will automatically send `.loginOK`
-                testScheduler.advance(by: 1)
+                testScheduler.advance(by: .seconds(1))
 
                 expect(lastReply?.input) == .loginOK
                 expect(lastReply?.fromState) == .loggingIn
