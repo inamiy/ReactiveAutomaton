@@ -45,7 +45,7 @@ class NextMappingSpec: QuickSpec
                     .login    | .loggedOut  => .loggingIn  | loginOKProducer,
                     .loginOK  | .loggingIn  => .loggedIn   | .empty,
                     .logout   | .loggedIn   => .loggingOut | logoutOKProducer,
-                    .logoutOK | .loggingOut => .loggedOut  | .empty,
+                    .logoutOK | .loggingOut => .loggedOut  | .empty
                 ]
 
                 // strategy = `.Merge`
@@ -193,7 +193,7 @@ class NextMappingSpec: QuickSpec
 
                 let mappings: [Automaton.NextMapping] = [
                     .login    | .loggedOut  => .loggingIn  | loginOKProducer,
-                    .loginOK  | .loggingIn  => .loggedIn   | .empty,
+                    .loginOK  | .loggingIn  => .loggedIn   | .empty
                 ]
 
                 // strategy = `.Merge`

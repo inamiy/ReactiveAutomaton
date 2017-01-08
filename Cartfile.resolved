@@ -1,5 +1,5 @@
-github "Quick/Nimble" "v5.0.0"
-github "Quick/Quick" "v0.10.0"
+github "Quick/Nimble" "v5.1.1"
+github "Quick/Quick" "v1.0.0"
 github "antitypical/Result" "3.1.0"
 github "mrackwitz/xcconfigs" "3.0"
-github "ReactiveCocoa/ReactiveSwift" "90308457b2928c38fd8ab90ab073f217e6560030"
+github "ReactiveCocoa/ReactiveSwift" "1.0.0"
