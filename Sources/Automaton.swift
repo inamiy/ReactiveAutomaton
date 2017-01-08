@@ -89,13 +89,13 @@ public final class Automaton<State, Input>
                             .filterMap { input, fromState, nextProducer in
                                 return nextProducer.map { (input, fromState, $0) }
                             }
-                            .flatMap(strategy) { input, fromState, nextProducer -> SignalProducer<Input, NoError> in
+                            .flatMap(strategy) { input, _, nextProducer -> SignalProducer<Input, NoError> in
                                 return recurInputProducer(nextProducer, strategy: strategy)
                                     .prefix(value: input)
                             }
 
                         let failureSignal = mappingSignal
-                            .filterMap { input, fromState, nextProducer -> Input? in
+                            .filterMap { input, _, nextProducer -> Input? in
                                 return nextProducer == nil ? input : nil
                             }
 

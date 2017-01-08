@@ -45,7 +45,7 @@ class NextMappingLatestSpec: QuickSpec
                     .login    | .loggedOut  => .loggingIn  | loginOKProducer,
                     .loginOK  | .loggingIn  => .loggedIn   | .empty,
                     .logout   | .loggedIn   => .loggingOut | logoutOKProducer,
-                    .logoutOK | .loggingOut => .loggedOut  | .empty,
+                    .logoutOK | .loggingOut => .loggedOut  | .empty
                 ]
 
                 // strategy = `.latest`

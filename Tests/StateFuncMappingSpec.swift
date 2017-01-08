@@ -28,7 +28,7 @@ class StateFuncMappingSpec: QuickSpec
             beforeEach {
                 let mappings: [Automaton.NextMapping] = [
                     .increment | { $0 + 1 } | .empty,
-                    .decrement | { $0 - 1 } | .empty,
+                    .decrement | { $0 - 1 } | .empty
                 ]
 
                 // strategy = `.merge`
