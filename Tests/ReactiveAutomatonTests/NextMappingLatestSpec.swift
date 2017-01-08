@@ -1,5 +1,5 @@
 //
-//  StrategyLatestSpec.swift
+//  NextMappingLatestSpec.swift
 //  ReactiveAutomaton
 //
 //  Created by Yasuhiro Inami on 2016-07-21.
