@@ -107,7 +107,7 @@ public final class Automaton<State, Input>
             }
         }
 
-        recurInputProducer(SignalProducer(signal: inputSignal), strategy: strategy)
+        recurInputProducer(SignalProducer(inputSignal), strategy: strategy)
             .withLatest(from: stateProperty.producer)
             .flatMap(.merge) { input, fromState -> SignalProducer<Reply<State, Input>, NoError> in
                 if let (toState, _) = mapping(fromState, input) {
