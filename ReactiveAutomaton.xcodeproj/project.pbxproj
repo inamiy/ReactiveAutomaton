@@ -24,7 +24,6 @@
 		487C0F4D1D003B2E0071666D /* AnyMappingSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C0F4C1D003B2E0071666D /* AnyMappingSpec.swift */; };
 		48B2D1141CED890D0095F175 /* Mapping+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B2D1131CED890D0095F175 /* Mapping+Helper.swift */; };
 		48C03E951D4094270084B208 /* NextMappingLatestSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C03E751D4093610084B208 /* NextMappingLatestSpec.swift */; };
-		48F34E801D4072DA00C53CAC /* ReactiveCocoa+FilterMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F34E7F1D4072DA00C53CAC /* ReactiveCocoa+FilterMap.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,7 +64,6 @@
 		487C0F4C1D003B2E0071666D /* AnyMappingSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyMappingSpec.swift; sourceTree = "<group>"; };
 		48B2D1131CED890D0095F175 /* Mapping+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mapping+Helper.swift"; sourceTree = "<group>"; };
 		48C03E751D4093610084B208 /* NextMappingLatestSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextMappingLatestSpec.swift; sourceTree = "<group>"; };
-		48F34E7F1D4072DA00C53CAC /* ReactiveCocoa+FilterMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReactiveCocoa+FilterMap.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,14 +89,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1F24E04C1CDD0F610008028E /* Internals */ = {
-			isa = PBXGroup;
-			children = (
-				48F34E7F1D4072DA00C53CAC /* ReactiveCocoa+FilterMap.swift */,
-			);
-			name = Internals;
-			sourceTree = "<group>";
-		};
 		1F24E04D1CDD15980008028E /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
@@ -172,7 +162,6 @@
 				1FAEBD071CDCF04E0046EA72 /* Reply.swift */,
 				48B2D1131CED890D0095F175 /* Mapping+Helper.swift */,
 				1F00C32E1D5CB3D900CC3139 /* ReactiveCocoa+ThenValue.swift */,
-				1F24E04C1CDD0F610008028E /* Internals */,
 				1FAEBD011CDCEF940046EA72 /* Info.plist */,
 			);
 			path = Sources;
@@ -352,7 +341,6 @@
 				1F00C32F1D5CB3D900CC3139 /* ReactiveCocoa+ThenValue.swift in Sources */,
 				48B2D1141CED890D0095F175 /* Mapping+Helper.swift in Sources */,
 				1FAEBD061CDCEFD50046EA72 /* Automaton.swift in Sources */,
-				48F34E801D4072DA00C53CAC /* ReactiveCocoa+FilterMap.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
