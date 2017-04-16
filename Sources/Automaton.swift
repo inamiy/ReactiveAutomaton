@@ -86,17 +86,17 @@ public final class Automaton<State, Input>
                         // inner producers of `flatMap(strategy)` in `successSignal` don't get interrupted by mapping failure.
                         //
                         let successSignal = mappingSignal
-                            .filterMap { input, fromState, nextProducer in
-                                return nextProducer.map { (input, fromState, $0) }
+                            .filterMap { input, fromState, effect in
+                                return effect.map { (input, fromState, $0) }
                             }
-                            .flatMap(strategy) { input, _, nextProducer -> SignalProducer<Input, NoError> in
-                                return recurInputProducer(nextProducer, strategy: strategy)
+                            .flatMap(strategy) { input, _, effect -> SignalProducer<Input, NoError> in
+                                return recurInputProducer(effect, strategy: strategy)
                                     .prefix(value: input)
                             }
 
                         let failureSignal = mappingSignal
-                            .filterMap { input, _, nextProducer -> Input? in
-                                return nextProducer == nil ? input : nil
+                            .filterMap { input, _, effect -> Input? in
+                                return effect == nil ? input : nil
                             }
 
                         let mergedProducer = SignalProducer(values: failureSignal, successSignal).flatten(.merge)

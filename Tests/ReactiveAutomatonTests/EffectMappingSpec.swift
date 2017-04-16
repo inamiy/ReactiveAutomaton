@@ -173,7 +173,7 @@ class EffectMappingSpec: QuickSpec
         }
 
         /// https://github.com/inamiy/RxAutomaton/issues/3
-        describe("Next-producer should be called only once per input") {
+        describe("Additional effect should be called only once per input") {
 
             var effectCallCount = 0
 

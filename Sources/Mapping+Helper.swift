@@ -76,11 +76,11 @@ public func | <State, Input: Equatable>(input: Input, transition: @escaping (Sta
 
 // MARK: `|` (Automaton.EffectMapping constructor)
 
-public func | <State, Input>(mapping: @escaping Automaton<State, Input>.Mapping, nextInputProducer: SignalProducer<Input, NoError>) -> Automaton<State, Input>.EffectMapping
+public func | <State, Input>(mapping: @escaping Automaton<State, Input>.Mapping, effect: SignalProducer<Input, NoError>) -> Automaton<State, Input>.EffectMapping
 {
     return { fromState, input in
         if let toState = mapping(fromState, input) {
-            return (toState, nextInputProducer)
+            return (toState, effect)
         }
         else {
             return nil
