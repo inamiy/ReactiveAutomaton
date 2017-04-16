@@ -1,5 +1,5 @@
 //
-//  NextMappingLatestSpec.swift
+//  EffectMappingLatestSpec.swift
 //  ReactiveAutomaton
 //
 //  Created by Yasuhiro Inami on 2016-07-21.
@@ -12,13 +12,13 @@ import ReactiveAutomaton
 import Quick
 import Nimble
 
-/// NextMapping tests with `strategy = .latest`.
-class NextMappingLatestSpec: QuickSpec
+/// EffectMapping tests with `strategy = .latest`.
+class EffectMappingLatestSpec: QuickSpec
 {
     override func spec()
     {
         typealias Automaton = ReactiveAutomaton.Automaton<AuthState, AuthInput>
-        typealias NextMapping = Automaton.NextMapping
+        typealias EffectMapping = Automaton.EffectMapping
 
         let (signal, observer) = Signal<AuthInput, NoError>.pipe()
         var automaton: Automaton?
@@ -41,7 +41,7 @@ class NextMappingLatestSpec: QuickSpec
                     SignalProducer<AuthInput, NoError>(value: .logoutOK)
                         .delay(1, on: testScheduler)
 
-                let mappings: [Automaton.NextMapping] = [
+                let mappings: [Automaton.EffectMapping] = [
                     .login    | .loggedOut  => .loggingIn  | loginOKProducer,
                     .loginOK  | .loggingIn  => .loggedIn   | .empty,
                     .logout   | .loggedIn   => .loggingOut | logoutOKProducer,
@@ -58,7 +58,7 @@ class NextMappingLatestSpec: QuickSpec
                 lastReply = nil
             }
 
-            it("`strategy = .latest` should not interrupt inner next-producers when transition fails") {
+            it("`strategy = .latest` should not interrupt inner effects when transition fails") {
                 expect(automaton?.state.value) == .loggedOut
                 expect(lastReply).to(beNil())
 

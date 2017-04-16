@@ -74,13 +74,13 @@ public func | <State, Input: Equatable>(input: Input, transition: @escaping (Sta
     return { $0 == input } | transition
 }
 
-// MARK: `|` (Automaton.NextMapping constructor)
+// MARK: `|` (Automaton.EffectMapping constructor)
 
-public func | <State, Input>(mapping: @escaping Automaton<State, Input>.Mapping, nextInputProducer: SignalProducer<Input, NoError>) -> Automaton<State, Input>.NextMapping
+public func | <State, Input>(mapping: @escaping Automaton<State, Input>.Mapping, effect: SignalProducer<Input, NoError>) -> Automaton<State, Input>.EffectMapping
 {
     return { fromState, input in
         if let toState = mapping(fromState, input) {
-            return (toState, nextInputProducer)
+            return (toState, effect)
         }
         else {
             return nil
@@ -111,8 +111,8 @@ public func reduce<State, Input, Mappings: Sequence>(_ mappings: Mappings) -> Au
     }
 }
 
-/// Folds multiple `Automaton.NextMapping`s into one (preceding mapping has higher priority).
-public func reduce<State, Input, Mappings: Sequence>(_ mappings: Mappings) -> Automaton<State, Input>.NextMapping where Mappings.Iterator.Element == Automaton<State, Input>.NextMapping
+/// Folds multiple `Automaton.EffectMapping`s into one (preceding mapping has higher priority).
+public func reduce<State, Input, Mappings: Sequence>(_ mappings: Mappings) -> Automaton<State, Input>.EffectMapping where Mappings.Iterator.Element == Automaton<State, Input>.EffectMapping
 {
     return { fromState, input in
         for mapping in mappings {
