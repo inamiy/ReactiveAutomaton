@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "ReactiveAutomaton"
-  s.version      = "0.2.0"
+  s.version      = "0.3.0"
   s.summary      = "ReactiveCocoa + State Machine, inspired by Redux and Elm."
   s.homepage     = "https://github.com/inamiy/ReactiveAutomaton"
   s.license      = { :type => "MIT", :file => "LICENSE" }
@@ -14,5 +14,5 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/inamiy/ReactiveAutomaton.git", :tag => "#{s.version}" }
   s.source_files  = "Sources/**/*.swift"
 
-  s.dependency "ReactiveSwift", "~> 1.0.0"
+  s.dependency "ReactiveSwift", "~> 1.1"
 end
