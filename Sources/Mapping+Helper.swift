@@ -123,3 +123,21 @@ public func reduce<State, Input, Mappings: Sequence>(_ mappings: Mappings) -> Au
         return nil
     }
 }
+
+/// Converts `Automaton.Mapping` to `Automaton.EffectMapping`.
+public func toEffectMapping<State, Input>(_ mapping: @escaping Automaton<State, Input>.Mapping)
+    -> Automaton<State, Input>.EffectMapping
+{
+    return { state, input in
+        return mapping(state, input).map { ($0, .empty) }
+    }
+}
+
+/// Converts `Automaton.EffectMapping` to `Automaton.Mapping`, discarding effects.
+public func toMapping<State, Input>(_ effectMapping: @escaping Automaton<State, Input>.EffectMapping)
+    -> Automaton<State, Input>.Mapping
+{
+    return { state, input in
+        return effectMapping(state, input)?.0
+    }
+}
