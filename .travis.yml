@@ -19,7 +19,7 @@ matrix:
       language: objective-c
       script:
         - set -o pipefail
-        - xcodebuild build-for-testing test-without-building -destination 'platform=iOS Simulator,name=iPhone 6s,OS=9.0' ENABLE_TESTABILITY=YES $XCPROJ | xcpretty
+        - xcodebuild build-for-testing test-without-building -destination 'platform=iOS Simulator,name=iPhone 6s,OS=10.3' ENABLE_TESTABILITY=YES $XCPROJ | xcpretty
       env:
         - JOB=xcodebuild-iOS
 
