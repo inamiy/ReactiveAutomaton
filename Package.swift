@@ -1,20 +1,27 @@
+// swift-tools-version:4.2
+
 import Foundation
 import PackageDescription
 
-let isSwiftPackageManagerTest = ProcessInfo.processInfo.environment["SWIFTPM_TEST"] == "YES"
-
 let package = Package(
     name: "ReactiveAutomaton",
-    dependencies: {
-        var deps: [Package.Dependency] = [
-            .Package(url: "https://github.com/ReactiveCocoa/ReactiveSwift.git", majorVersion: 1, minor: 1)
-        ]
-        if isSwiftPackageManagerTest {
-            deps += [
-                .Package(url: "https://github.com/Quick/Quick", majorVersion: 1),
-                .Package(url: "https://github.com/Quick/Nimble", majorVersion: 6)
-            ]
-        }
-        return deps
-    }()
+    products: [
+        .library(
+            name: "ReactiveAutomaton",
+            targets: ["ReactiveAutomaton"]),
+    ],
+    dependencies:  [
+        .package(url: "https://github.com/ReactiveCocoa/ReactiveSwift.git", from: "4.0.0"),
+        .package(url: "https://github.com/Quick/Quick", from: "1.0.0"),
+        .package(url: "https://github.com/Quick/Nimble", from: "7.0.0")
+    ],
+    targets: [
+        .target(
+            name: "ReactiveAutomaton",
+            dependencies: ["ReactiveSwift"],
+            path: "Sources"),
+        .testTarget(
+            name: "ReactiveAutomatonTests",
+            dependencies: ["ReactiveAutomaton", "Quick", "Nimble"]),
+    ]
 )
