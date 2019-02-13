@@ -19,7 +19,7 @@ matrix:
       language: objective-c
       script:
         - set -o pipefail
-        - xcodebuild build-for-testing test-without-building -destination 'platform=iOS Simulator,name=iPhone 6s,OS=10.3' ENABLE_TESTABILITY=YES $XCPROJ | xcpretty
+        - xcodebuild build-for-testing test-without-building -destination 'platform=iOS Simulator,name=iPhone XS' ENABLE_TESTABILITY=YES $XCPROJ | xcpretty
       env:
         - JOB=xcodebuild-iOS
 
@@ -27,7 +27,7 @@ matrix:
       language: objective-c
       script:
         - set -o pipefail
-        - xcodebuild build-for-testing test-without-building -destination 'platform=tvOS Simulator,name=Apple TV 1080p' ENABLE_TESTABILITY=YES $XCPROJ | xcpretty
+        - xcodebuild build-for-testing test-without-building -destination 'platform=tvOS Simulator,name=Apple TV 4K' ENABLE_TESTABILITY=YES $XCPROJ | xcpretty
       env:
         - JOB=xcodebuild-tvOS
 
@@ -35,7 +35,7 @@ matrix:
       language: objective-c
       script:
         - set -o pipefail
-        - xcodebuild build -destination 'platform=watchOS Simulator,name=Apple Watch - 38mm,OS=2.2' $XCPROJ | xcpretty
+        - xcodebuild build -destination 'platform=watchOS Simulator,name=Apple Watch Series 4 - 44mm' $XCPROJ | xcpretty
       env:
         - JOB=xcodebuild-watchOS
 
