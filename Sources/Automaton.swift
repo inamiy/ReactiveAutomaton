@@ -99,8 +99,8 @@ public final class Automaton<State, Input>
                             }
 
                         let failureSignal = mappingSignal
-                            .filterMap { input, fromState, effect -> Reply<State, Input>? in
-                                return effect == nil ? .failure(input, fromState) : nil
+                            .filterMap { input, fromState, mapped -> Reply<State, Input>? in
+                                return mapped == nil ? .failure(input, fromState) : nil
                             }
 
                         let mergedProducer = SignalProducer(values: failureSignal, successSignal).flatten(.merge)
