@@ -27,7 +27,7 @@ public final class Automaton<State, Input>
     /// Current state.
     public let state: Property<State>
 
-    fileprivate let _replyObserver: Observer<Reply<State, Input>, NoError>
+    fileprivate let _replyObserver: Signal<Reply<State, Input>, NoError>.Observer
 
     fileprivate var _disposable: Disposable?
 

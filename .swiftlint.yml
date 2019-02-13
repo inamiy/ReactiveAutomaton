@@ -20,6 +20,9 @@ disabled_rules:
   - variable_name         # allow "_" prefix name
   - todo
   - valid_docs
+  - void_return
+  - nesting
+  - switch_case_alignment
 
 opt_in_rules:
   - empty_count  # local variable name `count` is frequently used
