@@ -123,15 +123,7 @@ public final class Automaton<State, Input>
             .startWithSignal { replySignal, disposable in
                 self._disposable = disposable
 
-                stateProperty <~ replySignal
-                    .flatMap(.merge) { reply -> SignalProducer<State, NoError> in
-                        if let toState = reply.toState {
-                            return .init(value: toState)
-                        }
-                        else {
-                            return .empty
-                        }
-                    }
+                stateProperty <~ replySignal.filterMap { $0.toState }
 
                 replySignal.observe(self._replyObserver)
             }
