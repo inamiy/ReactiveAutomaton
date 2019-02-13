@@ -41,7 +41,10 @@ public final class Automaton<State, Input>
     ///
     public convenience init(state initialState: State, input inputSignal: Signal<Input, NoError>, mapping: @escaping Mapping)
     {
-        self.init(state: initialState, input: inputSignal, mapping: _compose(_toEffectMapping, mapping))
+        /// - Warning: Strangely, casting and setting to temporal function is need in Swift 4.2 `swift build`...
+        let mapping2 = _compose(_toEffectMapping as (State?) -> (State, SignalProducer<Input, NoError>)?, mapping)
+
+        self.init(state: initialState, input: inputSignal, mapping: mapping2)
     }
 
     ///
