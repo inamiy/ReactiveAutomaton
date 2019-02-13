@@ -62,7 +62,7 @@ enum MyInput
 
 // MARK: Extensions
 
-extension Event
+extension Signal.Event
 {
     public var isCompleting: Bool
     {
