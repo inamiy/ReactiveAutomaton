@@ -6,7 +6,6 @@
 //  Copyright © 2016 Yasuhiro Inami. All rights reserved.
 //
 
-import Result
 import ReactiveSwift
 import ReactiveAutomaton
 import Quick
@@ -22,7 +21,7 @@ class StateFuncMappingSpec: QuickSpec
             typealias Automaton = ReactiveAutomaton.Automaton<CountState, CountInput>
             typealias EffectMapping = Automaton.EffectMapping
 
-            let (signal, observer) = Signal<CountInput, NoError>.pipe()
+            let (signal, observer) = Signal<CountInput, Never>.pipe()
             var automaton: Automaton?
 
             beforeEach {

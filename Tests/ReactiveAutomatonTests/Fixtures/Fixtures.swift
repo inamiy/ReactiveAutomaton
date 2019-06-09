@@ -6,7 +6,6 @@
 //  Copyright © 2016 Yasuhiro Inami. All rights reserved.
 //
 
-import Result
 import ReactiveSwift
 import ReactiveAutomaton
 

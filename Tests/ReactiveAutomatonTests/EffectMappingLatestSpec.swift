@@ -6,7 +6,6 @@
 //  Copyright © 2016 Yasuhiro Inami. All rights reserved.
 //
 
-import Result
 import ReactiveSwift
 import ReactiveAutomaton
 import Quick
@@ -20,7 +19,7 @@ class EffectMappingLatestSpec: QuickSpec
         typealias Automaton = ReactiveAutomaton.Automaton<AuthState, AuthInput>
         typealias EffectMapping = Automaton.EffectMapping
 
-        let (signal, observer) = Signal<AuthInput, NoError>.pipe()
+        let (signal, observer) = Signal<AuthInput, Never>.pipe()
         var automaton: Automaton?
         var lastReply: Reply<AuthState, AuthInput>?
 
@@ -33,12 +32,12 @@ class EffectMappingLatestSpec: QuickSpec
 
                 /// Sends `.loginOK` after delay, simulating async work during `.loggingIn`.
                 let loginOKProducer =
-                    SignalProducer<AuthInput, NoError>(value: .loginOK)
+                    SignalProducer<AuthInput, Never>(value: .loginOK)
                         .delay(1, on: testScheduler)
 
                 /// Sends `.logoutOK` after delay, simulating async work during `.loggingOut`.
                 let logoutOKProducer =
-                    SignalProducer<AuthInput, NoError>(value: .logoutOK)
+                    SignalProducer<AuthInput, Never>(value: .logoutOK)
                         .delay(1, on: testScheduler)
 
                 let mappings: [Automaton.EffectMapping] = [

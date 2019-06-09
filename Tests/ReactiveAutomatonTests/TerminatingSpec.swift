@@ -6,7 +6,6 @@
 //  Copyright © 2016 Yasuhiro Inami. All rights reserved.
 //
 
-import Result
 import ReactiveSwift
 import ReactiveAutomaton
 import Quick
@@ -21,25 +20,25 @@ class TerminatingSpec: QuickSpec
 
         var automaton: Automaton?
         var lastReply: Reply<MyState, MyInput>?
-        var lastRepliesEvent: Signal<Reply<MyState, MyInput>, NoError>.Event?
+        var lastRepliesEvent: Signal<Reply<MyState, MyInput>, Never>.Event?
 
         /// Flag for internal effect `sendInput1And2AfterDelay` disposed.
         var effectDisposed: Bool?
 
-        var signal: Signal<MyInput, NoError>!
-        var observer: Signal<MyInput, NoError>.Observer!
+        var signal: Signal<MyInput, Never>!
+        var observer: Signal<MyInput, Never>.Observer!
         var testScheduler: TestScheduler!
 
         describe("Deinit") {
 
             beforeEach {
                 testScheduler = TestScheduler()
-                let (signal_, observer_) = Signal<MyInput, NoError>.pipe()
+                let (signal_, observer_) = Signal<MyInput, Never>.pipe()
                 signal = signal_
                 observer = observer_
 
                 let sendInput1And2AfterDelay =
-                    SignalProducer<MyInput, NoError>(value: .input2)
+                    SignalProducer<MyInput, Never>(value: .input2)
                         .delay(1, on: testScheduler)
                         .prefix(value: .input1)
                         .delay(1, on: testScheduler)

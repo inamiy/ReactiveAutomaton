@@ -6,7 +6,6 @@
 //  Copyright © 2016 Yasuhiro Inami. All rights reserved.
 //
 
-import Result
 import ReactiveSwift
 import ReactiveAutomaton
 import Quick
@@ -19,7 +18,7 @@ class AnyMappingSpec: QuickSpec
     {
         typealias Automaton = ReactiveAutomaton.Automaton<MyState, MyInput>
 
-        let (signal, observer) = Signal<MyInput, NoError>.pipe()
+        let (signal, observer) = Signal<MyInput, Never>.pipe()
         var automaton: Automaton?
         var lastReply: Reply<MyState, MyInput>?
 

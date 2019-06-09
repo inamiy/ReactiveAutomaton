@@ -6,7 +6,6 @@
 //  Copyright © 2016 Yasuhiro Inami. All rights reserved.
 //
 
-import Result
 import ReactiveSwift
 import ReactiveAutomaton
 import Quick
@@ -20,7 +19,7 @@ class MappingSpec: QuickSpec
         typealias Automaton = ReactiveAutomaton.Automaton<AuthState, AuthInput>
         typealias Mapping = Automaton.Mapping
 
-        let (signal, observer) = Signal<AuthInput, NoError>.pipe()
+        let (signal, observer) = Signal<AuthInput, Never>.pipe()
         var automaton: Automaton?
         var lastReply: Reply<AuthState, AuthInput>?
 

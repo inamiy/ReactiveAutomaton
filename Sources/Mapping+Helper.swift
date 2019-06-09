@@ -6,7 +6,6 @@
 //  Copyright © 2016 Yasuhiro Inami. All rights reserved.
 //
 
-import Result
 import ReactiveSwift
 
 /// "From-" and "to-" states represented as `.state1 => .state2` or `anyState => .state3`.
@@ -76,7 +75,7 @@ public func | <State, Input: Equatable>(input: Input, transition: @escaping (Sta
 
 // MARK: `|` (Automaton.EffectMapping constructor)
 
-public func | <State, Input>(mapping: @escaping Automaton<State, Input>.Mapping, effect: SignalProducer<Input, NoError>) -> Automaton<State, Input>.EffectMapping
+public func | <State, Input>(mapping: @escaping Automaton<State, Input>.Mapping, effect: SignalProducer<Input, Never>) -> Automaton<State, Input>.EffectMapping
 {
     return { fromState, input in
         if let toState = mapping(fromState, input) {

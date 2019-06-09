@@ -6,14 +6,13 @@
 //  Copyright © 2016 Yasuhiro Inami. All rights reserved.
 //
 
-import Result
 import ReactiveSwift
 import ReactiveAutomaton
 import Quick
 import Nimble
 
 /// Tests for `(State, Input) -> (State, Output)?` mapping
-/// where `Output = SignalProducer<Input, NoError>`.
+/// where `Output = SignalProducer<Input, Never>`.
 class EffectMappingSpec: QuickSpec
 {
     override func spec()
@@ -21,7 +20,7 @@ class EffectMappingSpec: QuickSpec
         typealias Automaton = ReactiveAutomaton.Automaton<AuthState, AuthInput>
         typealias EffectMapping = Automaton.EffectMapping
 
-        let (signal, observer) = Signal<AuthInput, NoError>.pipe()
+        let (signal, observer) = Signal<AuthInput, Never>.pipe()
         var automaton: Automaton?
         var lastReply: Reply<AuthState, AuthInput>?
         var testScheduler: TestScheduler!
@@ -33,12 +32,12 @@ class EffectMappingSpec: QuickSpec
 
                 /// Sends `.loginOK` after delay, simulating async work during `.loggingIn`.
                 let loginOKProducer =
-                    SignalProducer<AuthInput, NoError>(value: .loginOK)
+                    SignalProducer<AuthInput, Never>(value: .loginOK)
                         .delay(1, on: testScheduler)
 
                 /// Sends `.logoutOK` after delay, simulating async work during `.loggingOut`.
                 let logoutOKProducer =
-                    SignalProducer<AuthInput, NoError>(value: .logoutOK)
+                    SignalProducer<AuthInput, Never>(value: .logoutOK)
                         .delay(1, on: testScheduler)
 
                 let mappings: [Automaton.EffectMapping] = [
@@ -102,12 +101,12 @@ class EffectMappingSpec: QuickSpec
 
                 /// Sends `.loginOK` after delay, simulating async work during `.loggingIn`.
                 let loginOKProducer =
-                    SignalProducer<AuthInput, NoError>(value: .loginOK)
+                    SignalProducer<AuthInput, Never>(value: .loginOK)
                         .delay(1, on: testScheduler)
 
                 /// Sends `.logoutOK` after delay, simulating async work during `.loggingOut`.
                 let logoutOKProducer =
-                    SignalProducer<AuthInput, NoError>(value: .logoutOK)
+                    SignalProducer<AuthInput, Never>(value: .logoutOK)
                         .delay(1, on: testScheduler)
 
                 let mapping: EffectMapping = { fromState, input in
@@ -183,7 +182,7 @@ class EffectMappingSpec: QuickSpec
 
                 /// Sends `.loginOK` after delay, simulating async work during `.loggingIn`.
                 let loginOKProducer =
-                    SignalProducer<AuthInput, NoError> { observer, disposable in
+                    SignalProducer<AuthInput, Never> { observer, disposable in
                         effectCallCount += 1
                         disposable += testScheduler.schedule(after: .milliseconds(100)) {
                             observer.send(value: .loginOK)
