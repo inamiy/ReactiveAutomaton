@@ -1,11 +1,3 @@
-//
-//  Fixtures.swift
-//  ReactiveAutomaton
-//
-//  Created by Yasuhiro Inami on 2016-06-02.
-//  Copyright © 2016 Yasuhiro Inami. All rights reserved.
-//
-
 import ReactiveSwift
 import ReactiveAutomaton
 

@@ -1,11 +1,3 @@
-//
-//  StateFuncMappingSpec.swift
-//  ReactiveAutomaton
-//
-//  Created by Yasuhiro Inami on 2016-11-26.
-//  Copyright © 2016 Yasuhiro Inami. All rights reserved.
-//
-
 import ReactiveSwift
 import ReactiveAutomaton
 import Quick
@@ -19,7 +11,7 @@ class StateFuncMappingSpec: QuickSpec
         describe("State-change function mapping") {
 
             typealias Automaton = ReactiveAutomaton.Automaton<CountState, CountInput>
-            typealias EffectMapping = Automaton.EffectMapping
+            typealias EffectMapping = Automaton.EffectMapping<Never>
 
             let (signal, observer) = Signal<CountInput, Never>.pipe()
             var automaton: Automaton?
@@ -32,8 +24,7 @@ class StateFuncMappingSpec: QuickSpec
                 ]
                 mappings += [ CountInput.decrement | { $0 - 1 } | .empty ]
 
-                // strategy = `.merge`
-                automaton = Automaton(state: 0, input: signal, mapping: reduce(mappings), strategy: .merge)
+                automaton = Automaton(state: 0, inputs: signal, mapping: reduce(mappings))
             }
 
             it("`.increment` and `.decrement` succeed") {

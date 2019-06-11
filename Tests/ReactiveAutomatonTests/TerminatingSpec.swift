@@ -1,11 +1,3 @@
-//
-//  TerminatingSpec.swift
-//  ReactiveAutomaton
-//
-//  Created by Yasuhiro Inami on 2016-06-09.
-//  Copyright © 2016 Yasuhiro Inami. All rights reserved.
-//
-
 import ReactiveSwift
 import ReactiveAutomaton
 import Quick
@@ -17,6 +9,7 @@ class TerminatingSpec: QuickSpec
     {
         typealias Automaton = ReactiveAutomaton.Automaton<MyState, MyInput>
         typealias Mapping = Automaton.Mapping
+        typealias EffectMapping = Automaton.EffectMapping<Never>
 
         var automaton: Automaton?
         var lastReply: Reply<MyState, MyInput>?
@@ -44,14 +37,13 @@ class TerminatingSpec: QuickSpec
                         .delay(1, on: testScheduler)
                         .on(disposed: { effectDisposed = true })
 
-                let mappings: [Automaton.EffectMapping] = [
+                let mappings: [EffectMapping] = [
                     .input0 | .state0 => .state1 | sendInput1And2AfterDelay,
                     .input1 | .state1 => .state2 | .empty,
                     .input2 | .state2 => .state0 | .empty
                 ]
 
-                // strategy = `.Merge`
-                automaton = Automaton(state: .state0, input: signal, mapping: reduce(mappings), strategy: .merge)
+                automaton = Automaton(state: .state0, inputs: signal, mapping: reduce(mappings))
 
                 _ = automaton?.replies.observe { event in
                     lastRepliesEvent = event
@@ -241,17 +233,17 @@ class TerminatingSpec: QuickSpec
                     // Not completed yet because `sendInput1And2AfterDelay` is still in progress.
                     expect(automaton?.state.value) == .state2
                     expect(lastReply?.input) == .input1
-                    expect(lastRepliesEvent?.isTerminating) == false
+                    expect(lastRepliesEvent?.isTerminating) == true
                     testScheduler.tickAndCheck {
-                        expect(effectDisposed) == false
+                        expect(effectDisposed) == true
                     }
 
                     // `sendInput1And2AfterDelay` will automatically send `.input2` at this point.
                     testScheduler.advance(by: .seconds(1))
 
-                    // Last state & input should change.
-                    expect(automaton?.state.value) == .state0
-                    expect(lastReply?.input) == .input2
+                    // Last state & input should NOT change.
+                    expect(automaton?.state.value) == .state2
+                    expect(lastReply?.input) == .input1
                     expect(lastRepliesEvent?.isCompleting) == true
                     testScheduler.tickAndCheck {
                         expect(effectDisposed) == true

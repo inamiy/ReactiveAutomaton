@@ -1,11 +1,3 @@
-//
-//  Mapping+Helper.swift
-//  ReactiveAutomaton
-//
-//  Created by Yasuhiro Inami on 2016-05-19.
-//  Copyright © 2016 Yasuhiro Inami. All rights reserved.
-//
-
 import ReactiveSwift
 
 /// "From-" and "to-" states represented as `.state1 => .state2` or `anyState => .state3`.
@@ -75,7 +67,18 @@ public func | <State, Input: Equatable>(input: Input, transition: @escaping (Sta
 
 // MARK: `|` (Automaton.EffectMapping constructor)
 
-public func | <State, Input>(mapping: @escaping Automaton<State, Input>.Mapping, effect: SignalProducer<Input, Never>) -> Automaton<State, Input>.EffectMapping
+public func | <State, Input>(
+    mapping: @escaping Automaton<State, Input>.Mapping,
+    effect: SignalProducer<Input, Never>
+    ) -> Automaton<State, Input>.EffectMapping<Never>
+{
+    return mapping | Effect(effect)
+}
+
+public func | <State, Input, Queue>(
+    mapping: @escaping Automaton<State, Input>.Mapping,
+    effect: Effect<Input, Queue>?
+    ) -> Automaton<State, Input>.EffectMapping<Queue>
 {
     return { fromState, input in
         if let toState = mapping(fromState, input) {
@@ -111,7 +114,9 @@ public func reduce<State, Input, Mappings: Sequence>(_ mappings: Mappings) -> Au
 }
 
 /// Folds multiple `Automaton.EffectMapping`s into one (preceding mapping has higher priority).
-public func reduce<State, Input, Mappings: Sequence>(_ mappings: Mappings) -> Automaton<State, Input>.EffectMapping where Mappings.Iterator.Element == Automaton<State, Input>.EffectMapping
+public func reduce<State, Input, Mappings: Sequence, Queue>(_ mappings: Mappings)
+    -> Automaton<State, Input>.EffectMapping<Queue>
+    where Mappings.Iterator.Element == Automaton<State, Input>.EffectMapping<Queue>
 {
     return { fromState, input in
         for mapping in mappings {
@@ -123,18 +128,21 @@ public func reduce<State, Input, Mappings: Sequence>(_ mappings: Mappings) -> Au
     }
 }
 
+// MARK: - Internals
+
 /// Converts `Automaton.Mapping` to `Automaton.EffectMapping`.
-public func toEffectMapping<State, Input>(_ mapping: @escaping Automaton<State, Input>.Mapping)
-    -> Automaton<State, Input>.EffectMapping
+internal func toEffectMapping<State, Input, Queue>(_ mapping: @escaping Automaton<State, Input>.Mapping)
+    -> Automaton<State, Input>.EffectMapping<Queue>
 {
     return { state, input in
-        return mapping(state, input).map { ($0, .empty) }
+        return mapping(state, input).map { ($0, nil) }
     }
 }
 
 /// Converts `Automaton.EffectMapping` to `Automaton.Mapping`, discarding effects.
-public func toMapping<State, Input>(_ effectMapping: @escaping Automaton<State, Input>.EffectMapping)
-    -> Automaton<State, Input>.Mapping
+internal func toMapping<State, Input, Queue>(
+    _ effectMapping: @escaping Automaton<State, Input>.EffectMapping<Queue>
+    ) -> Automaton<State, Input>.Mapping
 {
     return { state, input in
         return effectMapping(state, input)?.0
