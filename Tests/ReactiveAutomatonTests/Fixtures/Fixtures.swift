@@ -59,6 +59,20 @@ enum MyInput
     case input0, input1, input2
 }
 
+// MARK: Helpers
+
+protocol With {}
+
+extension With
+{
+    func with(_ f: (inout Self) -> Void) -> Self
+    {
+        var copy = self
+        f(&copy)
+        return copy
+    }
+}
+
 // MARK: Extensions
 
 extension Signal.Event
@@ -83,5 +97,13 @@ extension Signal.Event
             case .interrupted:
                 return true
         }
+    }
+}
+
+extension Lifetime.Token: Equatable
+{
+    public static func == (lhs: Lifetime.Token, rhs: Lifetime.Token) -> Bool
+    {
+        return lhs === rhs
     }
 }
