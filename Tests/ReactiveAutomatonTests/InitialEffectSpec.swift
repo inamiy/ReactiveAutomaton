@@ -3,21 +3,19 @@ import ReactiveAutomaton
 import Quick
 import Nimble
 
-/// EffectMapping tests with `strategy = .latest`.
-class EffectMappingLatestSpec: QuickSpec
+class InitialEffectSpec: QuickSpec
 {
     override func spec()
     {
         typealias Automaton = ReactiveAutomaton.Automaton<AuthState, AuthInput>
-        typealias EffectMapping = Automaton.EffectMapping<Queue>
+        typealias EffectMapping = Automaton.EffectMapping<Never>
 
         let (signal, observer) = Signal<AuthInput, Never>.pipe()
         var automaton: Automaton?
         var lastReply: Reply<AuthState, AuthInput>?
+        var testScheduler: TestScheduler!
 
-        describe("strategy = `.latest`") {
-
-            var testScheduler: TestScheduler!
+        describe("InitialEffect") {
 
             beforeEach {
                 testScheduler = TestScheduler()
@@ -33,13 +31,18 @@ class EffectMappingLatestSpec: QuickSpec
                         .delay(1, on: testScheduler)
 
                 let mappings: [EffectMapping] = [
-                    .login    | .loggedOut  => .loggingIn  | Effect(loginOKProducer, queue: .request),
-                    .loginOK  | .loggingIn  => .loggedIn   | nil,
-                    .logout   | .loggedIn   => .loggingOut | Effect(logoutOKProducer, queue: .request),
-                    .logoutOK | .loggingOut => .loggedOut  | nil
+                    .login    | .loggedOut  => .loggingIn  | loginOKProducer,
+                    .loginOK  | .loggingIn  => .loggedIn   | .empty,
+                    .logout   | .loggedIn   => .loggingOut | logoutOKProducer,
+                    .logoutOK | .loggingOut => .loggedOut  | .empty
                 ]
 
-                automaton = Automaton(state: .loggedOut, inputs: signal, mapping: reduce(mappings))
+                automaton = Automaton(
+                    state: .loggedOut,
+                    effect: Effect(SignalProducer(value: .login).delay(1, on: testScheduler)),
+                    inputs: signal,
+                    mapping: reduce(mappings)
+                )
 
                 _ = automaton?.replies.observeValues { reply in
                     lastReply = reply
@@ -48,25 +51,17 @@ class EffectMappingLatestSpec: QuickSpec
                 lastReply = nil
             }
 
-            it("`strategy = .latest` should not interrupt inner effects when transition fails") {
+            it("`LoggedOut (auto) => LoggingIn => LoggedIn => LoggingOut => LoggedOut` succeed") {
                 expect(automaton?.state.value) == .loggedOut
                 expect(lastReply).to(beNil())
 
-                observer.send(value: .login)
+                // NOTE: Instead of manually sending `.login`, initial effect already handles it.
+                testScheduler.advance(by: .seconds(1))
+                // observer.send(value: .login)
 
                 expect(lastReply?.input) == .login
                 expect(lastReply?.fromState) == .loggedOut
                 expect(lastReply?.toState) == .loggingIn
-                expect(automaton?.state.value) == .loggingIn
-
-                testScheduler.advance(by: .milliseconds(100))
-
-                // fails (`loginOKProducer` will not be interrupted)
-                observer.send(value: .login)
-
-                expect(lastReply?.input) == .login
-                expect(lastReply?.fromState) == .loggingIn
-                expect(lastReply?.toState).to(beNil())
                 expect(automaton?.state.value) == .loggingIn
 
                 // `loginOKProducer` will automatically send `.loginOK`
@@ -76,21 +71,24 @@ class EffectMappingLatestSpec: QuickSpec
                 expect(lastReply?.fromState) == .loggingIn
                 expect(lastReply?.toState) == .loggedIn
                 expect(automaton?.state.value) == .loggedIn
+
+                observer.send(value: .logout)
+
+                expect(lastReply?.input) == .logout
+                expect(lastReply?.fromState) == .loggedIn
+                expect(lastReply?.toState) == .loggingOut
+                expect(automaton?.state.value) == .loggingOut
+
+                // `logoutOKProducer` will automatically send `.logoutOK`
+                testScheduler.advance(by: .seconds(1))
+
+                expect(lastReply?.input) == .logoutOK
+                expect(lastReply?.fromState) == .loggingOut
+                expect(lastReply?.toState) == .loggedOut
+                expect(automaton?.state.value) == .loggedOut
             }
 
         }
 
-    }
-}
-
-// MARK: - Private
-
-private enum Queue: EffectQueueProtocol
-{
-    case request
-
-    var flattenStrategy: FlattenStrategy
-    {
-        return .latest
     }
 }

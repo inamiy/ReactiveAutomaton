@@ -1,11 +1,3 @@
-//
-//  MappingSpec.swift
-//  ReactiveAutomaton
-//
-//  Created by Yasuhiro Inami on 2016-05-07.
-//  Copyright © 2016 Yasuhiro Inami. All rights reserved.
-//
-
 import ReactiveSwift
 import ReactiveAutomaton
 import Quick
@@ -38,8 +30,7 @@ class MappingSpec: QuickSpec
                     .forceLogout | canForceLogout => .loggingOut
                 ]
 
-                // NOTE: Use `concat` to combine all mappings.
-                automaton = Automaton(state: .loggedOut, input: signal, mapping: reduce(mappings))
+                automaton = Automaton(state: .loggedOut, inputs: signal, mapping: reduce(mappings))
 
                 _ = automaton?.replies.observeValues { reply in
                     lastReply = reply
@@ -148,7 +139,7 @@ class MappingSpec: QuickSpec
                     }
                 }
 
-                automaton = Automaton(state: .loggedOut, input: signal, mapping: mapping)
+                automaton = Automaton(state: .loggedOut, inputs: signal, mapping: mapping)
 
                 _ = automaton?.replies.observeValues { reply in
                     lastReply = reply

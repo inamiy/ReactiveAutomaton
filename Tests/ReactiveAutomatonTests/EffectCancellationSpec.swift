@@ -8,7 +8,7 @@ class EffectCancellationSpec: QuickSpec
     override func spec()
     {
         typealias Automaton = ReactiveAutomaton.Automaton<State, Input>
-        typealias EffectMapping = Automaton.EffectMapping
+        typealias EffectMapping = Automaton.EffectMapping<Never>
 
         let (signal, observer) = Signal<Input, Never>.pipe()
         var automaton: Automaton?
@@ -16,9 +16,10 @@ class EffectCancellationSpec: QuickSpec
         var testScheduler: TestScheduler!
         var isEffectDetected: Bool = false
 
-        describe("Cancellation") {
-
-            typealias EffectMapping = Automaton.EffectMapping
+        // WARNING:
+        // Handling `Lifetime` is actually a side-effect that should not run inside `EffectMapping`.
+        // So, this test is actually not a good example of handling cancellation.
+        describe("Cancellation using Lifetime") {
 
             beforeEach {
                 testScheduler = TestScheduler()
@@ -32,6 +33,9 @@ class EffectCancellationSpec: QuickSpec
                 let mapping: EffectMapping = { fromState, input in
                     switch (fromState.status, input) {
                     case (.idle, .userAction(.request)):
+                        // WARNING:
+                        // Handling `Lifetime` is actually a side-effect that should not run inside `EffectMapping`.
+                        // So, this test is actually not a good example of handling cancellation.
                         let (lifetime, token) = Lifetime.make()
                         let toState = fromState.with {
                             $0.status = .requesting(token)
@@ -41,27 +45,26 @@ class EffectCancellationSpec: QuickSpec
                             .on(value: { _ in
                                 isEffectDetected = true
                             })
-                        return (toState, effect)
+                        return (toState, Effect(effect))
 
                     case (.requesting, .userAction(.cancel)):
                         let toState = fromState.with {
                             $0.status = .idle
                         }
-                        return (toState, .empty)
+                        return (toState, nil)
 
                     case (.requesting, .requestOK):
                         let toState = fromState.with {
                             $0.status = .idle
                         }
-                        return (toState, .empty)
+                        return (toState, nil)
 
                     default:
                         return nil
                     }
                 }
 
-                // strategy = `.Merge`
-                automaton = Automaton(state: State(), input: signal, mapping: mapping, strategy: .merge)
+                automaton = Automaton(state: State(), inputs: signal, mapping: mapping)
 
                 _ = automaton?.replies.observeValues { reply in
                     lastReply = reply

@@ -1,11 +1,3 @@
-//
-//  EffectMappingSpec.swift
-//  ReactiveAutomaton
-//
-//  Created by Yasuhiro Inami on 2016-06-02.
-//  Copyright © 2016 Yasuhiro Inami. All rights reserved.
-//
-
 import ReactiveSwift
 import ReactiveAutomaton
 import Quick
@@ -18,7 +10,7 @@ class EffectMappingSpec: QuickSpec
     override func spec()
     {
         typealias Automaton = ReactiveAutomaton.Automaton<AuthState, AuthInput>
-        typealias EffectMapping = Automaton.EffectMapping
+        typealias EffectMapping = Automaton.EffectMapping<Never>
 
         let (signal, observer) = Signal<AuthInput, Never>.pipe()
         var automaton: Automaton?
@@ -40,15 +32,14 @@ class EffectMappingSpec: QuickSpec
                     SignalProducer<AuthInput, Never>(value: .logoutOK)
                         .delay(1, on: testScheduler)
 
-                let mappings: [Automaton.EffectMapping] = [
+                let mappings: [EffectMapping] = [
                     .login    | .loggedOut  => .loggingIn  | loginOKProducer,
                     .loginOK  | .loggingIn  => .loggedIn   | .empty,
                     .logout   | .loggedIn   => .loggingOut | logoutOKProducer,
                     .logoutOK | .loggingOut => .loggedOut  | .empty
                 ]
 
-                // strategy = `.Merge`
-                automaton = Automaton(state: .loggedOut, input: signal, mapping: reduce(mappings), strategy: .merge)
+                automaton = Automaton(state: .loggedOut, inputs: signal, mapping: reduce(mappings))
 
                 _ = automaton?.replies.observeValues { reply in
                     lastReply = reply
@@ -112,20 +103,19 @@ class EffectMappingSpec: QuickSpec
                 let mapping: EffectMapping = { fromState, input in
                     switch (fromState, input) {
                         case (.loggedOut, .login):
-                            return (.loggingIn, loginOKProducer)
+                            return (.loggingIn, .init(loginOKProducer))
                         case (.loggingIn, .loginOK):
-                            return (.loggedIn, .empty)
+                            return (.loggedIn, nil)
                         case (.loggedIn, .logout):
-                            return (.loggingOut, logoutOKProducer)
+                            return (.loggingOut, .init(logoutOKProducer))
                         case (.loggingOut, .logoutOK):
-                            return (.loggedOut, .empty)
+                            return (.loggedOut, nil)
                         default:
                             return nil
                     }
                 }
 
-                // strategy = `.Merge`
-                automaton = Automaton(state: .loggedOut, input: signal, mapping: mapping, strategy: .merge)
+                automaton = Automaton(state: .loggedOut, inputs: signal, mapping: mapping)
 
                 _ = automaton?.replies.observeValues { reply in
                     lastReply = reply
@@ -190,13 +180,12 @@ class EffectMappingSpec: QuickSpec
                         }
                     }
 
-                let mappings: [Automaton.EffectMapping] = [
+                let mappings: [EffectMapping] = [
                     .login    | .loggedOut  => .loggingIn  | loginOKProducer,
                     .loginOK  | .loggingIn  => .loggedIn   | .empty
                 ]
 
-                // strategy = `.Merge`
-                automaton = Automaton(state: .loggedOut, input: signal, mapping: reduce(mappings), strategy: .merge)
+                automaton = Automaton(state: .loggedOut, inputs: signal, mapping: reduce(mappings))
 
                 _ = automaton?.replies.observeValues { reply in
                     lastReply = reply

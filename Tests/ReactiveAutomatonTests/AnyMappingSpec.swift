@@ -1,11 +1,3 @@
-//
-//  AnyMappingSpec.swift
-//  ReactiveAutomaton
-//
-//  Created by Yasuhiro Inami on 2016-06-02.
-//  Copyright © 2016 Yasuhiro Inami. All rights reserved.
-//
-
 import ReactiveSwift
 import ReactiveAutomaton
 import Quick
@@ -30,7 +22,7 @@ class AnyMappingSpec: QuickSpec
                     any     | .state1 => .state2
                 ]
 
-                automaton = Automaton(state: .state0, input: signal, mapping: reduce(mappings))
+                automaton = Automaton(state: .state0, inputs: signal, mapping: reduce(mappings))
 
                 _ = automaton?.replies.observeValues { reply in
                     lastReply = reply
