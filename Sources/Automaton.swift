@@ -37,7 +37,7 @@ public final class Automaton<State, Input>
         self.init(
             state: initialState,
             inputs: inputSignal,
-            mapping: { _toEffectMapping(mapping($0, $1)) }
+            mapping: { mapping($0, $1).map { ($0, Effect<Input, Never>?.none) } }
         )
     }
 
@@ -158,16 +158,4 @@ extension Automaton
         replies: Signal<Reply<State, Input>, Never>,
         effects: SignalProducer<Input, Never>
     )
-}
-
-// MARK: - Private
-
-private func _toEffectMapping<State, Input>(_ toState: State?) -> (State, Effect<Input, Never>?)?
-{
-    if let toState = toState {
-        return (toState, nil)
-    }
-    else {
-        return nil
-    }
 }

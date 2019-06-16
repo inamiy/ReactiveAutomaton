@@ -31,7 +31,10 @@ public func => <State: Equatable>(left: State, right: State) -> Transition<State
 
 //infix operator | : AdditionPrecedence   // Comment-Out: already built-in
 
-public func | <State, Input>(inputFunc: @escaping (Input) -> Bool, transition: Transition<State>) -> Automaton<State, Input>.Mapping
+public func | <State, Input>(
+    inputFunc: @escaping (Input) -> Bool,
+    transition: Transition<State>
+    ) -> Automaton<State, Input>.Mapping
 {
     return { fromState, input in
         if inputFunc(input) && transition.fromState(fromState) {
@@ -43,12 +46,18 @@ public func | <State, Input>(inputFunc: @escaping (Input) -> Bool, transition: T
     }
 }
 
-public func | <State, Input: Equatable>(input: Input, transition: Transition<State>) -> Automaton<State, Input>.Mapping
+public func | <State, Input: Equatable>(
+    input: Input,
+    transition: Transition<State>
+    ) -> Automaton<State, Input>.Mapping
 {
     return { $0 == input } | transition
 }
 
-public func | <State, Input>(inputFunc: @escaping (Input) -> Bool, transition: @escaping (State) -> State) -> Automaton<State, Input>.Mapping
+public func | <State, Input>(
+    inputFunc: @escaping (Input) -> Bool,
+    transition: @escaping (State) -> State
+    ) -> Automaton<State, Input>.Mapping
 {
     return { fromState, input in
         if inputFunc(input) {
@@ -60,7 +69,10 @@ public func | <State, Input>(inputFunc: @escaping (Input) -> Bool, transition: @
     }
 }
 
-public func | <State, Input: Equatable>(input: Input, transition: @escaping (State) -> State) -> Automaton<State, Input>.Mapping
+public func | <State, Input: Equatable>(
+    input: Input,
+    transition: @escaping (State) -> State
+    ) -> Automaton<State, Input>.Mapping
 {
     return { $0 == input } | transition
 }
