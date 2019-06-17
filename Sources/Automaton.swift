@@ -9,7 +9,7 @@ public final class Automaton<State, Input>
 
     /// Transducer (input & output) mapping with `Effect<Input>` (additional effect) as output,
     /// which may emit next input values for continuous state-transitions.
-    public typealias EffectMapping<Queue> = (State, Input) -> (State, Effect<Input, Queue>?)?
+    public typealias EffectMapping<Queue> = (State, Input) -> (State, Effect<Input, State, Queue>?)?
         where Queue: EffectQueueProtocol
 
     /// `Reply` signal that notifies either `.success` or `.failure` of state-transition on every input.
@@ -37,7 +37,7 @@ public final class Automaton<State, Input>
         self.init(
             state: initialState,
             inputs: inputSignal,
-            mapping: { mapping($0, $1).map { ($0, Effect<Input, Never>?.none) } }
+            mapping: { mapping($0, $1).map { ($0, Effect<Input, State, Never>?.none) } }
         )
     }
 
@@ -50,7 +50,7 @@ public final class Automaton<State, Input>
     ///   - mapping: `EffectMapping` that designates next state and also generates additional effect.
     public convenience init<Queue>(
         state initialState: State,
-        effect initialEffect: Effect<Input, Queue>? = nil,
+        effect initialEffect: Effect<Input, State, Queue>? = nil,
         inputs inputSignal: Signal<Input, Never>,
         mapping: @escaping EffectMapping<Queue>
         ) where Queue: EffectQueueProtocol
@@ -75,7 +75,7 @@ public final class Automaton<State, Input>
                     }
 
                 var effects = mapped
-                    .filterMap { _, _, mapped -> Effect<Input, Queue>? in
+                    .filterMap { _, _, mapped -> Effect<Input, State, Queue>? in
                         guard case let .some(_, effect) = mapped else { return nil }
                         return effect
                     }
@@ -89,7 +89,11 @@ public final class Automaton<State, Input>
                     EffectQueue<Queue>.allCases.map { queue in
                         effects
                             .filter { $0.queue == queue }
-                            .flatMap(queue.flattenStrategy) { $0.producer }
+                            .flatMap(queue.flattenStrategy) { effect -> SignalProducer<Input, Never> in
+                                /// - Note: Cancellation will be triggered regardless of state-transition success or failure.
+                                let until = from.filterMap { effect.until($0, $1) ? () : nil }
+                                return effect.producer.take(until: until)
+                            }
                     }
                 )
 
