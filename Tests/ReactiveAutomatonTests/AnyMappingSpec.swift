@@ -8,11 +8,11 @@ class AnyMappingSpec: QuickSpec
 {
     override func spec()
     {
-        typealias Automaton = ReactiveAutomaton.Automaton<MyState, MyInput>
+        typealias Automaton = ReactiveAutomaton.Automaton<MyInput, MyState>
 
         let (signal, observer) = Signal<MyInput, Never>.pipe()
         var automaton: Automaton?
-        var lastReply: Reply<MyState, MyInput>?
+        var lastReply: Reply<MyInput, MyState>?
 
         describe("`anyState`/`anyInput` mapping") {
 

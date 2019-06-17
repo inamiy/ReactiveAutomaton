@@ -2,23 +2,23 @@ import ReactiveSwift
 
 /// Deterministic finite state machine that receives "input"
 /// and with "current state" transform to "next state" & "output (additional effect)".
-public final class Automaton<State, Input>
+public final class Automaton<Input, State>
 {
     /// Basic state-transition function type.
-    public typealias Mapping = (State, Input) -> State?
+    public typealias Mapping = (Input, State) -> State?
 
     /// Transducer (input & output) mapping with `Effect<Input>` (additional effect) as output,
     /// which may emit next input values for continuous state-transitions.
-    public typealias EffectMapping<Queue> = (State, Input) -> (State, Effect<Input, State, Queue>?)?
+    public typealias EffectMapping<Queue> = (Input, State) -> (State, Effect<Input, State, Queue>?)?
         where Queue: EffectQueueProtocol
 
     /// `Reply` signal that notifies either `.success` or `.failure` of state-transition on every input.
-    public let replies: Signal<Reply<State, Input>, Never>
+    public let replies: Signal<Reply<Input, State>, Never>
 
     /// Current state.
     public let state: Property<State>
 
-    fileprivate let _repliesObserver: Signal<Reply<State, Input>, Never>.Observer
+    fileprivate let _repliesObserver: Signal<Reply<Input, State>, Never>.Observer
 
     fileprivate let _disposable: Disposable
 
@@ -61,11 +61,11 @@ public final class Automaton<State, Input>
             makeSignals: { from -> MakeSignals in
                 let mapped = from
                     .map { input, fromState in
-                        return (input, fromState, mapping(fromState, input))
+                        return (input, fromState, mapping(input, fromState))
                     }
 
                 let replies = mapped
-                    .map { input, fromState, mapped -> Reply<State, Input> in
+                    .map { input, fromState, mapped -> Reply<Input, State> in
                         if let (toState, _) = mapped {
                             return .success((input, fromState, toState))
                         }
@@ -111,7 +111,7 @@ public final class Automaton<State, Input>
         let stateProperty = MutableProperty(initialState)
         self.state = Property(capturing: stateProperty)
 
-        (self.replies, self._repliesObserver) = Signal<Reply<State, Input>, Never>.pipe()
+        (self.replies, self._repliesObserver) = Signal<Reply<Input, State>, Never>.pipe()
 
         let effectInputs = Signal<Input, Never>.pipe()
 
@@ -159,7 +159,7 @@ public final class Automaton<State, Input>
 extension Automaton
 {
     internal typealias MakeSignals = (
-        replies: Signal<Reply<State, Input>, Never>,
+        replies: Signal<Reply<Input, State>, Never>,
         effects: SignalProducer<Input, Never>
     )
 }

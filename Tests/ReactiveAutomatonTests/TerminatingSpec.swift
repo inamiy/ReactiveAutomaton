@@ -7,13 +7,13 @@ class TerminatingSpec: QuickSpec
 {
     override func spec()
     {
-        typealias Automaton = ReactiveAutomaton.Automaton<MyState, MyInput>
+        typealias Automaton = ReactiveAutomaton.Automaton<MyInput, MyState>
         typealias Mapping = Automaton.Mapping
         typealias EffectMapping = Automaton.EffectMapping<Never>
 
         var automaton: Automaton?
-        var lastReply: Reply<MyState, MyInput>?
-        var lastRepliesEvent: Signal<Reply<MyState, MyInput>, Never>.Event?
+        var lastReply: Reply<MyInput, MyState>?
+        var lastRepliesEvent: Signal<Reply<MyInput, MyState>, Never>.Event?
 
         /// Flag for internal effect `sendInput1And2AfterDelay` disposed.
         var effectDisposed: Bool?

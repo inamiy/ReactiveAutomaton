@@ -1,5 +1,5 @@
 /// `Automaton`'s reply to state transition.
-public enum Reply<State, Input>
+public enum Reply<Input, State>
 {
     /// Transition success, i.e. `(input, fromState, toState)`.
     case success(Success)

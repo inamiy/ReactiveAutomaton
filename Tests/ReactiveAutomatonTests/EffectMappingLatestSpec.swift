@@ -8,12 +8,12 @@ class EffectMappingLatestSpec: QuickSpec
 {
     override func spec()
     {
-        typealias Automaton = ReactiveAutomaton.Automaton<AuthState, AuthInput>
+        typealias Automaton = ReactiveAutomaton.Automaton<AuthInput, AuthState>
         typealias EffectMapping = Automaton.EffectMapping<Queue>
 
         let (signal, observer) = Signal<AuthInput, Never>.pipe()
         var automaton: Automaton?
-        var lastReply: Reply<AuthState, AuthInput>?
+        var lastReply: Reply<AuthInput, AuthState>?
 
         describe("strategy = `.latest`") {
 

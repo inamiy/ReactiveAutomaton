@@ -3,18 +3,18 @@ import ReactiveAutomaton
 import Quick
 import Nimble
 
-/// Tests for `(State, Input) -> (State, Output)?` mapping
+/// Tests for `(Input, State) -> (State, Output)?` mapping
 /// where `Output = SignalProducer<Input, Never>`.
 class EffectMappingSpec: QuickSpec
 {
     override func spec()
     {
-        typealias Automaton = ReactiveAutomaton.Automaton<AuthState, AuthInput>
+        typealias Automaton = ReactiveAutomaton.Automaton<AuthInput, AuthState>
         typealias EffectMapping = Automaton.EffectMapping<Never>
 
         let (signal, observer) = Signal<AuthInput, Never>.pipe()
         var automaton: Automaton?
-        var lastReply: Reply<AuthState, AuthInput>?
+        var lastReply: Reply<AuthInput, AuthState>?
         var testScheduler: TestScheduler!
 
         describe("Syntax-sugar EffectMapping") {
@@ -100,15 +100,15 @@ class EffectMappingSpec: QuickSpec
                     SignalProducer<AuthInput, Never>(value: .logoutOK)
                         .delay(1, on: testScheduler)
 
-                let mapping: EffectMapping = { fromState, input in
-                    switch (fromState, input) {
-                        case (.loggedOut, .login):
+                let mapping: EffectMapping = { input, fromState in
+                    switch (input, fromState) {
+                        case (.login, .loggedOut):
                             return (.loggingIn, .init(loginOKProducer))
-                        case (.loggingIn, .loginOK):
+                        case (.loginOK, .loggingIn):
                             return (.loggedIn, nil)
-                        case (.loggedIn, .logout):
+                        case (.logout, .loggedIn):
                             return (.loggingOut, .init(logoutOKProducer))
-                        case (.loggingOut, .logoutOK):
+                        case (.logoutOK, .loggingOut):
                             return (.loggedOut, nil)
                         default:
                             return nil
