@@ -7,12 +7,12 @@ class InitialEffectSpec: QuickSpec
 {
     override func spec()
     {
-        typealias Automaton = ReactiveAutomaton.Automaton<AuthState, AuthInput>
+        typealias Automaton = ReactiveAutomaton.Automaton<AuthInput, AuthState>
         typealias EffectMapping = Automaton.EffectMapping<Never>
 
         let (signal, observer) = Signal<AuthInput, Never>.pipe()
         var automaton: Automaton?
-        var lastReply: Reply<AuthState, AuthInput>?
+        var lastReply: Reply<AuthInput, AuthState>?
         var testScheduler: TestScheduler!
 
         describe("InitialEffect") {

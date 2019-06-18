@@ -3,17 +3,17 @@ import ReactiveAutomaton
 import Quick
 import Nimble
 
-/// Tests for `(State, Input) -> State?` mapping.
+/// Tests for `(Input, State) -> State?` mapping.
 class MappingSpec: QuickSpec
 {
     override func spec()
     {
-        typealias Automaton = ReactiveAutomaton.Automaton<AuthState, AuthInput>
+        typealias Automaton = ReactiveAutomaton.Automaton<AuthInput, AuthState>
         typealias Mapping = Automaton.Mapping
 
         let (signal, observer) = Signal<AuthInput, Never>.pipe()
         var automaton: Automaton?
-        var lastReply: Reply<AuthState, AuthInput>?
+        var lastReply: Reply<AuthInput, AuthState>?
 
         describe("Syntax-sugar Mapping") {
 
@@ -119,19 +119,19 @@ class MappingSpec: QuickSpec
         describe("Func-based Mapping") {
 
             beforeEach {
-                let mapping: Mapping = { fromState, input in
-                    switch (fromState, input) {
-                        case (.loggedOut, .login):
+                let mapping: Mapping = { input, fromState in
+                    switch (input, fromState) {
+                        case (.login, .loggedOut):
                             return .loggingIn
-                        case (.loggingIn, .loginOK):
+                        case (.loginOK, .loggingIn):
                             return .loggedIn
-                        case (.loggedIn, .logout):
+                        case (.logout, .loggedIn):
                             return .loggingOut
-                        case (.loggingOut, .logoutOK):
+                        case (.logoutOK, .loggingOut):
                             return .loggedOut
 
                         // ForceLogout
-                        case (.loggingIn, .forceLogout), (.loggedIn, .forceLogout):
+                        case (.forceLogout, .loggingIn), (.forceLogout, .loggedIn):
                             return .loggingOut
 
                         default:

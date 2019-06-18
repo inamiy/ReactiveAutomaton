@@ -13,7 +13,7 @@ extension Automaton
         state initialState: State,
         inputs inputSignal: Signal<Input, Never>,
         mapping: @escaping Mapping,
-        feedback: Feedback<Reply<State, Input>.Success, Input>
+        feedback: Feedback<Reply<Input, State>.Success, Input>
         )
     {
         self.init(
@@ -22,11 +22,11 @@ extension Automaton
             makeSignals: { from -> MakeSignals in
                 let mapped = from
                     .map { input, fromState in
-                        return (input, fromState, mapping(fromState, input))
+                        return (input, fromState, mapping(input, fromState))
                     }
 
                 let replies = mapped
-                    .map { input, fromState, mapped -> Reply<State, Input> in
+                    .map { input, fromState, mapped -> Reply<Input, State> in
                         if let toState = mapped {
                             return .success((input, fromState, toState))
                         }

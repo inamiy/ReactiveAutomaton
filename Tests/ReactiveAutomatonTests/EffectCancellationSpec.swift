@@ -10,12 +10,12 @@ class EffectCancellationSpec: QuickSpec
         describe("Cancellation using Lifetime") {
 
             typealias State = _State<Lifetime.Token>
-            typealias Automaton = ReactiveAutomaton.Automaton<State, Input>
+            typealias Automaton = ReactiveAutomaton.Automaton<Input, State>
             typealias EffectMapping = Automaton.EffectMapping<Never>
 
             let (signal, observer) = Signal<Input, Never>.pipe()
             var automaton: Automaton?
-            var lastReply: Reply<State, Input>?
+            var lastReply: Reply<Input, State>?
             var testScheduler: TestScheduler!
             var isEffectDetected: Bool = false
 
@@ -28,7 +28,7 @@ class EffectCancellationSpec: QuickSpec
                     SignalProducer<Input, Never>(value: .requestOK)
                         .delay(1, on: testScheduler)
 
-                let mapping: EffectMapping = { fromState, input in
+                let mapping: EffectMapping = { input, fromState in
                     switch (fromState.status, input) {
                     case (.idle, .userAction(.request)):
                         let (lifetime, token) = Lifetime.make()
@@ -119,12 +119,12 @@ class EffectCancellationSpec: QuickSpec
         describe("Cancellation using Effect.until") {
 
             typealias State = _State<_Void>
-            typealias Automaton = ReactiveAutomaton.Automaton<State, Input>
+            typealias Automaton = ReactiveAutomaton.Automaton<Input, State>
             typealias EffectMapping = Automaton.EffectMapping<Never>
 
             let (signal, observer) = Signal<Input, Never>.pipe()
             var automaton: Automaton?
-            var lastReply: Reply<State, Input>?
+            var lastReply: Reply<Input, State>?
             var testScheduler: TestScheduler!
             var isEffectDetected: Bool = false
 
@@ -137,7 +137,7 @@ class EffectCancellationSpec: QuickSpec
                     SignalProducer<Input, Never>(value: .requestOK)
                         .delay(1, on: testScheduler)
 
-                let mapping: EffectMapping = { fromState, input in
+                let mapping: EffectMapping = { input, fromState in
                     switch (fromState.status, input) {
                     case (.idle, .userAction(.request)):
                         let toState = fromState.with {

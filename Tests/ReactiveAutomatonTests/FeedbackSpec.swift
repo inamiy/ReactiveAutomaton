@@ -7,13 +7,13 @@ class FeedbackSpec: QuickSpec
 {
     override func spec()
     {
-        typealias Automaton = ReactiveAutomaton.Automaton<AuthState, AuthInput>
+        typealias Automaton = ReactiveAutomaton.Automaton<AuthInput, AuthState>
         typealias Mapping = Automaton.Mapping
-        typealias Feedback = ReactiveAutomaton.Feedback<Reply<AuthState, AuthInput>.Success, AuthInput>
+        typealias Feedback = ReactiveAutomaton.Feedback<Reply<AuthInput, AuthState>.Success, AuthInput>
 
         let (signal, observer) = Signal<AuthInput, Never>.pipe()
         var automaton: Automaton?
-        var lastReply: Reply<AuthState, AuthInput>?
+        var lastReply: Reply<AuthInput, AuthState>?
         var testScheduler: TestScheduler!
 
         describe("Feedback") {

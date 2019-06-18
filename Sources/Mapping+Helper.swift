@@ -31,12 +31,12 @@ public func => <State: Equatable>(left: State, right: State) -> Transition<State
 
 //infix operator | : AdditionPrecedence   // Comment-Out: already built-in
 
-public func | <State, Input>(
+public func | <Input, State>(
     inputFunc: @escaping (Input) -> Bool,
     transition: Transition<State>
-    ) -> Automaton<State, Input>.Mapping
+    ) -> Automaton<Input, State>.Mapping
 {
-    return { fromState, input in
+    return { input, fromState in
         if inputFunc(input) && transition.fromState(fromState) {
             return transition.toState
         }
@@ -46,20 +46,20 @@ public func | <State, Input>(
     }
 }
 
-public func | <State, Input: Equatable>(
+public func | <Input: Equatable, State>(
     input: Input,
     transition: Transition<State>
-    ) -> Automaton<State, Input>.Mapping
+    ) -> Automaton<Input, State>.Mapping
 {
     return { $0 == input } | transition
 }
 
-public func | <State, Input>(
+public func | <Input, State>(
     inputFunc: @escaping (Input) -> Bool,
     transition: @escaping (State) -> State
-    ) -> Automaton<State, Input>.Mapping
+    ) -> Automaton<Input, State>.Mapping
 {
-    return { fromState, input in
+    return { input, fromState in
         if inputFunc(input) {
             return transition(fromState)
         }
@@ -69,31 +69,31 @@ public func | <State, Input>(
     }
 }
 
-public func | <State, Input: Equatable>(
+public func | <Input: Equatable, State>(
     input: Input,
     transition: @escaping (State) -> State
-    ) -> Automaton<State, Input>.Mapping
+    ) -> Automaton<Input, State>.Mapping
 {
     return { $0 == input } | transition
 }
 
 // MARK: `|` (Automaton.EffectMapping constructor)
 
-public func | <State, Input>(
-    mapping: @escaping Automaton<State, Input>.Mapping,
+public func | <Input, State>(
+    mapping: @escaping Automaton<Input, State>.Mapping,
     effect: SignalProducer<Input, Never>
-    ) -> Automaton<State, Input>.EffectMapping<Never>
+    ) -> Automaton<Input, State>.EffectMapping<Never>
 {
     return mapping | Effect(effect)
 }
 
-public func | <State, Input, Queue>(
-    mapping: @escaping Automaton<State, Input>.Mapping,
+public func | <Input, State, Queue>(
+    mapping: @escaping Automaton<Input, State>.Mapping,
     effect: Effect<Input, State, Queue>?
-    ) -> Automaton<State, Input>.EffectMapping<Queue>
+    ) -> Automaton<Input, State>.EffectMapping<Queue>
 {
-    return { fromState, input in
-        if let toState = mapping(fromState, input) {
+    return { input, fromState in
+        if let toState = mapping(input, fromState) {
             return (toState, effect)
         }
         else {
@@ -102,7 +102,7 @@ public func | <State, Input, Queue>(
     }
 }
 
-// MARK: Functions
+// MARK: - Functions
 
 /// Helper for "any state" or "any input" mappings, e.g.
 /// - `let mapping = .input0 | any => .state1`
@@ -113,11 +113,13 @@ public func any<T>(_: T) -> Bool
 }
 
 /// Folds multiple `Automaton.Mapping`s into one (preceding mapping has higher priority).
-public func reduce<State, Input, Mappings: Sequence>(_ mappings: Mappings) -> Automaton<State, Input>.Mapping where Mappings.Iterator.Element == Automaton<State, Input>.Mapping
+public func reduce<Input, State, Mappings: Sequence>(_ mappings: Mappings)
+    -> Automaton<Input, State>.Mapping
+    where Mappings.Iterator.Element == Automaton<Input, State>.Mapping
 {
-    return { fromState, input in
+    return { input, fromState in
         for mapping in mappings {
-            if let toState = mapping(fromState, input) {
+            if let toState = mapping(input, fromState) {
                 return toState
             }
         }
@@ -126,13 +128,13 @@ public func reduce<State, Input, Mappings: Sequence>(_ mappings: Mappings) -> Au
 }
 
 /// Folds multiple `Automaton.EffectMapping`s into one (preceding mapping has higher priority).
-public func reduce<State, Input, Mappings: Sequence, Queue>(_ mappings: Mappings)
-    -> Automaton<State, Input>.EffectMapping<Queue>
-    where Mappings.Iterator.Element == Automaton<State, Input>.EffectMapping<Queue>
+public func reduce<Input, State, Mappings: Sequence, Queue>(_ mappings: Mappings)
+    -> Automaton<Input, State>.EffectMapping<Queue>
+    where Mappings.Iterator.Element == Automaton<Input, State>.EffectMapping<Queue>
 {
-    return { fromState, input in
+    return { input, fromState in
         for mapping in mappings {
-            if let tuple = mapping(fromState, input) {
+            if let tuple = mapping(input, fromState) {
                 return tuple
             }
         }
@@ -140,23 +142,23 @@ public func reduce<State, Input, Mappings: Sequence, Queue>(_ mappings: Mappings
     }
 }
 
-// MARK: - Internals
+// MARK: - Mapping conversion
 
 /// Converts `Automaton.Mapping` to `Automaton.EffectMapping`.
-internal func toEffectMapping<State, Input, Queue>(_ mapping: @escaping Automaton<State, Input>.Mapping)
-    -> Automaton<State, Input>.EffectMapping<Queue>
+public func toEffectMapping<Input, State, Queue>(_ mapping: @escaping Automaton<Input, State>.Mapping)
+    -> Automaton<Input, State>.EffectMapping<Queue>
 {
-    return { state, input in
-        return mapping(state, input).map { ($0, nil) }
+    return { input, state in
+        return mapping(input, state).map { ($0, nil) }
     }
 }
 
 /// Converts `Automaton.EffectMapping` to `Automaton.Mapping`, discarding effects.
-internal func toMapping<State, Input, Queue>(
-    _ effectMapping: @escaping Automaton<State, Input>.EffectMapping<Queue>
-    ) -> Automaton<State, Input>.Mapping
+public func toMapping<Input, State, Queue>(
+    _ effectMapping: @escaping Automaton<Input, State>.EffectMapping<Queue>
+    ) -> Automaton<Input, State>.Mapping
 {
-    return { state, input in
-        return effectMapping(state, input)?.0
+    return { input, state in
+        return effectMapping(input, state)?.0
     }
 }
