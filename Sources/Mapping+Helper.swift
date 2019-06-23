@@ -89,7 +89,7 @@ public func | <Input, State>(
 
 public func | <Input, State, Queue>(
     mapping: @escaping Automaton<Input, State>.Mapping,
-    effect: Effect<Input, State, Queue>?
+    effect: Effect<Input, State, Queue>
     ) -> Automaton<Input, State>.EffectMapping<Queue>
 {
     return { input, fromState in

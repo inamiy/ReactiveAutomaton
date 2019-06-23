@@ -27,6 +27,20 @@ public struct Effect<Input, State, Queue> where Queue: EffectQueueProtocol
         self.queue = queue.map(EffectQueue.custom) ?? .default
         self.until = until
     }
+
+    /// Empty side-effect.
+    public static var none: Effect<Input, State, Queue>
+    {
+        return Effect(.empty)
+    }
+}
+
+extension Effect: ExpressibleByNilLiteral
+{
+    public init(nilLiteral: ())
+    {
+        self = .none
+    }
 }
 
 extension Effect where Input: Equatable
