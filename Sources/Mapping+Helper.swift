@@ -79,10 +79,10 @@ public func | <Input: Equatable, State>(
 
 // MARK: `|` (Automaton.EffectMapping constructor)
 
-public func | <Input, State>(
+public func | <Input, State, Queue>(
     mapping: @escaping Automaton<Input, State>.Mapping,
     effect: SignalProducer<Input, Never>
-    ) -> Automaton<Input, State>.EffectMapping<Never>
+    ) -> Automaton<Input, State>.EffectMapping<Queue>
 {
     return mapping | Effect(effect)
 }
