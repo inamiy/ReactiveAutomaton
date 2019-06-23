@@ -9,7 +9,7 @@ public final class Automaton<Input, State>
 
     /// Transducer (input & output) mapping with `Effect<Input>` (additional effect) as output,
     /// which may emit next input values for continuous state-transitions.
-    public typealias EffectMapping<Queue> = (Input, State) -> (State, Effect<Input, State, Queue>?)?
+    public typealias EffectMapping<Queue> = (Input, State) -> (State, Effect<Input, State, Queue>)?
         where Queue: EffectQueueProtocol
 
     /// `Reply` signal that notifies either `.success` or `.failure` of state-transition on every input.
@@ -37,7 +37,7 @@ public final class Automaton<Input, State>
         self.init(
             state: initialState,
             inputs: inputSignal,
-            mapping: { mapping($0, $1).map { ($0, Effect<Input, State, Never>?.none) } }
+            mapping: { mapping($0, $1).map { ($0, Effect<Input, State, Never>.empty) } }
         )
     }
 
