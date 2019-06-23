@@ -50,7 +50,7 @@ public final class Automaton<Input, State>
     ///   - mapping: `EffectMapping` that designates next state and also generates additional effect.
     public convenience init<Queue>(
         state initialState: State,
-        effect initialEffect: Effect<Input, State, Queue>? = nil,
+        effect initialEffect: Effect<Input, State, Queue> = .empty,
         inputs inputSignal: Signal<Input, Never>,
         mapping: @escaping EffectMapping<Queue>
         ) where Queue: EffectQueueProtocol
@@ -74,16 +74,13 @@ public final class Automaton<Input, State>
                         }
                     }
 
-                var effects = mapped
-                    .filterMap { _, _, mapped -> Effect<Input, State, Queue>? in
-                        guard case let .some(_, effect) = mapped else { return nil }
+                let effects = mapped
+                    .filterMap { _, _, mapped -> Effect<Input, State, Queue> in
+                        guard case let .some(_, effect) = mapped else { return .empty }
                         return effect
                     }
                     .producer
-
-                if let initialEffect = initialEffect {
-                    effects = effects.prefix(value: initialEffect)
-                }
+                    .prefix(value: initialEffect)
 
                 let effectInputs = SignalProducer.merge(
                     EffectQueue<Queue>.allCases.map { queue in

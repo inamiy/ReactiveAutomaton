@@ -31,9 +31,9 @@ class InitialEffectSpec: QuickSpec
                         .delay(1, on: testScheduler)
 
                 let mappings: [EffectMapping] = [
-                    .login    | .loggedOut  => .loggingIn  | loginOKProducer,
+                    .login    | .loggedOut  => .loggingIn  | .init(loginOKProducer),
                     .loginOK  | .loggingIn  => .loggedIn   | .empty,
-                    .logout   | .loggedIn   => .loggingOut | logoutOKProducer,
+                    .logout   | .loggedIn   => .loggingOut | .init(logoutOKProducer),
                     .logoutOK | .loggingOut => .loggedOut  | .empty
                 ]
 

@@ -28,7 +28,7 @@ public struct Effect<Input, State, Queue> where Queue: EffectQueueProtocol
         self.until = until
     }
 
-    static var empty: Effect<Input, State, Queue>
+    public static var empty: Effect<Input, State, Queue>
     {
         return Effect(.empty)
     }
