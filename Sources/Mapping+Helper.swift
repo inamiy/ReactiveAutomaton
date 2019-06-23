@@ -79,18 +79,18 @@ public func | <Input: Equatable, State>(
 
 // MARK: `|` (Automaton.EffectMapping constructor)
 
-public func | <Input, State, Queue>(
+public func | <Input, State, Queue, EffectID>(
     mapping: @escaping Automaton<Input, State>.Mapping,
     effect: SignalProducer<Input, Never>
-    ) -> Automaton<Input, State>.EffectMapping<Queue>
+    ) -> Automaton<Input, State>.EffectMapping<Queue, EffectID>
 {
     return mapping | Effect(effect)
 }
 
-public func | <Input, State, Queue>(
+public func | <Input, State, Queue, EffectID>(
     mapping: @escaping Automaton<Input, State>.Mapping,
-    effect: Effect<Input, State, Queue>
-    ) -> Automaton<Input, State>.EffectMapping<Queue>
+    effect: Effect<Input, Queue, EffectID>
+    ) -> Automaton<Input, State>.EffectMapping<Queue, EffectID>
 {
     return { input, fromState in
         if let toState = mapping(input, fromState) {
@@ -128,9 +128,9 @@ public func reduce<Input, State, Mappings: Sequence>(_ mappings: Mappings)
 }
 
 /// Folds multiple `Automaton.EffectMapping`s into one (preceding mapping has higher priority).
-public func reduce<Input, State, Mappings: Sequence, Queue>(_ mappings: Mappings)
-    -> Automaton<Input, State>.EffectMapping<Queue>
-    where Mappings.Iterator.Element == Automaton<Input, State>.EffectMapping<Queue>
+public func reduce<Input, State, Mappings: Sequence, Queue, EffectID>(_ mappings: Mappings)
+    -> Automaton<Input, State>.EffectMapping<Queue, EffectID>
+    where Mappings.Iterator.Element == Automaton<Input, State>.EffectMapping<Queue, EffectID>
 {
     return { input, fromState in
         for mapping in mappings {
@@ -145,8 +145,8 @@ public func reduce<Input, State, Mappings: Sequence, Queue>(_ mappings: Mappings
 // MARK: - Mapping conversion
 
 /// Converts `Automaton.Mapping` to `Automaton.EffectMapping`.
-public func toEffectMapping<Input, State, Queue>(_ mapping: @escaping Automaton<Input, State>.Mapping)
-    -> Automaton<Input, State>.EffectMapping<Queue>
+public func toEffectMapping<Input, State, Queue, EffectID>(_ mapping: @escaping Automaton<Input, State>.Mapping)
+    -> Automaton<Input, State>.EffectMapping<Queue, EffectID>
 {
     return { input, state in
         return mapping(input, state).map { ($0, nil) }
@@ -154,8 +154,8 @@ public func toEffectMapping<Input, State, Queue>(_ mapping: @escaping Automaton<
 }
 
 /// Converts `Automaton.EffectMapping` to `Automaton.Mapping`, discarding effects.
-public func toMapping<Input, State, Queue>(
-    _ effectMapping: @escaping Automaton<Input, State>.EffectMapping<Queue>
+public func toMapping<Input, State, Queue, EffectID>(
+    _ effectMapping: @escaping Automaton<Input, State>.EffectMapping<Queue, EffectID>
     ) -> Automaton<Input, State>.Mapping
 {
     return { input, state in

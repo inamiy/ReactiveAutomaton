@@ -10,8 +10,9 @@ class EffectCancellationSpec: QuickSpec
         describe("Cancellation using Lifetime") {
 
             typealias State = _State<Lifetime.Token>
+            typealias Input = _Input<_Void>
             typealias Automaton = ReactiveAutomaton.Automaton<Input, State>
-            typealias EffectMapping = Automaton.EffectMapping<Never>
+            typealias EffectMapping = Automaton.EffectMapping<Never, Never>
 
             let (signal, observer) = Signal<Input, Never>.pipe()
             var automaton: Automaton?
@@ -101,9 +102,9 @@ class EffectCancellationSpec: QuickSpec
                 expect(automaton?.state.value.status.requesting).toNot(beNil())
 
                 // `loginOKProducer` will automatically send `.loginOK`
-                observer.send(value: .userAction(.cancel))
+                observer.send(value: .userAction(.cancel(_Void())))
 
-                expect(lastReply?.input) == .userAction(.cancel)
+                expect(lastReply?.input) == .userAction(.cancel(_Void()))
                 expect(lastReply?.fromState.status.requesting).toNot(beNil())
                 expect(lastReply?.toState?.status) == .idle
                 expect(automaton?.state.value.status) == .idle
@@ -116,17 +117,22 @@ class EffectCancellationSpec: QuickSpec
 
         }
 
-        describe("Cancellation using Effect.until") {
+        describe("Cancellation using Effect.cancel") {
 
+            typealias EffectID = String
             typealias State = _State<_Void>
+            typealias Input = _Input<EffectID>
             typealias Automaton = ReactiveAutomaton.Automaton<Input, State>
-            typealias EffectMapping = Automaton.EffectMapping<Never>
+            typealias EffectMapping = Automaton.EffectMapping<Never, EffectID>
 
             let (signal, observer) = Signal<Input, Never>.pipe()
             var automaton: Automaton?
             var lastReply: Reply<Input, State>?
             var testScheduler: TestScheduler!
             var isEffectDetected: Bool = false
+
+            let dummyEffectID: EffectID = "dummy"
+            let effectID: EffectID = "foo"
 
             beforeEach {
                 testScheduler = TestScheduler()
@@ -147,13 +153,15 @@ class EffectCancellationSpec: QuickSpec
                             .on(value: { _ in
                                 isEffectDetected = true
                             })
-                        return (toState, Effect(effect, until: .userAction(.cancel)))
+                        return (toState, Effect(effect, id: effectID))
 
-                    case (.requesting, .userAction(.cancel)):
+                    case let (.requesting, .userAction(.cancel(id))):
+                        guard id == effectID else { return nil } // NOTE: skips `dummyEffectID`
+
                         let toState = fromState.with {
                             $0.status = .idle
                         }
-                        return (toState, nil)
+                        return (toState, Effect.cancel(id))
 
                     case (.requesting, .requestOK):
                         let toState = fromState.with {
@@ -183,14 +191,14 @@ class EffectCancellationSpec: QuickSpec
 
                 expect(lastReply?.input) == .userAction(.request)
                 expect(lastReply?.fromState.status) == .idle
-                expect(lastReply?.toState?.status.requesting).toNot(beNil())
-                expect(automaton?.state.value.status.requesting).toNot(beNil())
+                expect(lastReply?.toState?.status) == .requesting(_Void())
+                expect(automaton?.state.value.status) == .requesting(_Void())
 
                 // `loginOKProducer` will automatically send `.loginOK`
                 testScheduler.advance(by: .seconds(2))
 
                 expect(lastReply?.input) == .requestOK
-                expect(lastReply?.fromState.status.requesting).toNot(beNil())
+                expect(lastReply?.fromState.status) == .requesting(_Void())
                 expect(lastReply?.toState?.status) == .idle
                 expect(automaton?.state.value.status) == .idle
                 expect(isEffectDetected) == true
@@ -204,18 +212,25 @@ class EffectCancellationSpec: QuickSpec
 
                 expect(lastReply?.input) == .userAction(.request)
                 expect(lastReply?.fromState.status) == .idle
-                expect(lastReply?.toState?.status.requesting).toNot(beNil())
-                expect(automaton?.state.value.status.requesting).toNot(beNil())
+                expect(lastReply?.toState?.status) == .requesting(_Void())
+                expect(automaton?.state.value.status) == .requesting(_Void())
 
-                // `loginOKProducer` will automatically send `.loginOK`
-                observer.send(value: .userAction(.cancel))
+                // Dummy effect identifier, do nothing.
+                observer.send(value: .userAction(.cancel(dummyEffectID)))
 
-                expect(lastReply?.input) == .userAction(.cancel)
+                expect(lastReply?.input) == .userAction(.cancel(dummyEffectID))
+                expect(lastReply?.fromState.status) == .requesting(_Void())
+                expect(lastReply?.toState?.status).to(beNil()) // transition failure
+                expect(automaton?.state.value.status) == .requesting(_Void())
+
+                // Send proper effect identifier to cancel.
+                observer.send(value: .userAction(.cancel(effectID)))
+
+                expect(lastReply?.input) == .userAction(.cancel(effectID))
                 expect(lastReply?.fromState.status.requesting).toNot(beNil())
                 expect(lastReply?.toState?.status) == .idle
                 expect(automaton?.state.value.status) == .idle
 
-                lastReply = nil // clear `lastReply` to not retain `Lifetime.Token`
                 testScheduler.advance(by: .seconds(2))
 
                 expect(isEffectDetected) == false
@@ -228,15 +243,16 @@ class EffectCancellationSpec: QuickSpec
 
 // MARK: - Private
 
-private enum Input: Equatable
+private enum _Input<EffectID>: Equatable
+    where EffectID: Equatable
 {
     case userAction(UserAction)
     case requestOK
 
-    enum UserAction
+    enum UserAction: Equatable
     {
         case request
-        case cancel
+        case cancel(EffectID)
     }
 }
 

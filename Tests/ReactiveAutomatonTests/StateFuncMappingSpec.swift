@@ -11,7 +11,7 @@ class StateFuncMappingSpec: QuickSpec
         describe("State-change function mapping") {
 
             typealias Automaton = ReactiveAutomaton.Automaton<CountInput, CountState>
-            typealias EffectMapping = Automaton.EffectMapping<Never>
+            typealias EffectMapping = Automaton.EffectMapping<Never, Never>
 
             let (signal, observer) = Signal<CountInput, Never>.pipe()
             var automaton: Automaton?
