@@ -38,7 +38,7 @@ class TerminatingSpec: QuickSpec
                         .on(disposed: { effectDisposed = true })
 
                 let mappings: [EffectMapping] = [
-                    .input0 | .state0 => .state1 | .init(sendInput1And2AfterDelay),
+                    .input0 | .state0 => .state1 | sendInput1And2AfterDelay,
                     .input1 | .state1 => .state2 | .empty,
                     .input2 | .state2 => .state0 | .empty
                 ]

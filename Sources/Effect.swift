@@ -28,7 +28,8 @@ public struct Effect<Input, State, Queue> where Queue: EffectQueueProtocol
         self.until = until
     }
 
-    public static var empty: Effect<Input, State, Queue>
+    /// Empty side-effect.
+    public static var none: Effect<Input, State, Queue>
     {
         return Effect(.empty)
     }
@@ -38,7 +39,7 @@ extension Effect: ExpressibleByNilLiteral
 {
     public init(nilLiteral: ())
     {
-        self = .empty
+        self = .none
     }
 }
 

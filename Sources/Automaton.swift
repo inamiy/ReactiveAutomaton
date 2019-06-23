@@ -37,7 +37,7 @@ public final class Automaton<Input, State>
         self.init(
             state: initialState,
             inputs: inputSignal,
-            mapping: { mapping($0, $1).map { ($0, Effect<Input, State, Never>.empty) } }
+            mapping: { mapping($0, $1).map { ($0, Effect<Input, State, Never>.none) } }
         )
     }
 
@@ -50,7 +50,7 @@ public final class Automaton<Input, State>
     ///   - mapping: `EffectMapping` that designates next state and also generates additional effect.
     public convenience init<Queue>(
         state initialState: State,
-        effect initialEffect: Effect<Input, State, Queue> = .empty,
+        effect initialEffect: Effect<Input, State, Queue> = .none,
         inputs inputSignal: Signal<Input, Never>,
         mapping: @escaping EffectMapping<Queue>
         ) where Queue: EffectQueueProtocol
@@ -76,7 +76,7 @@ public final class Automaton<Input, State>
 
                 let effects = mapped
                     .filterMap { _, _, mapped -> Effect<Input, State, Queue> in
-                        guard case let .some(_, effect) = mapped else { return .empty }
+                        guard case let .some(_, effect) = mapped else { return .none }
                         return effect
                     }
                     .producer
