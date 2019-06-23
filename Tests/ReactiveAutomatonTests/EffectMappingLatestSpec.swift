@@ -9,7 +9,7 @@ class EffectMappingLatestSpec: QuickSpec
     override func spec()
     {
         typealias Automaton = ReactiveAutomaton.Automaton<AuthInput, AuthState>
-        typealias EffectMapping = Automaton.EffectMapping<Queue>
+        typealias EffectMapping = Automaton.EffectMapping<Queue, Never>
 
         let (signal, observer) = Signal<AuthInput, Never>.pipe()
         var automaton: Automaton?

@@ -9,7 +9,7 @@ class TerminatingSpec: QuickSpec
     {
         typealias Automaton = ReactiveAutomaton.Automaton<MyInput, MyState>
         typealias Mapping = Automaton.Mapping
-        typealias EffectMapping = Automaton.EffectMapping<Never>
+        typealias EffectMapping = Automaton.EffectMapping<Never, Never>
 
         var automaton: Automaton?
         var lastReply: Reply<MyInput, MyState>?
