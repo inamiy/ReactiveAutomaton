@@ -57,6 +57,22 @@ public struct Effect<Input, Queue, ID>
     {
         return Effect(.empty)
     }
+
+    // MARK: - Functor
+
+    public func mapInput<Input2>(_ f: @escaping (Input) -> Input2) -> Effect<Input2, Queue, ID>
+    {
+        switch self.kind {
+        case let .producer(producer):
+            return .init(kind: .producer(Effect<Input2, Queue, ID>.Producer(
+                producer: producer.producer.map(f),
+                queue: producer.queue,
+                id: producer.id
+            )))
+        case let .cancel(predicate):
+            return .cancel(predicate)
+        }
+    }
 }
 
 extension Effect: ExpressibleByNilLiteral
