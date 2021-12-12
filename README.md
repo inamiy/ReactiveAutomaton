@@ -1,3 +1,5 @@
+## NOTE: This repository has been discontinued in favor of [Actomaton](https://github.com/inamiy/Actomaton).
+
 # ReactiveAutomaton
 
 [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa) + State Machine, inspired by [Redux](https://github.com/reactjs/redux) and [Elm](http://elm-lang.org/). A successor of [SwiftState](https://github.com/ReactKit/SwiftState).
